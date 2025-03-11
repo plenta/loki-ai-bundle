@@ -1,21 +1,10 @@
 var Encore = require('@symfony/webpack-encore');
 
 Encore
-    .setOutputPath('src/Brkwsky/ContaoPropstack/Resources/public')
-    .setPublicPath('/bundles/contaopropstack')
-    .setManifestKeyPrefix('contaopropstack')
-
-    .addEntry('autoComplete', './assets/js/autoComplete.js')
-    .addStyleEntry('autoCompleteStyles', './assets/scss/autoComplete.scss')
-    .addStyleEntry('backend', './assets/scss/backend.scss')
-
-    .addEntry('leaflet', './assets/js/leaflet.js')
-    .addStyleEntry('leafletStyles', './assets/scss/leaflet.scss')
-
-    .addStyleEntry('energyStyles', './assets/scss/energy.scss')
-
-    .addEntry('app', './assets/js/app.js')
-    .addEntry('embed', './assets/js/embed.js')
+    .setOutputPath('public')
+    .setPublicPath('/bundles/lokiai')
+    .setManifestKeyPrefix('lokiai')
+    .addEntry('backend', './assets/js/backend.js')
 
 
     //.splitEntryChunks()

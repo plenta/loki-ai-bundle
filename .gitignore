@@ -27,3 +27,4 @@ gulp.config.js
 .phpunit.result.cache
 .php-cs-fixer.cache
 packages
+composer.lock

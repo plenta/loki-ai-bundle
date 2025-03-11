@@ -1,0 +1,9 @@
+{
+  "entrypoints": {
+    "backend": {
+      "js": [
+        "/bundles/lokiai/backend.js"
+      ]
+    }
+  }
+}

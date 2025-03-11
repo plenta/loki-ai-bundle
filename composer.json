@@ -1,7 +1,7 @@
 {
-    "name": "plenta/jobs-matching-bundle",
+    "name": "plenta/loki-ai-bundle",
     "type": "contao-bundle",
-    "description": "Matching Bundle for Plenta.Jobs",
+    "description": "AI Bundle for Contao",
     "license": "proprietary",
     "authors": [
         {
@@ -10,38 +10,30 @@
         }
     ],
     "version": "1.0",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "packages/*"
-        }
-    ],
     "require": {
         "php": "^8.3",
         "ext-json": "*",
         "contao/conflicts": "@dev",
-        "contao/core-bundle": "^5.3",
+        "contao/core-bundle": "^4.13 || ^5.3",
         "doctrine/dbal": "^3.2.0",
         "plenta/hugin-munin": "^1.0",
-        "brkwsky/contao-jobs-bundle": "@dev",
-        "plenta/contao-symfony-forms-helper-bundle": "*",
         "mvo/contao-group-widget": "^1.5",
-        "hofff/contao-calendarfield": "dev-contao5",
-        "symfony/http-client": "^6.4"
+        "symfony/http-client": "^5.4 || ^6.4",
+        "openai-php/symfony": "^0.10.2"
     },
     "require-dev": {
-        "contao/manager-bundle": "5.3.*",
+        "contao/manager-bundle": "^4.13",
         "phpunit/phpunit": "^9.5.10",
-        "contao/test-case": "^5.3",
+        "contao/test-case": "^4.13",
         "symfony/phpunit-bridge": "^v6.4.9",
         "friendsofphp/php-cs-fixer": "^3.2"
     },
     "extra": {
-        "contao-manager-plugin": "Plenta\\ContaoJobsMatching\\ContaoManager\\Plugin"
+        "contao-manager-plugin": "Plenta\\LokiAiBundle\\ContaoManager\\Plugin"
     },
     "autoload": {
         "psr-4": {
-            "Plenta\\ContaoJobsMatching\\": "src"
+            "Plenta\\LokiAiBundle\\": "src"
         }
     },
     "config": {

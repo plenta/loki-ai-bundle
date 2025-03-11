@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $openAi:
+                model: '%loki_ai.open_ai.model%'
+                temperature: '%loki_ai.open_ai.temperature%'
+                max_tokens: '%loki_ai.open_ai.max_tokens%'
+            $openAiClient: '@openai'
+
+
+    Plenta\LokiAiBundle\:
+        resource: ../src/*
+        exclude: ../src/{Entity,Migrations,Resources,Tests}

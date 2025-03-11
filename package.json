@@ -2,9 +2,7 @@
     "devDependencies": {
         "@babel/plugin-transform-runtime": "^7.22.9",
         "@symfony/webpack-encore": "^4.4.0",
-        "autocompleter": "^9.0.1",
         "core-js": "^3.32.0",
-        "leaflet": "^1.9.4",
         "sass": "^1.64",
         "regenerator-runtime": "^0.13.11",
         "sass-loader": "^13.3.2",
