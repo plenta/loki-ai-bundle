@@ -5,8 +5,9 @@ namespace Plenta\LokiAiBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Plenta\LokiAiBundle\Repository\PromptRepository;
 
-#[ORM\Entity()]
+#[ORM\Entity(repositoryClass: PromptRepository::class)]
 #[ORM\Table(self::TABLE)]
 class Prompt extends DCADefault
 {
