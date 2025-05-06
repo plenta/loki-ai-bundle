@@ -46,6 +46,6 @@ class ParseWidgetListener
             ]);
         }
 
-        return str_replace('</label></h3>', '</label></h3>'.$text, $buffer);
+        return str_replace('</h3>', '</h3>'.$text, $buffer);
     }
 }
