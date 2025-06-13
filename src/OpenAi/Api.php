@@ -61,7 +61,7 @@ class Api
         $time = time();
 
         foreach ($this->openAiClient->models()->list()->data as $model) {
-            $entity = $this->modelRepository->findBy(['name' => $model->id]);
+            $entity = $this->modelRepository->findOneBy(['name' => $model->id]);
 
             if (!$entity) {
                 $entity = new Model();
