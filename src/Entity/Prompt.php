@@ -31,6 +31,21 @@ class Prompt extends DCADefault
     #[ORM\Column(type: 'float', nullable: true)]
     protected ?float $temperature = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    protected bool $published = false;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    protected bool $autoRun = false;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    protected bool $protected = false;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    protected $userGroups = null;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    protected int $rootPage = 0;
+
     public function getFields()
     {
         return $this->fields;
@@ -106,6 +121,61 @@ class Prompt extends DCADefault
     public function setTemperature(?float $temperature): Prompt
     {
         $this->temperature = $temperature;
+        return $this;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): Prompt
+    {
+        $this->published = $published;
+        return $this;
+    }
+
+    public function isAutoRun(): bool
+    {
+        return $this->autoRun;
+    }
+
+    public function setAutoRun(bool $autoRun): Prompt
+    {
+        $this->autoRun = $autoRun;
+        return $this;
+    }
+
+    public function isProtected(): bool
+    {
+        return $this->protected;
+    }
+
+    public function setProtected(bool $protected): Prompt
+    {
+        $this->protected = $protected;
+        return $this;
+    }
+
+    public function getUserGroups(): ?string
+    {
+        return $this->userGroups;
+    }
+
+    public function setUserGroups(?string $userGroups): Prompt
+    {
+        $this->userGroups = $userGroups;
+        return $this;
+    }
+
+    public function getRootPage(): int
+    {
+        return $this->rootPage;
+    }
+
+    public function setRootPage(int $rootPage): Prompt
+    {
+        $this->rootPage = $rootPage;
         return $this;
     }
 }

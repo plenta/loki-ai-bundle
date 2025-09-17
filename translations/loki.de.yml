@@ -1,0 +1,4 @@
+loki:
+    fields_edit: Felder bearbeitet
+    errors: 'Fehler ist/sind aufgetreten:'
+    title: 'Prompt ":title" ausführen'

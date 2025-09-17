@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+    <file datatype="php">
+        <body>
+            <trans-unit id="tl_loki_prompt.title_legend">
+                <target>Titel</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.config_legend">
+                <target>Konfiguration</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.ai_legend">
+                <target>AI-Konfiguration</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.publish_legend">
+                <target>Veröffentlichung</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.title.0">
+                <target>Titel</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.title.1">
+                <target>Bitte geben Sie einen Titel ein. Dieser wird auch auf dem Button zum Starten des Prompts ausgegeben.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.fields.0">
+                <target>Konfigurations-Einstellungen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.fields.1">
+                <target>Bitte legen Sie pro Konfiguration ein Element an.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.tableName.0">
+                <target>Tabelle</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.tableName.1">
+                <target>Bitte wählen Sie eine Tabelle aus.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.field.0">
+                <target>Zu bearbeitende Felder</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.field.1">
+                <target>Bitte wählen Sie die Felder der Tabelle aus, die vom Prompt bearbeitet werden sollen.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.includeFields.0">
+                <target>Eingebundene Felder</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.includeFields.1">
+                <target>Bitte wählen Sie die Felder der Tabelle aus, die in den Prompt eingebunden werden sollen.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.rootPage.0">
+                <target>Seitenbaum</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.rootPage.1">
+                <target>Wenn der Prompt auf einen bestimmten Seitenbaum beschränkt werden soll, wählen Sie bitte hier den Seitenbaum aus.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.prompt.0">
+                <target>Prompt</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.prompt.1">
+                <target>Bitte geben Sie den Prompt für die AI ein. Die Werte der Felder aus den eingebundenen Feldern können über ##include_fields## eingebunden werden, der aktuelle Wert des Feldes über ##current_value## und Optionen eines Select-Felds/Checkboxen über ##field_options##.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.model.0">
+                <target>Modell</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.model.1">
+                <target>Bitte wählen Sie das Modell aus. Hinweis: Die Modelle werden regelmäßig aktualisiert. Dabei können Modelle wegfallen und neu hinzukommen.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.maxTokens.0">
+                <target>Maximale Token-Anzahl</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.maxTokens.1">
+                <target>Bitte geben Sie an, wie viele Tokens bei der Anfrage maximal verwendet werden sollen. Je komplexer die Anfrage ist, desto mehr Tokens werden benötigt. Bei unvollständigen Rückgabewerten kann es sinnvoll sein, die Zahl anzuheben. Je mehr Tokens verwendet werden, desto teurer ist die Anfrage.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.temperature.0">
+                <target>Temperatur</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.temperature.1">
+                <target>Die Temperatur kann zwischen 0 und 1 sein. Je höher die Temperatur ist, desto zufälliger ist der Rückgabewert.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.published.0">
+                <target>Prompt veröffentlichen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.published.1">
+                <target>Der Prompt-Button wird beim Feld angezeigt.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.autoRun.0">
+                <target>Prompt automatisch ausführen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.autoRun.1">
+                <target>Der Prompt wird ausgeführt, wenn das Konsolen-Kommando ausgeführt wird.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.protected.0">
+                <target>Prompt schützen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.protected.1">
+                <target>Der Prompt wird nur bestimmten Benutzergruppen angezeigt.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.userGroups.0">
+                <target>Benutzergruppen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.userGroups.1">
+                <target>Bitte wählen Sie die Benutzergruppen aus, die diesen Prompt ausführen dürfen.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.run.0">
+                <target>Prompt ausführen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.run.1">
+                <target>Prompt ausführen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.runConfirm">
+                <target>Sind Sie sicher, dass Sie den Prompt ausführen möchten? Der Prompt wird für ALLE ausgewählten Felder von ALLEN Datensätzen, auf die die Beschränkungen zutreffen, ausgeführt, aktuelle Werte werden dabei überschrieben.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

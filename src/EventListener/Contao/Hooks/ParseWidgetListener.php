@@ -4,6 +4,7 @@ namespace Plenta\LokiAiBundle\EventListener\Contao\Hooks;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Routing\ScopeMatcher;
+use Contao\PageModel;
 use Contao\Widget;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Symfony\Component\Asset\Packages;
@@ -39,6 +40,14 @@ class ParseWidgetListener
         $text = '';
 
         foreach ($fields as $field) {
+            if ($field->getTableName() === 'tl_page' && $field->getParent()->getRootPage()) {
+                $page = PageModel::findByPk($widget->dataContainer->id)->loadDetails();
+
+                if (!in_array($field->getParent()->getRootPage(), $page->trail)) {
+                    continue;
+                }
+            }
+
             $text .= $this->twigEnvironment->render('@Contao/backend/prompt_button.html.twig', [
                 'widget' => $widget,
                 'field' => $field,

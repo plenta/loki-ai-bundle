@@ -32,14 +32,32 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
                 'href' => 'act=edit',
                 'icon' => 'edit',
             ],
+            'duplicate' => [
+                'href' => 'act=copy',
+                'icon' => 'copy',
+            ],
             'delete' => [
                 'href' => 'act=delete',
                 'icon' => 'delete',
+                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null).'\')) return false; Backend.getScrollOffset();"',
             ],
+            'toggle' => [
+                'href' => 'act=toggle&field=published',
+                'icon' => 'visible',
+            ],
+            'run' => [
+                'href' => 'act=run',
+                'icon' => 'sync',
+                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['tl_loki_prompt']['runConfirm'] ?? null).'\')) return false; Backend.getScrollOffset();"',
+            ]
         ],
     ],
     'palettes' => [
-        'default' => '{title_legend},title;{config_legend},fields;{ai_legend},prompt,model,maxTokens,temperature',
+        '__selector__' => ['protected'],
+        'default' => '{title_legend},title;{config_legend},fields;{ai_legend},prompt,model,maxTokens,temperature;{publish_legend},published,autoRun,protected',
+    ],
+    'subpalettes' => [
+        'protected' => 'userGroups',
     ],
     'fields' => [
         'id' => [
@@ -52,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         ],
         'tableName' => [
             'inputType' => 'select',
-            'eval' => ['includeBlankOption' => true, 'submitOnChange' => true, 'mandatory' => true],
+            'eval' => ['includeBlankOption' => true, 'submitOnChange' => true, 'mandatory' => true, 'chosen' => true],
         ],
         'field' => [
             'inputType' => 'checkbox',
@@ -72,10 +90,12 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             'eval' => ['decodeEntities' => true],
         ],
         'model' => [
+            'exclude' => true,
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Default: '.\Contao\System::getContainer()->getParameter('loki_ai.open_ai.model')],
         ],
         'maxTokens' => [
+            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'natural', 'placeholder' => \Contao\System::getContainer()->getParameter('loki_ai.open_ai.max_tokens')],
             'sql' => [
@@ -84,11 +104,47 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             ],
         ],
         'temperature' => [
+            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'minval' => 0, 'maxval' => 2, 'placeholder' => \Contao\System::getContainer()->getParameter('loki_ai.open_ai.temperature')],
             'sql' => [
                 'type' => 'float',
                 'notnull' => false,
+            ],
+        ],
+        'published' => [
+            'inputType' => 'checkbox',
+            'toggle' => true,
+            'sql' => ['type' => 'boolean', 'default' => false],
+        ],
+        'autoRun' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'sql' => ['type' => 'boolean', 'default' => false],
+        ],
+        'protected' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'eval' => ['submitOnChange' => true],
+            'sql' => ['type' => 'boolean', 'default' => false],
+        ],
+        'userGroups' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'foreignKey' => 'tl_user_group.name',
+            'eval' => ['tl_class' => 'clr', 'multiple' => true],
+        ],
+        'rootPage' => [
+            'inputType' => 'pageTree',
+            'foreignKey' => 'tl_page.title',
+            'eval' => ['fieldType' => 'radio'],
+            'relation' => [
+                'type' => 'hasOne',
+                'load' => 'lazy',
+            ],
+            'sql' => [
+                'type' => 'integer',
+                'default' => 0,
             ],
         ],
     ],

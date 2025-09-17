@@ -1,0 +1,22 @@
+.prompts.progress .status {
+    &:before {
+        content: '';
+        width: 40px;
+        height: 40px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        display: inline-block;
+        margin-right: 8px;
+    }
+
+    &.pending:before {
+        /* webpackIgnore: true */
+        background-image: url('/system/themes/flexible/icons/loading.svg');
+    }
+
+    &.complete:before {
+        /* webpackIgnore: true */
+        background-image: url('/system/themes/flexible/icons/ok.svg');
+    }
+}

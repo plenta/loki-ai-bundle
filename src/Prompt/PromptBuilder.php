@@ -4,6 +4,7 @@ namespace Plenta\LokiAiBundle\Prompt;
 
 use Contao\Controller;
 use Contao\CoreBundle\String\SimpleTokenParser;
+use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Doctrine\DBAL\Connection;
@@ -32,7 +33,7 @@ class PromptBuilder
 
         $includeFields = StringUtil::deserialize($field->getIncludeFields(), true);
 
-        if (empty($includeFields)) {
+        if (empty($includeFields) && !str_contains($field->getParent()->getPrompt(), '##current_value##')) {
             throw new PromptException('No base text found');
         }
 
@@ -53,10 +54,20 @@ class PromptBuilder
                 $base .= $includeField.': '.$value;
             }
         } else {
-            $base = $object[$includeFields[0]];
+            $base = $object[$includeFields[0] ?? null] ?? null;
         }
 
-        $dca = $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName];
+        $dca = $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName] ?? null;
+
+        if (!$dca) {
+            throw new PromptException('Field '.$fieldName.' not found');
+        }
+
+        $affectedFields = StringUtil::deserialize($field->getField(), true);
+
+        if (!in_array($fieldName, $affectedFields)) {
+            throw new PromptException('Field '.$fieldName.' is not selected');
+        }
 
         $options = $this->getOptions($dca);
 
@@ -72,7 +83,7 @@ class PromptBuilder
             }
         }
 
-        return $this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options]);
+        return $this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $object[$fieldName]]);
     }
 
     protected function getOptions($dca)
@@ -98,5 +109,30 @@ class PromptBuilder
         }
 
         return $options;
+    }
+
+    public function getPages(Field $field): array
+    {
+        $return = [];
+
+        if ($field->getTableName() === 'tl_page') {
+            if ($field->getParent()->getRootPage()) {
+                $this->buildPages(PageModel::findByPk($field->getParent()->getRootPage()), $return);
+            }
+        }
+
+        return $return;
+    }
+
+    protected function buildPages($pageObj, &$pageIds)
+    {
+        $pages = PageModel::findPublishedByPid($pageObj->id);
+
+        if ($pages) {
+            foreach ($pages as $page) {
+                $pageIds[] = $page->id;
+                $this->buildPages($page, $pageIds);
+            }
+        }
     }
 }

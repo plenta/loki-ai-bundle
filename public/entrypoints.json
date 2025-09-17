@@ -1,8 +1,11 @@
 {
   "entrypoints": {
     "backend": {
+      "css": [
+        "/bundles/lokiai/backend.2b65dbf7.css"
+      ],
       "js": [
-        "/bundles/lokiai/backend.js"
+        "/bundles/lokiai/backend.3fcde05f.js"
       ]
     }
   }
