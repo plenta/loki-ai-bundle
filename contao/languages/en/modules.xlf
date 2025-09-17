@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+    <file datatype="php" source-language="en">
+        <body>
+            <trans-unit id="MOD.loki_prompts.0">
+                <source>Loki AI</source>
+            </trans-unit>
+            <trans-unit id="MOD.loki_prompts.1">
+                <source>Manage AI prompts</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
