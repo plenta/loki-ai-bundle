@@ -3,7 +3,8 @@
     <file datatype="php" source-language="en" target-language="de">
         <body>
             <trans-unit id="MOD.loki_prompts.0">
-                <target>Loki AI</target>
+                <source>Loki AI Prompts</source>
+                <target>Loki AI Prompts</target>
             </trans-unit>
             <trans-unit id="MOD.loki_prompts.1">
                 <source>Manage AI prompts</source>
