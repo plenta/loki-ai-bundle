@@ -44,8 +44,7 @@ class RunPromptsCommand extends Command
 
         foreach ($prompts as $prompt) {
             $fields = $prompt->getFields();
-
-            $output->writeln(sprintf('<info>%s</info>', $prompt->getTitle()));
+            $titlePrinted = false;
 
             foreach ($fields as $field) {
                 $dataFields = StringUtil::deserialize($field->getField(), true);
@@ -65,6 +64,11 @@ class RunPromptsCommand extends Command
                     }
 
                     if ($objects) {
+                        if (!$titlePrinted) {
+                            $output->writeln(sprintf('<info>%s</info>', $prompt->getTitle()));
+                            $titlePrinted = true;
+                        }
+
                         $output->writeln('<comment>'.$field->getTableName().' - '.$dataField.'</comment>');
 
                         $progressBar = new ProgressBar($output, count($objects));
