@@ -18,13 +18,13 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Plenta\LokiAiBundle\Entity\Field;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class FieldRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $managerRegistry,
-        protected Security $security,
+        protected TokenStorageInterface $tokenStorage,
     ) {
         parent::__construct($managerRegistry, Field::class);
     }
@@ -35,7 +35,7 @@ class FieldRepository extends ServiceEntityRepository
     public function findByTableNameAndField($tableName, $field)
     {
         $qb = $this->createQueryBuilder('f');
-        $user = $this->security->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $qb
             ->where('f.tableName = :tableName')
             ->leftJoin('f.parent', 'p')

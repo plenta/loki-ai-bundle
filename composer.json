@@ -19,7 +19,9 @@
         "plenta/hugin-munin": "^1.0",
         "mvo/contao-group-widget": "^1.5",
         "symfony/http-client": "^5.4 || ^6.4",
-        "openai-php/symfony": "^0.10.2"
+        "openai-php/symfony": "^0.10.2",
+        "symfony/http-foundation": "^5.4 || ^6.4",
+        "symfony/routing": "^5.4 || ^6.4"
     },
     "require-dev": {
         "contao/manager-bundle": "^4.13",

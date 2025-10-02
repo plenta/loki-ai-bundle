@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\EventListener\Contao\DCA;
 
-use Contao\Backend;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\Database;
@@ -24,7 +23,7 @@ use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Plenta\LokiAiBundle\Repository\PromptRepository;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TlLokiPrompt
 {
@@ -34,7 +33,7 @@ class TlLokiPrompt
         protected Api $api,
         protected PromptRepository $promptRepository,
         protected RouterInterface $router,
-        protected Security $security,
+        protected TokenStorageInterface $tokenStorage,
     ) {
     }
 
@@ -144,7 +143,7 @@ class TlLokiPrompt
             return '';
         }
 
-        $user = $this->security->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$user->isAdmin && $row['protected']) {
             $groups = StringUtil::deserialize($row['userGroups']);

@@ -30,25 +30,25 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'operations' => [
             'edit' => [
                 'href' => 'act=edit',
-                'icon' => 'edit',
+                'icon' => 'edit.svg',
             ],
             'duplicate' => [
                 'href' => 'act=copy',
-                'icon' => 'copy',
+                'icon' => 'copy.svg',
             ],
             'delete' => [
                 'href' => 'act=delete',
-                'icon' => 'delete',
+                'icon' => 'delete.svg',
                 'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null).'\')) return false; Backend.getScrollOffset();"',
             ],
             'toggle' => [
                 'href' => 'act=toggle&field=published',
-                'icon' => 'visible',
+                'icon' => 'visible.svg',
             ],
             'run' => [
                 'href' => 'act=run',
-                'icon' => 'sync',
-                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['tl_loki_prompt']['runConfirm'] ?? null).'\')) return false; Backend.getScrollOffset();"',
+                'icon' => 'sync.svg',
+                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['tl_loki_prompt']['runConfirm'] ?? null).'\')) return false; Backend.getScrollOffset();" data-turbo="false"',
             ]
         ],
     ],

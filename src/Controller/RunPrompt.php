@@ -16,6 +16,7 @@ use Plenta\LokiAiBundle\Repository\PromptRepository;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -26,7 +27,7 @@ class RunPrompt extends AbstractBackendController
     public function doRunPrompt(
         int $id,
         PromptRepository $promptRepository,
-        Security $security,
+        TokenStorageInterface $tokenStorage,
         PromptBuilder $promptBuilder,
         Connection $connection,
         Packages $packages,
@@ -39,7 +40,7 @@ class RunPrompt extends AbstractBackendController
         }
 
         if ($prompt->isProtected()) {
-            $user = $security->getToken()->getUser();
+            $user = $tokenStorage->getToken()->getUser();
 
             if (!$user->isAdmin) {
                 $groups = StringUtil::deserialize($prompt->getUserGroups());
