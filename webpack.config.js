@@ -25,6 +25,13 @@ Encore
     //.enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     .enableSassLoader()
+    .configureCssLoader((options) => {
+        options.url = {
+            filter: (url) => {
+                return !url.startsWith('/system/themes/');
+            },
+        };
+    })
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
@@ -33,9 +40,6 @@ Encore
         config.useBuiltIns = 'usage';
         config.corejs = 3;
     })*/
-    .configureBabel(function(babelConfig) {
-        babelConfig.plugins.push('@babel/plugin-transform-runtime');
-    }, {})
 ;
 
 module.exports = Encore.getWebpackConfig();
