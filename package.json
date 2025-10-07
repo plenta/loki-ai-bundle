@@ -1,11 +1,11 @@
 {
     "devDependencies": {
         "@babel/plugin-transform-runtime": "^7.22.9",
-        "@symfony/webpack-encore": "^4.4.0",
+        "@symfony/webpack-encore": "^5.2.0",
         "core-js": "^3.32.0",
         "sass": "^1.64",
-        "regenerator-runtime": "^0.13.11",
-        "sass-loader": "^13.3.2",
+        "regenerator-runtime": "^0.14.1",
+        "sass-loader": "^16.0.5",
         "webpack-notifier": "^1.15.0"
     },
     "license": "UNLICENSED",
@@ -15,8 +15,5 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
-    },
-    "dependencies": {
-        "save-dev": "0.0.1-security"
     }
 }
