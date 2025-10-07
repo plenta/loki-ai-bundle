@@ -1,4 +1,4 @@
-import "../scss/backend.scss"
+import "../scss/backend.scss";
 
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.prompt-button button').forEach(function (item) {
