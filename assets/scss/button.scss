@@ -36,8 +36,21 @@
             background-size: contain;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) rotate(0);
             filter: invert(1);
+        }
+
+        &.loading {
+            @keyframes rotateLokiButton {
+                to {
+                    transform: translate(-50%, -50%) rotate(360deg);
+                }
+            }
+
+            &:after {
+                background-image: url('/assets/images/loader-circle.svg');
+                animation: rotateLokiButton 1s linear infinite;
+            }
         }
     }
 }

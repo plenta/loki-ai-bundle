@@ -1,9 +1,15 @@
 import "../scss/backend.scss";
 
 document.addEventListener('DOMContentLoaded', function () {
+    const loadingClass = 'loading';
+
     document.querySelectorAll('.loki-prompt-button button').forEach(function (item) {
         item.addEventListener('click', function () {
+            item.classList.add(loadingClass);
+
             fetch(item.dataset.prefix + '/_loki/prompt/' + item.dataset.id + '/' + item.dataset.field + '/' + item.dataset.objectId).then(r => r.json()).then(r => {
+                item.classList.remove(loadingClass);
+
                 if (r.result) {
                     let input = item.closest('.widget').querySelector('input[id]');
                     let textarea = item.closest('.widget').querySelector('textarea[id]');
