@@ -2,3 +2,5 @@ loki:
     fields_edit: Felder bearbeitet
     errors: 'Fehler ist/sind aufgetreten:'
     title: 'Prompt ":title" ausführen'
+    button:
+        title: ':field mit Hilfe des Prompts ":title" generieren.'

@@ -1,5 +1,6 @@
 {% trans_default_domain 'contao_default' %}
+{% trans_default_domain 'loki' %}
 
 <div class="loki-prompt-button">
-    <button data-id="{{ field.id }}" data-field="{{ widget.name }}" data-object-id="{{ objectId }}" data-prefix="{{ path('contao_backend') }}" type="button" aria-label="{{ field.parent.title }}" title="{{ field.parent.title }}"></button>
+    <button data-id="{{ field.id }}" data-field="{{ widget.name }}" data-object-id="{{ objectId }}" data-prefix="{{ path('contao_backend') }}" type="button" aria-label="{{ 'loki.button.title'|trans({':title': field.parent.title, ':field': widget.label}) }}" title="{{ 'loki.button.title'|trans({':title': field.parent.title, ':field': widget.label}) }}"></button>
 </div>
