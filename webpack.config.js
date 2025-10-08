@@ -5,6 +5,7 @@ Encore
     .setPublicPath('/bundles/lokiai')
     .setManifestKeyPrefix('lokiai')
     .addEntry('backend', './assets/js/backend.js')
+    .addStyleEntry('button', './assets/scss/button.scss')
 
 
     //.splitEntryChunks()

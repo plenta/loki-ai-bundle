@@ -1,7 +1,7 @@
 import "../scss/backend.scss";
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.prompt-button button').forEach(function (item) {
+    document.querySelectorAll('.loki-prompt-button button').forEach(function (item) {
         item.addEventListener('click', function () {
             fetch(item.dataset.prefix + '/_loki/prompt/' + item.dataset.id + '/' + item.dataset.field + '/' + item.dataset.objectId).then(r => r.json()).then(r => {
                 if (r.result) {

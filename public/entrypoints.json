@@ -5,7 +5,12 @@
         "/bundles/lokiai/backend.2b65dbf7.css"
       ],
       "js": [
-        "/bundles/lokiai/backend.ab40567c.js"
+        "/bundles/lokiai/backend.0311cfbc.js"
+      ]
+    },
+    "button": {
+      "css": [
+        "/bundles/lokiai/button.19a04831.css"
       ]
     }
   }

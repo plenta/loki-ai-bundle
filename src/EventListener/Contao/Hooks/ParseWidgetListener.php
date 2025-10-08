@@ -36,6 +36,7 @@ class ParseWidgetListener
         }
 
         $GLOBALS['TL_JAVASCRIPT']['lokiBackend'] = $this->packages->getUrl('lokiai/backend.js', 'lokiai');
+        $GLOBALS['TL_CSS']['lokiButton'] = $this->packages->getUrl('lokiai/button.css', 'lokiai');
 
         $text = '';
 
@@ -55,6 +56,6 @@ class ParseWidgetListener
             ]);
         }
 
-        return str_replace('</h3>', '</h3>'.$text, $buffer);
+        return str_replace('</h3>', $text.'</h3>', $buffer);
     }
 }
