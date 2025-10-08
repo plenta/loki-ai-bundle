@@ -3,4 +3,4 @@ loki:
     errors: 'Fehler ist/sind aufgetreten:'
     title: 'Prompt ":title" ausführen'
     button:
-        title: ':field mit Hilfe des Prompts ":title" generieren.'
+        title: ':field mit Hilfe des KI Prompts ":title" generieren.'
