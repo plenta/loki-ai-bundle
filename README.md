@@ -23,3 +23,9 @@ composer require plenta/loki-ai-bundle
 
 - PHP: `^8.3`
 - Contao: `^4.13` || `^5`
+
+## Console command
+
+```bash
+php vendor/bin/contao-console loki:prompts:run
+```
