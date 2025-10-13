@@ -13,7 +13,7 @@
         width: 0.875rem;
         height: 0.875rem;
         display: inline-block;
-        background-color: var(--blue);
+        background-color: var(--blue, #006494);
         border-radius: 0.2rem;
         position: relative;
 
@@ -21,7 +21,7 @@
             text-decoration: none !important;
             background-image: none;
             background-position: 0;
-            background-color: var(--contao);
+            background-color: var(--contao, #f47c00);
         }
 
         &:after {
