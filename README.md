@@ -35,6 +35,8 @@ OPENAI_API_KEY=##YOUR-API-KEY##
 
 ## Console command
 
+You can run the prompts directly on the console.
+
 ```bash
 php vendor/bin/contao-console loki:prompts:run
 ```
