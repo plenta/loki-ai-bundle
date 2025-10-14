@@ -43,10 +43,10 @@ php vendor/bin/contao-console loki:prompts:run
 
 ## Screenshots
 
-### Backend DCA view
-
 For example, you can also place multiple prompts on one field.
 
 ![Backend-DCA-View](docs/backend.png)
+
+![Manually start](docs/manually.png)
 
 
