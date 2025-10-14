@@ -47,6 +47,8 @@ For example, you can also place multiple prompts on one field.
 
 ![Backend-DCA-View](docs/backend.png)
 
+You can also start each prompt manually.
+
 ![Manually start](docs/manually.png)
 
 
