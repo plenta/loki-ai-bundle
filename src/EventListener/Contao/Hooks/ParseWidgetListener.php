@@ -1,5 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @package       Customer
+ * @copyright     Copyright (c) 2025, Plenta.io
+ * @author        Plenta.io <https://plenta.io>
+ * @license       commercial
+ */
+
 namespace Plenta\LokiAiBundle\EventListener\Contao\Hooks;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
@@ -25,6 +34,10 @@ class ParseWidgetListener
     #[AsHook(hook: 'parseWidget')]
     public function onParseWidget(string $buffer, Widget $widget)
     {
+        if (!$widget->dataContainer) {
+            return $buffer;
+        }
+
         if (!$this->scopeMatcher->isBackendRequest($this->requestStack->getCurrentRequest())) {
             return $buffer;
         }
@@ -41,10 +54,10 @@ class ParseWidgetListener
         $text = '';
 
         foreach ($fields as $field) {
-            if ($field->getTableName() === 'tl_page' && $field->getParent()->getRootPage()) {
+            if ('tl_page' === $field->getTableName() && $field->getParent()->getRootPage()) {
                 $page = PageModel::findByPk($widget->dataContainer->id)->loadDetails();
 
-                if (!in_array($field->getParent()->getRootPage(), $page->trail)) {
+                if (!\in_array($field->getParent()->getRootPage(), $page->trail, true)) {
                     continue;
                 }
             }
