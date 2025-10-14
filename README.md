@@ -31,7 +31,7 @@ OPENAI_API_KEY=##YOUR-API-KEY##
 ## System requirements
 
 - PHP: `^8.3`
-- Contao: `^4.13` || `^5`
+- Contao: `^4.13` || `^5.3`
 
 ## Console command
 
