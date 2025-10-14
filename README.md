@@ -18,6 +18,15 @@ Search for **ai**, **chatgpt**, or **openai** and you will find this extension.
 composer require plenta/loki-ai-bundle
 ```
 
+### Configuration
+
+You can find your Secret API key on the [API key page](https://platform.openai.com/api-keys).
+
+Add the following parameter, including your API key, to your .env or .env.local
+
+```bash
+OPENAI_API_KEY=##YOUR-API-KEY##
+```
 
 ## System requirements
 
