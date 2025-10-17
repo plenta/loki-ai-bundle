@@ -3,6 +3,7 @@
 namespace Plenta\LokiAiBundle\Prompt;
 
 use Contao\Controller;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\String\SimpleTokenParser;
 use Contao\PageModel;
 use Contao\StringUtil;
@@ -16,6 +17,7 @@ class PromptBuilder
     public function __construct(
         protected Connection $connection,
         protected SimpleTokenParser $simpleTokenParser,
+        protected InsertTagParser $insertTagParser,
     ) {
     }
 
@@ -83,7 +85,7 @@ class PromptBuilder
             }
         }
 
-        return $this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $object[$fieldName]]);
+        return $this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $object[$fieldName]]));
     }
 
     protected function getOptions($dca)
