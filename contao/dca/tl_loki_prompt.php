@@ -1,8 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Loki AI Bundle for Contao Open Source CMS
+ *
+ * @copyright     Copyright (c) 2025, Plenta.io
+ * @author        Plenta.io <https://plenta.io>
+ * @link          https://github.com/plenta/
+ */
+
+use Contao\System;
+use Contao\DC_Table;
+use Contao\DataContainer;
+
 $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     'config' => [
-        'dataContainer' => \Contao\DC_Table::class,
+        'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'sql' => [
             'keys' => [
@@ -12,8 +26,8 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     ],
     'list' => [
         'sorting' => [
-            'mode' => \Contao\DataContainer::MODE_SORTED,
-            'flag' => \Contao\DataContainer::SORT_INITIAL_LETTER_ASC,
+            'mode' => DataContainer::MODE_SORTED,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'fields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
         ],
@@ -92,12 +106,12 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'model' => [
             'exclude' => true,
             'inputType' => 'select',
-            'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Default: '.\Contao\System::getContainer()->getParameter('loki_ai.open_ai.model')],
+            'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Default: '.System::getContainer()->getParameter('loki_ai.open_ai.model')],
         ],
         'maxTokens' => [
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'natural', 'placeholder' => \Contao\System::getContainer()->getParameter('loki_ai.open_ai.max_tokens')],
+            'eval' => ['rgxp' => 'natural', 'placeholder' => System::getContainer()->getParameter('loki_ai.open_ai.max_tokens')],
             'sql' => [
                 'type' => 'integer',
                 'notnull' => false,
@@ -106,7 +120,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'temperature' => [
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'digit', 'minval' => 0, 'maxval' => 2, 'placeholder' => \Contao\System::getContainer()->getParameter('loki_ai.open_ai.temperature')],
+            'eval' => ['rgxp' => 'digit', 'minval' => 0, 'maxval' => 2, 'placeholder' => System::getContainer()->getParameter('loki_ai.open_ai.temperature')],
             'sql' => [
                 'type' => 'float',
                 'notnull' => false,
