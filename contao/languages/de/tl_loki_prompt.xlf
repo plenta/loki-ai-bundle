@@ -20,6 +20,12 @@
             <trans-unit id="tl_loki_prompt.title.1">
                 <target>Bitte geben Sie einen Titel ein. Dieser wird auch auf dem Button zum Starten des Prompts ausgegeben.</target>
             </trans-unit>
+            <trans-unit id="tl_loki_prompt.alias.0">
+                <target>Alias</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.alias.1">
+                <target>Der Alias ist eine eindeutige Referenz, die anstelle der numerischen ID aufgerufen werden kann.</target>
+            </trans-unit>
             <trans-unit id="tl_loki_prompt.fields.0">
                 <target>Konfigurations-Einstellungen</target>
             </trans-unit>
