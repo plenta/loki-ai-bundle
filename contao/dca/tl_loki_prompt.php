@@ -21,6 +21,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'sql' => [
             'keys' => [
                 'id' => 'primary',
+                'alias' => 'index',
             ],
         ],
     ],
@@ -68,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     ],
     'palettes' => [
         '__selector__' => ['protected'],
-        'default' => '{title_legend},title;{config_legend},fields;{ai_legend},prompt,model,maxTokens,temperature;{publish_legend},published,autoRun,protected',
+        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,model,maxTokens,temperature;{publish_legend},autoRun,protected,published',
     ],
     'subpalettes' => [
         'protected' => 'userGroups',
@@ -80,7 +81,12 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         ],
         'title' => [
             'inputType' => 'text',
-            'eval' => ['mandatory' => true],
+            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
+        ],
+        'alias' => [
+            'inputType' => 'text',
+            'eval' => ['rgxp' => 'alias', 'doNotCopy' => true, 'unique' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) BINARY NOT NULL default ''"
         ],
         'tableName' => [
             'inputType' => 'select',
@@ -111,7 +117,11 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'maxTokens' => [
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'natural', 'placeholder' => System::getContainer()->getParameter('loki_ai.open_ai.max_tokens')],
+            'eval' => [
+                'rgxp' => 'natural',
+                'placeholder' => System::getContainer()->getParameter('loki_ai.open_ai.max_tokens'),
+                'tl_class' => 'w50',
+            ],
             'sql' => [
                 'type' => 'integer',
                 'notnull' => false,
@@ -120,7 +130,13 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'temperature' => [
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'digit', 'minval' => 0, 'maxval' => 2, 'placeholder' => System::getContainer()->getParameter('loki_ai.open_ai.temperature')],
+            'eval' => [
+                'rgxp' => 'digit',
+                'minval' => 0,
+                'maxval' => 2,
+                'placeholder' => System::getContainer()->getParameter('loki_ai.open_ai.temperature'),
+                'tl_class' => 'w50',
+            ],
             'sql' => [
                 'type' => 'float',
                 'notnull' => false,
