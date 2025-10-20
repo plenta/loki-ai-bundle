@@ -18,6 +18,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
+        'markAsCopy' => 'title',
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -81,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         ],
         'title' => [
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'markAsCopy' => true, 'tl_class' => 'w50'],
         ],
         'alias' => [
             'inputType' => 'text',
