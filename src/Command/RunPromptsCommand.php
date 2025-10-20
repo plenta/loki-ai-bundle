@@ -16,7 +16,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'loki:prompts:run')]
+#[AsCommand(
+    name: 'loki:prompts:run',
+    description: 'Runs Loki AI prompts on the command line.',
+)]
 class RunPromptsCommand extends Command
 {
     public function __construct(
