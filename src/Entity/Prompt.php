@@ -46,6 +46,9 @@ class Prompt extends DCADefault
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     protected int $rootPage = 0;
 
+    #[ORM\Column(type: 'string', length: 255, options: ['default' => '', 'collation' => 'utf8mb4_bin'])]
+    protected string $alias;
+
     public function getFields()
     {
         return $this->fields;
@@ -176,6 +179,17 @@ class Prompt extends DCADefault
     public function setRootPage(int $rootPage): Prompt
     {
         $this->rootPage = $rootPage;
+        return $this;
+    }
+
+    public function getAlias(): string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(string $alias): Prompt
+    {
+        $this->alias = $alias;
         return $this;
     }
 }

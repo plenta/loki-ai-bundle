@@ -87,7 +87,6 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'alias' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'alias', 'doNotCopy' => true, 'unique' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) BINARY NOT NULL default ''"
         ],
         'tableName' => [
             'inputType' => 'select',

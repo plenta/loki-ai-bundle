@@ -37,13 +37,27 @@ class RunPromptsCommand extends Command
     protected function configure(): void
     {
         $this->addOption('limit', 'l', InputOption::VALUE_OPTIONAL, 'Limit the number of prompts.', 10);
+        $this->addOption('prompt', 'p', InputOption::VALUE_OPTIONAL, 'Run a specific prompt. Provide the alias.');
+        $this->addOption('all', 'a', InputOption::VALUE_OPTIONAL, 'Runs this command for all entries, not only empty fields.', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->framework->initialize();
 
-        $prompts = $this->promptRepository->findBy(['autoRun' => true, 'published' => true]);
+        if ($input->getOption('prompt')) {
+            $prompt = $this->promptRepository->findOneBy(['alias' => $input->getOption('prompt'), 'published' => true]);
+
+            if (!$prompt) {
+                $output->writeln('<error>Prompt not found.</error>');
+
+                return Command::FAILURE;
+            }
+
+            $prompts = [$prompt];
+        } else {
+            $prompts = $this->promptRepository->findBy(['autoRun' => true, 'published' => true]);
+        }
 
         foreach ($prompts as $prompt) {
             $fields = $prompt->getFields();
@@ -57,13 +71,12 @@ class RunPromptsCommand extends Command
                         $ids = $this->promptBuilder->getPages($field);
 
                         if (!empty($ids)) {
-                            $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().' WHERE id IN ('.implode(',', $ids).') AND ('.$dataField.' = ? OR '.$dataField.' IS NULL) LIMIT '.$input->getOption('limit'), ['']);
+                            $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().' WHERE id IN ('.implode(',', $ids).')'.($input->getOption('all') === false ? ' AND ('.$dataField.' = ? OR '.$dataField.' IS NULL)' : '').' LIMIT '.$input->getOption('limit'), $input->getOption('all') === false ? [''] : []);
                         } else {
                             $objects = null;
                         }
-
                     } else {
-                        $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().' WHERE '.$dataField.' = ? OR '.$dataField.' IS NULL LIMIT '.$input->getOption('limit'), ['']);
+                        $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().($input->getOption('all') === false ? ' WHERE '.$dataField.' = ? OR '.$dataField.' IS NULL' : '').' LIMIT '.$input->getOption('limit'), $input->getOption('all') === false ? [''] : []);
                     }
 
                     if ($objects) {
