@@ -84,7 +84,7 @@
                 <target>Prompt veröffentlichen</target>
             </trans-unit>
             <trans-unit id="tl_loki_prompt.published.1">
-                <target>Der Prompt-Button wird beim Feld angezeigt.</target>
+                <target>Der Prompt wird veröffentlicht und ist anschließend sowohl über den Button am Feld als auch über die Kommandozeile nutzbar.</target>
             </trans-unit>
             <trans-unit id="tl_loki_prompt.autoRun.0">
                 <target>Prompt automatisch ausführen</target>
