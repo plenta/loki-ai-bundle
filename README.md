@@ -25,4 +25,6 @@ composer require plenta/loki-ai-bundle
 - PHP: `^8.3`
 - Contao: `^4.13` || `^5.3`
 
+## Documentation
+
 👉 [Full documentation](https://plenta.io/contao-loki-ai-bundle)
