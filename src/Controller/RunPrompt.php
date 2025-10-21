@@ -70,6 +70,8 @@ class RunPrompt extends AbstractBackendController
 
             if ($field->getTableName() === 'tl_page' && $prompt->getRootPage()) {
                 $ids = $promptBuilder->getPages($field);
+            } elseif ($field->getTableName() === 'tl_content' && $prompt->getRootPage()) {
+                $ids = $promptBuilder->getContentElements($field);
             } else {
                 $ids = $connection->createQueryBuilder()
                     ->select('t.id')

@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\EventListener\Contao\Hooks;
 
+use Contao\ArticleModel;
+use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\PageModel;
@@ -54,11 +56,25 @@ class ParseWidgetListener
         $text = '';
 
         foreach ($fields as $field) {
-            if ('tl_page' === $field->getTableName() && $field->getParent()->getRootPage()) {
-                $page = PageModel::findByPk($widget->dataContainer->id)->loadDetails();
+            if ($field->getParent()->getRootPage()) {
+                $page = null;
 
-                if (!\in_array($field->getParent()->getRootPage(), $page->trail, true)) {
-                    continue;
+                if ('tl_page' === $field->getTableName()) {
+                    $page = PageModel::findByPk($widget->dataContainer->id)->loadDetails();
+                } elseif ('tl_content' === $field->getTableName()) {
+                    if ($widget->dataContainer->activeRecord->ptable === 'tl_article') {
+                        $article = ArticleModel::findById($widget->dataContainer->activeRecord->pid);
+
+                        if ($article) {
+                            $page = PageModel::findByPk($article->pid)->loadDetails();
+                        }
+                    }
+                }
+
+                if ($page) {
+                    if (!\in_array($field->getParent()->getRootPage(), $page->trail, true)) {
+                        continue;
+                    }
                 }
             }
 

@@ -85,7 +85,7 @@ class PromptBuilder
             }
         }
 
-        return $this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $object[$fieldName]]));
+        return StringUtil::decodeEntities($this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $object[$fieldName]])));
     }
 
     protected function getOptions($dca)
@@ -117,13 +117,30 @@ class PromptBuilder
     {
         $return = [];
 
-        if ($field->getTableName() === 'tl_page') {
+        if ($field->getTableName() === 'tl_page' || $field->getTableName() === 'tl_content') {
             if ($field->getParent()->getRootPage()) {
                 $this->buildPages(PageModel::findByPk($field->getParent()->getRootPage()), $return);
             }
         }
 
         return $return;
+    }
+
+    public function getContentElements(Field $field)
+    {
+        $pages = $this->getPages($field);
+
+        $qb = $this->connection->createQueryBuilder();
+
+        return $qb
+            ->select('c.id')
+            ->from('tl_content', 'c')
+            ->leftJoin('c', 'tl_article', 'a', 'c.pid=a.id and c.ptable = :article')
+            ->where($qb->expr()->in('a.pid', $pages))
+            ->setParameter('article', 'tl_article')
+            ->executeQuery()
+            ->fetchFirstColumn()
+        ;
     }
 
     protected function buildPages($pageObj, &$pageIds)

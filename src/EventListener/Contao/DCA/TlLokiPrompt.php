@@ -112,7 +112,7 @@ class TlLokiPrompt
         $fields = $prompt->getFields();
 
         foreach ($fields as $field) {
-            if ('tl_page' === $field->getTableName()) {
+            if ('tl_page' === $field->getTableName() || 'tl_content' === $field->getTableName()) {
                 PaletteManipulator::create()
                     ->addField('rootPage', 'config_legend', PaletteManipulator::POSITION_APPEND)
                     ->applyToPalette('default', 'tl_loki_prompt')

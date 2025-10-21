@@ -67,8 +67,12 @@ class RunPromptsCommand extends Command
                 $dataFields = StringUtil::deserialize($field->getField(), true);
 
                 foreach ($dataFields as $dataField) {
-                    if ($field->getTableName() === 'tl_page' && $field->getParent()->getRootPage()) {
-                        $ids = $this->promptBuilder->getPages($field);
+                    if ($field->getParent()->getRootPage()) {
+                        if ($field->getTableName() === 'tl_page') {
+                            $ids = $this->promptBuilder->getPages($field);
+                        } elseif ($field->getTableName() === 'tl_content') {
+                            $ids = $this->promptBuilder->getContentElements($field);
+                        }
 
                         if (!empty($ids)) {
                             $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().' WHERE id IN ('.implode(',', $ids).')'.($input->getOption('all') === false ? ' AND ('.$dataField.' = ? OR '.$dataField.' IS NULL)' : '').' LIMIT '.$input->getOption('limit'), $input->getOption('all') === false ? [''] : []);
