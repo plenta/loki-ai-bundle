@@ -24,7 +24,7 @@
                 <target>Alias</target>
             </trans-unit>
             <trans-unit id="tl_loki_prompt.alias.1">
-                <target>Der Alias ist eine eindeutige Referenz, die anstelle der numerischen ID aufgerufen werden kann.</target>
+                <target>Der Alias ist eine eindeutige Referenz und dient dazu, den Prompt über die Kommandozeile direkt aufzurufen.</target>
             </trans-unit>
             <trans-unit id="tl_loki_prompt.fields.0">
                 <target>Konfigurations-Einstellungen</target>
@@ -84,7 +84,7 @@
                 <target>Prompt veröffentlichen</target>
             </trans-unit>
             <trans-unit id="tl_loki_prompt.published.1">
-                <target>Der Prompt-Button wird beim Feld angezeigt.</target>
+                <target>Der Prompt wird veröffentlicht und ist anschließend sowohl über den Button am Feld als auch über die Kommandozeile nutzbar.</target>
             </trans-unit>
             <trans-unit id="tl_loki_prompt.autoRun.0">
                 <target>Prompt automatisch ausführen</target>
