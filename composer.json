@@ -1,50 +1,56 @@
 {
-    "name": "plenta/loki-ai-bundle",
-    "type": "contao-bundle",
-    "description": "AI Bundle for Contao",
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "Plenta.io",
-            "homepage": "https://plenta.io"
-        }
-    ],
-    "version": "1.1",
-    "require": {
-        "php": "^8.3",
-        "ext-json": "*",
-        "contao/conflicts": "@dev",
-        "contao/core-bundle": "^4.13 || ^5.3",
-        "doctrine/dbal": "^3.2.0",
-        "plenta/hugin-munin": "^1.0",
-        "mvo/contao-group-widget": "^1.5",
-        "symfony/http-client": "^5.4 || ^6.4 || ^7.4",
-        "openai-php/symfony": "^0.10.2",
-        "symfony/http-foundation": "^5.4 || ^6.4 || ^7.4",
-        "symfony/routing": "^5.4 || ^6.4 || ^7.4"
-    },
-    "require-dev": {
-        "contao/manager-bundle": "^4.13",
-        "phpunit/phpunit": "^9.5.10",
-        "contao/test-case": "^4.13",
-        "symfony/phpunit-bridge": "^v6.4.9",
-        "friendsofphp/php-cs-fixer": "^3.2"
-    },
-    "extra": {
-        "contao-manager-plugin": "Plenta\\LokiAiBundle\\ContaoManager\\Plugin"
-    },
-    "autoload": {
-        "psr-4": {
-            "Plenta\\LokiAiBundle\\": "src"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "composer/package-versions-deprecated": true,
-            "contao-components/installer": true,
-            "contao/manager-plugin": true,
-            "contao-community-alliance/composer-plugin": true,
-            "php-http/discovery": true
-        }
+  "name": "plenta/loki-ai-bundle",
+  "type": "contao-bundle",
+  "description": "AI Bundle for Contao",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Plenta.io",
+      "homepage": "https://plenta.io"
     }
+  ],
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/plenta"
+    }
+  ],
+  "version": "1.1",
+  "require": {
+    "php": "^8.3",
+    "ext-json": "*",
+    "contao/conflicts": "@dev",
+    "contao/core-bundle": "^4.13 || ^5.3",
+    "doctrine/dbal": "^3.2.0",
+    "plenta/hugin-munin": "^1.0",
+    "mvo/contao-group-widget": "^1.5",
+    "symfony/http-client": "^5.4 || ^6.4 || ^7.4",
+    "openai-php/symfony": "^0.10.2",
+    "symfony/http-foundation": "^5.4 || ^6.4 || ^7.4",
+    "symfony/routing": "^5.4 || ^6.4 || ^7.4"
+  },
+  "require-dev": {
+    "contao/manager-bundle": "^4.13",
+    "phpunit/phpunit": "^9.5.10",
+    "contao/test-case": "^4.13",
+    "symfony/phpunit-bridge": "^v6.4.9",
+    "friendsofphp/php-cs-fixer": "^3.2"
+  },
+  "extra": {
+    "contao-manager-plugin": "Plenta\\LokiAiBundle\\ContaoManager\\Plugin"
+  },
+  "autoload": {
+    "psr-4": {
+      "Plenta\\LokiAiBundle\\": "src"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "contao-components/installer": true,
+      "contao/manager-plugin": true,
+      "contao-community-alliance/composer-plugin": true,
+      "php-http/discovery": true
+    }
+  }
 }
