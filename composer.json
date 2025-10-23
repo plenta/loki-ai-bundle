@@ -21,7 +21,6 @@
         "contao/conflicts": "@dev",
         "contao/core-bundle": "^4.13 || ^5.3",
         "doctrine/dbal": "^3.2.0",
-        "plenta/hugin-munin": "^1.0",
         "mvo/contao-group-widget": "^1.5",
         "symfony/http-client": "^5.4 || ^6.4 || ^7.4",
         "openai-php/symfony": "^0.10.2",
