@@ -2,7 +2,7 @@
     "name": "plenta/loki-ai-bundle",
     "type": "contao-bundle",
     "description": "AI Bundle for Contao",
-    "license": "proprietary",
+    "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name": "Plenta.io",
