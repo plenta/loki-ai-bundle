@@ -97,7 +97,7 @@ class RunPromptsCommand extends Command
                         foreach ($objects as $object) {
                             $prompt = $this->promptBuilder->build($field, $object['id'], $dataField);
 
-                            $newValue = $this->openAiApi->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens());
+                            $newValue = $this->promptBuilder->buildHeadline($this->openAiApi->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $object['id'], $field, $dataField);
 
                             $this->connection->update($field->getTableName(), [$dataField => $newValue], ['id' => $object['id']]);
 

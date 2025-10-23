@@ -41,6 +41,14 @@ class PromptBuilder
 
         Controller::loadDataContainer($field->getTableName());
 
+        if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType'] === 'inputUnit') {
+            $currentValue = StringUtil::deserialize($object[$fieldName], true)['value'] ?? '';
+        } else {
+            $options = $this->getOptions($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]);
+
+            $currentValue = $options[$object[$fieldName]] ?? $object[$fieldName] ?? '';
+        }
+
         if (count($includeFields) > 1) {
             $base = '';
 
@@ -49,9 +57,14 @@ class PromptBuilder
                     $base .= '; ';
                 }
 
-                $options = $this->getOptions($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]);
+                if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]['inputType'] === 'inputUnit') {
+                    $value = StringUtil::deserialize($object[$includeField], true)['value'] ?? '';
+                } else {
+                    $options = $this->getOptions($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]);
 
-                $value = $options[$object[$includeField]] ?? $object[$includeField];
+                    $value = $options[$object[$includeField]] ?? $object[$includeField];
+                }
+
 
                 $base .= $includeField.': '.$value;
             }
@@ -85,7 +98,7 @@ class PromptBuilder
             }
         }
 
-        return StringUtil::decodeEntities($this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $object[$fieldName]])));
+        return StringUtil::decodeEntities($this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $currentValue])));
     }
 
     protected function getOptions($dca)
@@ -153,5 +166,18 @@ class PromptBuilder
                 $this->buildPages($page, $pageIds);
             }
         }
+    }
+
+    public function buildHeadline($newValue, int $id, Field $field, string $fieldName)
+    {
+        if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType'] === 'inputUnit') {
+            $currentValue = StringUtil::deserialize($this->connection->fetchOne('SELECT '.$fieldName.' FROM '.$field->getTableName().' WHERE id = ?', [$id]), true);
+
+            $currentValue['value'] = $newValue;
+
+            $newValue = serialize($currentValue);
+        }
+
+        return $newValue;
     }
 }

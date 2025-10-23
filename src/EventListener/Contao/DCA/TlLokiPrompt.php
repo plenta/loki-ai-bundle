@@ -78,7 +78,7 @@ class TlLokiPrompt
                     continue;
                 }
 
-                if (str_contains($dc->field, 'fields__field__') && !\in_array($dca['inputType'], ['text', 'textarea', 'checkbox', 'checkboxWizard', 'select'], true)) {
+                if (str_contains($dc->field, 'fields__field__') && !\in_array($dca['inputType'], ['text', 'textarea', 'checkbox', 'checkboxWizard', 'select', 'inputUnit'], true)) {
                     continue;
                 }
 
