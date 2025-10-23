@@ -9,6 +9,12 @@
             "homepage": "https://plenta.io"
         }
     ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/plenta"
+        }
+    ],
     "require": {
         "php": "^8.3",
         "ext-json": "*",
