@@ -82,7 +82,7 @@ class TlLokiPrompt
                     continue;
                 }
 
-                $return[$name] = $dca['label'][0] ?? $name;
+                $return[$name] = (($dca['label'][0] ?? '')).'<span class="label-info">['.$name.']</span>';
             }
         }
 
