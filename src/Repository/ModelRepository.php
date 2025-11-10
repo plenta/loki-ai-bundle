@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /**
- * Plenta Jobs Basic Geo Search Bundle for Contao Open Source CMS
+ * Loki AI Bundle for Contao Open Source CMS
  *
- * @copyright     Copyright (c) 2024, Plenta.io
+ * @copyright     Copyright (c) 2025, Plenta.io
  * @author        Plenta.io <https://plenta.io>
  * @link          https://github.com/plenta/
  */

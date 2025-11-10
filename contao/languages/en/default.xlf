@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+    <file>
+        <body>
+            <trans-unit id="MSC.PLENTA_LOKI.DASHBOARD.documentation">
+                <target>Documentation</target>
+            </trans-unit>
+            <trans-unit id="MSC.PLENTA_LOKI.DASHBOARD.report_error">
+                <target>Report an error</target>
+            </trans-unit>
+            <trans-unit id="MSC.PLENTA_LOKI.DASHBOARD.sponsor">
+                <target>Become a supporter!</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @package       Customer
+ * Loki AI Bundle for Contao Open Source CMS
+ *
  * @copyright     Copyright (c) 2025, Plenta.io
  * @author        Plenta.io <https://plenta.io>
- * @license       commercial
+ * @link          https://github.com/plenta/
  */
 
 namespace Plenta\LokiAiBundle\EventListener\Contao\Hooks;

@@ -20,3 +20,35 @@
         background-image: url('/system/themes/flexible/icons/ok.svg');
     }
 }
+
+.plenta-loki-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.plenta-loki-box {
+    flex: 50%;
+
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: underline;
+            color: var(--contao, #f47c00);
+        }
+    }
+
+    &:last-child {
+        text-align: right;
+    }
+}
+
+html[data-color-scheme="dark"] {
+    .plenta-box a {
+        color: var(--blue, #0073ab);
+
+        &:hover {
+            color: var(--contao, #f47c00);
+        }
+    }
+}
