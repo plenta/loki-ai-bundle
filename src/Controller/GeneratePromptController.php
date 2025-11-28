@@ -42,6 +42,10 @@ class GeneratePromptController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()]);
         }
 
+        if (empty($prompt)) {
+            return new JsonResponse(['error' => 'Values are empty']);
+        }
+
         $newValue = $api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens());
 
         return new JsonResponse(['result' => $newValue]);

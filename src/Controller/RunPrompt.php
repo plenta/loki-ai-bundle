@@ -132,6 +132,10 @@ class RunPrompt extends AbstractBackendController
             return new JsonResponse(['error' => $e->getMessage()]);
         }
 
+        if (empty($prompt)) {
+            return new JsonResponse(['error' => 'Values are empty']);
+        }
+
         $newValue = $promptBuilder->buildHeadline($api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $objectId, $field, $fieldName);
 
         $connection->createQueryBuilder()

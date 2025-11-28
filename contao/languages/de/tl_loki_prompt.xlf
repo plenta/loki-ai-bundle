@@ -110,6 +110,12 @@
             <trans-unit id="tl_loki_prompt.run.1">
                 <target>Prompt ausführen</target>
             </trans-unit>
+            <trans-unit id="tl_loki_prompt.skipIfEmpty.0">
+                <target>Leere Einträge überspringen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.skipIfEmpty.1">
+                <target>Wenn der aktuelle Wert bzw. die eingebundenen Felder leer sind, wird der Prompt für diesen Eintrag nicht automatisch ausgeführt.</target>
+            </trans-unit>
             <trans-unit id="tl_loki_prompt.runConfirm">
                 <target>Sind Sie sicher, dass Sie den Prompt ausführen möchten? Der Prompt wird für ALLE ausgewählten Felder von ALLEN Datensätzen, auf die die Beschränkungen zutreffen, ausgeführt, aktuelle Werte werden dabei überschrieben.</target>
             </trans-unit>

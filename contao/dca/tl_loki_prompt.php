@@ -70,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     ],
     'palettes' => [
         '__selector__' => ['protected'],
-        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,model,maxTokens,temperature;{publish_legend},autoRun,protected,published',
+        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,model,maxTokens,temperature;{publish_legend},autoRun,skipIfEmpty,protected,published',
     ],
     'subpalettes' => [
         'protected' => 'userGroups',
@@ -93,12 +93,12 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             'eval' => ['includeBlankOption' => true, 'submitOnChange' => true, 'mandatory' => true, 'chosen' => true],
         ],
         'field' => [
-            'inputType' => 'checkbox',
-            'eval' => ['multiple' => true],
+            'inputType' => 'select',
+            'eval' => ['multiple' => true, 'chosen' => true],
         ],
         'includeFields' => [
-            'inputType' => 'checkbox',
-            'eval' => ['multiple' => true],
+            'inputType' => 'select',
+            'eval' => ['multiple' => true, 'chosen' => true],
         ],
         'fields' => [
             'inputType' => 'group',
@@ -177,5 +177,11 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
                 'default' => 0,
             ],
         ],
+        'skipIfEmpty' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'eval' => ['tl_class' => 'clr'],
+            'sql' => ['type' => 'boolean', 'default' => false],
+        ]
     ],
 ];

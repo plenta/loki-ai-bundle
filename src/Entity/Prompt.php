@@ -59,6 +59,9 @@ class Prompt extends DCADefault
     #[ORM\Column(type: 'string', length: 255, options: ['default' => '', 'collation' => 'utf8mb4_bin'])]
     protected string $alias;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    protected bool $skipIfEmpty = false;
+
     public function getFields()
     {
         return $this->fields;
@@ -201,5 +204,15 @@ class Prompt extends DCADefault
     {
         $this->alias = $alias;
         return $this;
+    }
+
+    public function isSkipIfEmpty(): bool
+    {
+        return $this->skipIfEmpty;
+    }
+
+    public function setSkipIfEmpty(bool $skipIfEmpty): void
+    {
+        $this->skipIfEmpty = $skipIfEmpty;
     }
 }

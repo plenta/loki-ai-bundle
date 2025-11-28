@@ -69,8 +69,8 @@ class RunPromptsCommand extends Command
             $prompts = $this->promptRepository->findBy(['autoRun' => true, 'published' => true]);
         }
 
-        foreach ($prompts as $prompt) {
-            $fields = $prompt->getFields();
+        foreach ($prompts as $promptObj) {
+            $fields = $promptObj->getFields();
             $titlePrinted = false;
 
             foreach ($fields as $field) {
@@ -94,18 +94,26 @@ class RunPromptsCommand extends Command
                     }
 
                     if ($objects) {
-                        if (!$titlePrinted) {
-                            $output->writeln(sprintf('<info>%s</info>', $prompt->getTitle()));
-                            $titlePrinted = true;
-                        }
-
-                        $output->writeln('<comment>'.$field->getTableName().' - '.$dataField.'</comment>');
-
-                        $progressBar = new ProgressBar($output, count($objects));
-                        $progressBar->start();
+                        $progressBar = null;
 
                         foreach ($objects as $object) {
                             $prompt = $this->promptBuilder->build($field, $object['id'], $dataField);
+
+                            if (empty($prompt)) {
+                                continue;
+                            }
+
+                            if (!$progressBar) {
+                                if (!$titlePrinted) {
+                                    $output->writeln(sprintf('<info>%s</info>', $promptObj->getTitle()));
+                                    $titlePrinted = true;
+                                }
+
+                                $output->writeln('<comment>'.$field->getTableName().' - '.$dataField.'</comment>');
+
+                                $progressBar = new ProgressBar($output, count($objects));
+                                $progressBar->start();
+                            }
 
                             $newValue = $this->promptBuilder->buildHeadline($this->openAiApi->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $object['id'], $field, $dataField);
 
@@ -114,8 +122,10 @@ class RunPromptsCommand extends Command
                             $progressBar->advance();
                         }
 
-                        $progressBar->finish();
-                        $output->writeln('');
+                        if ($progressBar) {
+                            $progressBar->finish();
+                            $output->writeln('');
+                        }
                     }
 
                 }

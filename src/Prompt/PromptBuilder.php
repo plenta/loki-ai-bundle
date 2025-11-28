@@ -61,6 +61,7 @@ class PromptBuilder
 
         if (count($includeFields) > 1) {
             $base = '';
+            $empty = true;
 
             foreach ($includeFields as $includeField) {
                 if (!empty($base)) {
@@ -74,12 +75,19 @@ class PromptBuilder
 
                     $value = $options[$object[$includeField]] ?? $object[$includeField];
                 }
-
-
+                
+                if (empty($value)) {
+                    continue;
+                }
+                
+                $empty = false;
+                
                 $base .= $includeField.': '.$value;
             }
         } else {
             $base = $object[$includeFields[0] ?? null] ?? null;
+            
+            $empty = empty($base);
         }
 
         $dca = $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName] ?? null;
@@ -92,6 +100,23 @@ class PromptBuilder
 
         if (!in_array($fieldName, $affectedFields)) {
             throw new PromptException('Field '.$fieldName.' is not selected');
+        }
+
+        $hasIncludeFields = str_contains($field->getParent()->getPrompt(), '##include_fields##');
+        $hasCurrentValue = str_contains($field->getParent()->getPrompt(), '##current_value##');
+
+        if ($field->getParent()->isSkipIfEmpty()) {
+            if ($hasCurrentValue && $hasIncludeFields && $empty && empty($currentValue)) {
+                return '';
+            }
+
+            if ($hasIncludeFields && $empty) {
+                return '';
+            }
+
+            if ($hasCurrentValue && empty($currentValue)) {
+                return '';
+            }
         }
 
         $options = $this->getOptions($dca);
