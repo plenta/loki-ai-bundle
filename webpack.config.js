@@ -36,6 +36,9 @@ Encore
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
+
+    .enableStimulusBridge('./assets/js/controllers.json')
+
     // enables @babel/preset-env polyfills
     /*.configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';

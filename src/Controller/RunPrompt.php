@@ -128,15 +128,19 @@ class RunPrompt extends AbstractBackendController
 
         try {
             $prompt = $promptBuilder->build($field, $objectId, $fieldName);
-        } catch (PromptException $e) {
+        } catch (\Throwable $e) {
             return new JsonResponse(['error' => $e->getMessage()]);
         }
 
         if (empty($prompt)) {
-            return new JsonResponse(['error' => 'Values are empty']);
+            return new JsonResponse(['warning' => 'empty']);
         }
 
-        $newValue = $promptBuilder->buildHeadline($api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $objectId, $field, $fieldName);
+        try {
+            $newValue = $promptBuilder->buildHeadline($api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $objectId, $field, $fieldName);
+        } catch (\Throwable $e) {
+            return new JsonResponse(['error' => $e->getMessage()]);
+        }
 
         $connection->createQueryBuilder()
             ->update($field->getTableName())

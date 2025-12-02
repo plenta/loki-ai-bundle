@@ -23,6 +23,7 @@ use Plenta\LokiAiBundle\LokiAiBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\UX\StimulusBundle\StimulusBundle;
 
 class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPluginInterface
 {
@@ -30,10 +31,12 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPlu
     {
         return [
             BundleConfig::create(OpenAIBundle::class),
+            BundleConfig::create(StimulusBundle::class),
             BundleConfig::create(LokiAiBundle::class)
                 ->setLoadAfter([
                     ContaoCoreBundle::class,
                     OpenAIBundle::class,
+                    StimulusBundle::class,
                 ]),
         ];
     }

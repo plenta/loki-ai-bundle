@@ -6,12 +6,18 @@
         window.loki_fields = `{{ fields|json_encode|raw }}`;
     </script>
 
-    <div class="progress prompts">
-        <div class="status pending"><span class="completed">0</span>/{{ fields|length }} {{ 'loki.fields_edit'|trans }}</div>
-    </div>
+    <div {{ stimulus_controller('run-prompt') }}>
+        <div class="progress prompts">
+            <div class="status pending" {{ stimulus_target('run-prompt', 'status') }}><span class="completed" {{ stimulus_target('run-prompt', 'completed') }}>0</span>/{{ fields|length }} {{ 'loki.fields_edit'|trans }}</div>
+        </div>
 
-    <div class="errors invisible">
-        <p><span class="error-count">0</span> {{ 'loki.errors'|trans }}</p>
-        <div class="error-messages"></div>
+        <div class="errors invisible" {{ stimulus_target('run-prompt', 'errors') }}>
+            <p><span class="error-count" {{ stimulus_target('run-prompt', 'errorCount') }}>0</span> {{ 'loki.errors'|trans }}</p>
+            <div class="error-messages" {{ stimulus_target('run-prompt', 'errorMessages') }}></div>
+        </div>
+
+        <div class="warnings invisible" {{ stimulus_target('run-prompt', 'warnings') }}>
+            <div class="empty"><span class="empty-count" {{ stimulus_target('run-prompt', 'warningCount') }}>0</span> {{ 'loki.empty_warning'|trans }}</div>
+        </div>
     </div>
 {% endblock %}

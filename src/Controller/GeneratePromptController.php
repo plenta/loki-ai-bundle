@@ -38,7 +38,7 @@ class GeneratePromptController extends AbstractController
 
         try {
             $prompt = $promptBuilder->build($field, $objectId, $fieldName);
-        } catch (PromptException $e) {
+        } catch (\Throwable $e) {
             return new JsonResponse(['error' => $e->getMessage()]);
         }
 
@@ -46,7 +46,11 @@ class GeneratePromptController extends AbstractController
             return new JsonResponse(['error' => 'Values are empty']);
         }
 
-        $newValue = $api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens());
+        try {
+            $newValue = $api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens());
+        } catch (\Throwable $e) {
+            return new JsonResponse(['error' => 'An error occurred: '.$e->getMessage()]);
+        }
 
         return new JsonResponse(['result' => $newValue]);
     }

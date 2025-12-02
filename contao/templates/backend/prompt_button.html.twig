@@ -2,5 +2,5 @@
 {% trans_default_domain 'loki' %}
 
 <div class="loki-prompt-button">
-    <button data-id="{{ field.id }}" data-field="{{ widget.name }}" data-object-id="{{ objectId }}" data-prefix="{{ path('contao_backend') }}" type="button" aria-label="{{ 'loki.button.title'|trans({':title': field.parent.title, ':field': widget.label}) }}" title="{{ 'loki.button.title'|trans({':title': field.parent.title, ':field': widget.label}) }}"></button>
+    <button data-id="{{ field.id }}" data-field="{{ widget.name }}" data-object-id="{{ objectId }}" data-prefix="{{ path('contao_backend') }}" type="button" aria-label="{{ 'loki.button.title'|trans({':title': field.parent.title, ':field': widget.label}) }}" title="{{ 'loki.button.title'|trans({':title': field.parent.title, ':field': widget.label}) }}" {{ stimulus_controller('run-single-prompt') }} {{ stimulus_action('run-single-prompt', 'run') }}></button>
 </div>

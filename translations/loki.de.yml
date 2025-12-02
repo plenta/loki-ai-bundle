@@ -4,3 +4,4 @@ loki:
     title: 'Prompt ":title" ausführen'
     button:
         title: ':field mit Hilfe des KI Prompts ":title" generieren.'
+    empty_warning: 'Eintrag/Einträge wurde(n) übersprungen, weil deren Werte leer waren.'
