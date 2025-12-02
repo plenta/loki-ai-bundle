@@ -19,6 +19,7 @@ use Plenta\LokiAiBundle\Exception\PromptException;
 use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,14 +33,15 @@ class GeneratePromptController extends AbstractController
         int $objectId,
         FieldRepository $fieldRepository,
         PromptBuilder $promptBuilder,
-        Api $api
+        Api $api,
+        HtmlSanitizerInterface $sanitizer,
     ): JsonResponse {
         $field = $fieldRepository->find($id);
 
         try {
             $prompt = $promptBuilder->build($field, $objectId, $fieldName);
         } catch (\Throwable $e) {
-            return new JsonResponse(['error' => $e->getMessage()]);
+            return new JsonResponse(['error' => $sanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }
 
         if (empty($prompt)) {
@@ -49,7 +51,7 @@ class GeneratePromptController extends AbstractController
         try {
             $newValue = $api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens());
         } catch (\Throwable $e) {
-            return new JsonResponse(['error' => 'An error occurred: '.$e->getMessage()]);
+            return new JsonResponse(['error' => 'An error occurred: '.$sanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }
 
         return new JsonResponse(['result' => $newValue]);

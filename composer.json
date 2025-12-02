@@ -26,7 +26,8 @@
         "openai-php/symfony": "^0.10.2",
         "symfony/http-foundation": "^5.4 || ^6.4 || ^7.4",
         "symfony/routing": "^5.4 || ^6.4 || ^7.4",
-        "symfony/stimulus-bundle": "^2.31"
+        "symfony/stimulus-bundle": "^2.31",
+        "symfony/html-sanitizer": "^5.4 || ^6.4 || ^7.4 || ^8.0"
     },
     "require-dev": {
         "contao/manager-bundle": "^4.13",

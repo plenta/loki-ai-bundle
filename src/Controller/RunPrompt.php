@@ -24,6 +24,7 @@ use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Plenta\LokiAiBundle\Repository\PromptRepository;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -123,13 +124,14 @@ class RunPrompt extends AbstractBackendController
         FieldRepository $fieldRepository,
         Api $api,
         Connection $connection,
-    ) {
+        HtmlSanitizerInterface $sanitizer,
+    ): JsonResponse {
         $field = $fieldRepository->find($id);
 
         try {
             $prompt = $promptBuilder->build($field, $objectId, $fieldName);
         } catch (\Throwable $e) {
-            return new JsonResponse(['error' => $e->getMessage()]);
+            return new JsonResponse(['error' => $sanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }
 
         if (empty($prompt)) {
@@ -139,7 +141,7 @@ class RunPrompt extends AbstractBackendController
         try {
             $newValue = $promptBuilder->buildHeadline($api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $objectId, $field, $fieldName);
         } catch (\Throwable $e) {
-            return new JsonResponse(['error' => $e->getMessage()]);
+            return new JsonResponse(['error' => $sanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }
 
         $connection->createQueryBuilder()
