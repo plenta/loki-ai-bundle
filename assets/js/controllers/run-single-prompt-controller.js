@@ -56,15 +56,26 @@ export default class extends Controller {
         });
     }
 
-    buildDialog(msg)
-    {
-        let dialog = document.createElement('dialog');
-        dialog.innerHTML = msg;
-        dialog.classList.add('loki-error');
+    buildDialog(msg) {
         let button = document.createElement('button');
-        button.innerHTML = 'Close';
-        dialog.appendChild(button);
+        button.innerText = 'x';
+        button.classList.add('close');
+        button.type = 'button';
+
+        let modalHeader = document.createElement('div');
+        modalHeader.classList.add('simple-modal-header');
+        modalHeader.innerHTML = '<h1>Loki AI - Error</h1>';
+        modalHeader.appendChild(button);
+
+        let dialog = document.createElement('dialog');
+        dialog.classList.add('plenta-loki-error');
+        dialog.classList.add('simple-modal');
+        dialog.classList.add('hide-footer');
+
+        dialog.appendChild(modalHeader);
+        dialog.appendHTML('<div class="simple-modal-body"><div class="contents">' + msg + '</div></div>');
         document.body.appendChild(dialog);
+
         dialog.showModal();
         dialog.querySelector('button').addEventListener('click', () => {
             dialog.close();

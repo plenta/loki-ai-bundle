@@ -1,25 +1,68 @@
-.prompts.progress .status {
-    &:before {
-        content: '';
-        width: 40px;
-        height: 40px;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        display: inline-block;
-        margin-right: 8px;
+.plenta-loki-ai-run-prompt {
+
+    .prompts.progress, .errors, .warnings {
+        padding: 12px;
     }
 
-    &.pending:before {
-        /* webpackIgnore: true */
-        background-image: url('/system/themes/flexible/icons/loading.svg');
+    .prompts.progress {
+        background: var(--panel-bg);
+        border-bottom: 1px solid var(--content-border, #414448);
+
+        .status {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            font-weight: bold;
+
+            &:before {
+                content: '';
+                width: 20px;
+                height: 20px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                display: inline-block;
+                margin-right: 16px;
+            }
+
+            &.pending:before {
+                /* webpackIgnore: true */
+                background-image: url('/system/themes/flexible/icons/loading.svg');
+            }
+
+            &.complete:before {
+                /* webpackIgnore: true */
+                background-image: url('/system/themes/flexible/icons/ok.svg');
+            }
+        }
+    }
+    .error-header {
+        margin-bottom: 12px;
     }
 
-    &.complete:before {
-        /* webpackIgnore: true */
-        background-image: url('/system/themes/flexible/icons/ok.svg');
+    .error-messages {
+        .error-message {
+            word-break: break-word;
+            margin: 0;
+            padding: 8px;
+            border-top: 1px solid var(--content-border, #414448);
+
+            &:last-child {
+                border-bottom: 1px solid var(--content-border, #414448);
+            }
+
+            &:nth-child(even) {
+                background: var(--panel-bg);
+            }
+
+            p {
+
+            }
+        }
     }
 }
+
+
 
 .plenta-loki-wrapper {
     display: flex;

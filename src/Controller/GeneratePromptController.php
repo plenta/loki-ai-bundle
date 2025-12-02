@@ -13,9 +13,6 @@ declare(strict_types=1);
 namespace Plenta\LokiAiBundle\Controller;
 
 use Contao\CoreBundle\Controller\AbstractController;
-use Contao\CoreBundle\String\SimpleTokenParser;
-use Doctrine\DBAL\Connection;
-use Plenta\LokiAiBundle\Exception\PromptException;
 use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;

@@ -6,18 +6,24 @@
         window.loki_fields = `{{ fields|json_encode|raw }}`;
     </script>
 
-    <div {{ stimulus_controller('run-prompt') }}>
+    <div class="plenta-loki-ai-run-prompt" {{ stimulus_controller('run-prompt') }}>
         <div class="progress prompts">
-            <div class="status pending" {{ stimulus_target('run-prompt', 'status') }}><span class="completed" {{ stimulus_target('run-prompt', 'completed') }}>0</span>/{{ fields|length }} {{ 'loki.fields_edit'|trans }}</div>
+            <div class="status pending" {{ stimulus_target('run-prompt', 'status') }}>
+                <h2 class="status-text">
+                    <span class="completed" {{ stimulus_target('run-prompt', 'completed') }}>0</span>/{{ fields|length }} {{ 'loki.fields_edit'|trans }}
+                </h2>
+            </div>
         </div>
 
         <div class="errors invisible" {{ stimulus_target('run-prompt', 'errors') }}>
-            <p><span class="error-count" {{ stimulus_target('run-prompt', 'errorCount') }}>0</span> {{ 'loki.errors'|trans }}</p>
+            <div class="error-header">
+                <h3><span class="error-count" {{ stimulus_target('run-prompt', 'errorCount') }}>0</span> {{ 'loki.errors'|trans }}</h3>
+            </div>
             <div class="error-messages" {{ stimulus_target('run-prompt', 'errorMessages') }}></div>
         </div>
 
         <div class="warnings invisible" {{ stimulus_target('run-prompt', 'warnings') }}>
-            <div class="empty"><span class="empty-count" {{ stimulus_target('run-prompt', 'warningCount') }}>0</span> {{ 'loki.empty_warning'|trans }}</div>
+            <div class="empty"><h3><span class="empty-count" {{ stimulus_target('run-prompt', 'warningCount') }}>0</span> {{ 'loki.empty_warning'|trans }}</h3></div>
         </div>
     </div>
 {% endblock %}
