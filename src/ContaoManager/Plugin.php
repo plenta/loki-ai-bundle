@@ -3,11 +3,10 @@
 declare(strict_types=1);
 
 /**
- * Loki AI Bundle for Contao Open Source CMS
- *
+ * @package       Customer
  * @copyright     Copyright (c) 2025, Plenta.io
  * @author        Plenta.io <https://plenta.io>
- * @link          https://github.com/plenta/
+ * @license       commercial
  */
 
 namespace Plenta\LokiAiBundle\ContaoManager;
@@ -23,6 +22,7 @@ use Plenta\LokiAiBundle\LokiAiBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\UX\StimulusBundle\StimulusBundle;
 
 class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPluginInterface
@@ -46,11 +46,28 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPlu
         $loader->load(__DIR__.'/../../config/config.php');
     }
 
+    /*
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
     {
         return $resolver
             ->resolve(__DIR__.'/../Controller', 'annotation')
             ->load(__DIR__.'/../Controller')
-            ;
+        ;
+    }
+    */
+
+    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): ?RouteCollection
+    {
+        $resource = __DIR__.'/../Controller';
+
+        if ($loader = $resolver->resolve($resource, 'annotation')) {
+            return $loader->load($resource);
+        }
+
+        if ($loader = $resolver->resolve($resource, 'attribute')) {
+            return $loader->load($resource);
+        }
+
+        return null;
     }
 }
