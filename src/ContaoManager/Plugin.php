@@ -46,16 +46,6 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPlu
         $loader->load(__DIR__.'/../../config/config.php');
     }
 
-    /*
-    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
-    {
-        return $resolver
-            ->resolve(__DIR__.'/../Controller', 'annotation')
-            ->load(__DIR__.'/../Controller')
-        ;
-    }
-    */
-
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): ?RouteCollection
     {
         $resource = __DIR__.'/../Controller';
