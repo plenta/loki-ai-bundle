@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\OpenAi;
 
-use Contao\System;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenAI\Contracts\ClientContract;
 use Plenta\LokiAiBundle\Entity\Model;
@@ -28,7 +27,7 @@ class Api
     ) {
     }
 
-    public function chat($content, ?string $model = null, ?float $temperature = null, ?int $maxTokens = null): string
+    public function chat($content, string|null $model = null, float|null $temperature = null, int|null $maxTokens = null): string
     {
         $response = $this->openAiClient->chat()->create([
             'model' => $model ?: $this->openAi['model'],
@@ -56,7 +55,7 @@ class Api
         return $models;
     }
 
-    public function initializeModels()
+    public function initializeModels(): void
     {
         $time = time();
 

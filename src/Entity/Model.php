@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io
@@ -34,9 +34,10 @@ class Model extends DCADefault
         return $this->name;
     }
 
-    public function setName(string $name): Model
+    public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -45,9 +46,10 @@ class Model extends DCADefault
         return $this->owner;
     }
 
-    public function setOwner(string $owner): Model
+    public function setOwner(string $owner): self
     {
         $this->owner = $owner;
+
         return $this;
     }
 
@@ -56,9 +58,10 @@ class Model extends DCADefault
         return $this->created;
     }
 
-    public function setCreated(int $created): Model
+    public function setCreated(int $created): self
     {
         $this->created = $created;
+
         return $this;
     }
 }

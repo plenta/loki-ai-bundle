@@ -30,18 +30,18 @@ class Field extends AbstractGroupElementEntity
     #[ORM\Column(name: 'position', type: 'integer', options: ['unsigned' => true])]
     protected $position = 0;
 
-    #[ORM\ManyToOne(targetEntity: Prompt::class, inversedBy: "fields")]
-    #[ORM\JoinColumn(name: "parent", nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Prompt::class, inversedBy: 'fields')]
+    #[ORM\JoinColumn(name: 'parent', nullable: false)]
     protected $parent;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     protected string $tableName = '';
 
     #[ORM\Column(type: 'text', nullable: true)]
-    protected ?string $field = null;
+    protected string|null $field = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    protected ?string $includeFields = null;
+    protected string|null $includeFields = null;
 
     public function getTableName(): string
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io
@@ -15,10 +15,8 @@ namespace Plenta\LokiAiBundle\Controller;
 use Contao\Backend;
 use Contao\CoreBundle\Controller\AbstractBackendController;
 use Contao\Message;
-use Contao\PageModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Plenta\LokiAiBundle\Exception\PromptException;
 use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
@@ -28,7 +26,6 @@ use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('%contao.backend.route_prefix%/_loki', defaults: ['_scope' => 'backend'])]
@@ -58,7 +55,7 @@ class RunPrompt extends AbstractBackendController
                 $isAllowed = false;
 
                 foreach ($user->groups as $group) {
-                    if (in_array($group, $groups)) {
+                    if (\in_array($group, $groups, true)) {
                         $isAllowed = true;
                     }
                 }
@@ -72,16 +69,15 @@ class RunPrompt extends AbstractBackendController
         $GLOBALS['TL_JAVASCRIPT']['lokiBackend'] = $packages->getUrl('lokiai/backend.js', 'lokiai');
         $GLOBALS['TL_CSS']['lokiBackend'] = $packages->getUrl('lokiai/backend.css', 'lokiai');
 
-
         $fields = $prompt->getFields();
         $fieldArr = [];
 
         foreach ($fields as $field) {
             $affectedFields = StringUtil::deserialize($field->getField(), true);
 
-            if ($field->getTableName() === 'tl_page' && $prompt->getRootPage()) {
+            if ('tl_page' === $field->getTableName() && $prompt->getRootPage()) {
                 $ids = $promptBuilder->getPages($field);
-            } elseif ($field->getTableName() === 'tl_content' && $prompt->getRootPage()) {
+            } elseif ('tl_content' === $field->getTableName() && $prompt->getRootPage()) {
                 $ids = $promptBuilder->getContentElements($field);
             } else {
                 $ids = $connection->createQueryBuilder()

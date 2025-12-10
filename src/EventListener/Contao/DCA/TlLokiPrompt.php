@@ -48,15 +48,18 @@ class TlLokiPrompt
             natsort($arrTables);
         }
 
-        $arrTables = array_filter($arrTables, function ($table) {
-            DataContainer::loadDataContainer($table);
+        $arrTables = array_filter(
+            $arrTables,
+            static function ($table) {
+                DataContainer::loadDataContainer($table);
 
-            if ($GLOBALS['TL_DCA'][$table] ?? null) {
-                return true;
-            }
+                if ($GLOBALS['TL_DCA'][$table] ?? null) {
+                    return true;
+                }
 
-            return false;
-        });
+                return false;
+            },
+        );
 
         return array_values($arrTables);
     }
@@ -82,7 +85,7 @@ class TlLokiPrompt
                     continue;
                 }
 
-                $return[$name] = (($dca['label'][0] ?? '')).'<span class="label-info">['.$name.']</span>';
+                $return[$name] = ($dca['label'][0] ?? '').'<span class="label-info">['.$name.']</span>';
             }
         }
 
@@ -102,7 +105,7 @@ class TlLokiPrompt
     }
 
     #[AsCallback(table: 'tl_loki_prompt', target: 'config.onload')]
-    public function onLoad(?DataContainer $dc): void
+    public function onLoad(DataContainer|null $dc): void
     {
         if (!$dc || !$dc->id) {
             return;
@@ -126,18 +129,18 @@ class TlLokiPrompt
     #[AsCallback(table: 'tl_loki_prompt', target: 'list.operations.run.button_callback')]
     public function onRunButtonCallback(
         array $row,
-        ?string $href,
+        string|null $href,
         string $label,
         string $title,
-        ?string $icon,
+        string|null $icon,
         string $attributes,
         string $table,
         array $rootRecordIds,
-        ?array $childRecordIds,
+        array|null $childRecordIds,
         bool $circularReference,
-        ?string $previous,
-        ?string $next,
-        DataContainer $dc
+        string|null $previous,
+        string|null $next,
+        DataContainer $dc,
     ): string {
         if (!$row['published']) {
             return '';
@@ -150,7 +153,7 @@ class TlLokiPrompt
             $isAllowed = false;
 
             foreach ($user->groups as $group) {
-                if (in_array($group, $groups)) {
+                if (\in_array($group, $groups, true)) {
                     $isAllowed = true;
                 }
             }
@@ -162,12 +165,12 @@ class TlLokiPrompt
 
         $href = $this->router->generate('loki_run_prompt', ['id' => $row['id']]);
 
-        return sprintf(
+        return \sprintf(
             '<a href="%s" title="%s"%s>%s</a> ',
             $href,
             StringUtil::specialchars($title),
             $attributes,
-            Image::getHtml($icon, $label)
+            Image::getHtml($icon, $label),
         );
     }
 }

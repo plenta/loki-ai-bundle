@@ -31,7 +31,7 @@ class PromptBuilder
     ) {
     }
 
-    public function build(?Field $field, int $objectId, string $fieldName)
+    public function build(Field|null $field, int $objectId, string $fieldName)
     {
         if (null === $field) {
             throw new PromptException('Field entity not found');
@@ -51,7 +51,7 @@ class PromptBuilder
 
         Controller::loadDataContainer($field->getTableName());
 
-        if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType'] === 'inputUnit') {
+        if ('inputUnit' === $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType']) {
             $currentValue = StringUtil::deserialize($object[$fieldName], true)['value'] ?? '';
         } else {
             $options = $this->getOptions($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]);
@@ -59,7 +59,7 @@ class PromptBuilder
             $currentValue = $options[$object[$fieldName]] ?? $object[$fieldName] ?? '';
         }
 
-        if (count($includeFields) > 1) {
+        if (\count($includeFields) > 1) {
             $base = '';
             $empty = true;
 
@@ -68,25 +68,25 @@ class PromptBuilder
                     $base .= '; ';
                 }
 
-                if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]['inputType'] === 'inputUnit') {
+                if ('inputUnit' === $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]['inputType']) {
                     $value = StringUtil::deserialize($object[$includeField], true)['value'] ?? '';
                 } else {
                     $options = $this->getOptions($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]);
 
                     $value = $options[$object[$includeField]] ?? $object[$includeField];
                 }
-                
+
                 if (empty($value)) {
                     continue;
                 }
-                
+
                 $empty = false;
-                
+
                 $base .= $includeField.': '.$value;
             }
         } else {
             $base = $object[$includeFields[0] ?? null] ?? null;
-            
+
             $empty = empty($base);
         }
 
@@ -98,7 +98,7 @@ class PromptBuilder
 
         $affectedFields = StringUtil::deserialize($field->getField(), true);
 
-        if (!in_array($fieldName, $affectedFields)) {
+        if (!\in_array($fieldName, $affectedFields, true)) {
             throw new PromptException('Field '.$fieldName.' is not selected');
         }
 
@@ -136,6 +136,49 @@ class PromptBuilder
         return StringUtil::decodeEntities($this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $currentValue])));
     }
 
+    public function getPages(Field $field): array
+    {
+        $return = [];
+
+        if ('tl_page' === $field->getTableName() || 'tl_content' === $field->getTableName()) {
+            if ($field->getParent()->getRootPage()) {
+                $this->buildPages(PageModel::findById($field->getParent()->getRootPage()), $return);
+            }
+        }
+
+        return $return;
+    }
+
+    public function getContentElements(Field $field)
+    {
+        $pages = $this->getPages($field);
+
+        $qb = $this->connection->createQueryBuilder();
+
+        return $qb
+            ->select('c.id')
+            ->from('tl_content', 'c')
+            ->leftJoin('c', 'tl_article', 'a', 'c.pid=a.id and c.ptable = :article')
+            ->where($qb->expr()->in('a.pid', $pages))
+            ->setParameter('article', 'tl_article')
+            ->executeQuery()
+            ->fetchFirstColumn()
+        ;
+    }
+
+    public function buildHeadline($newValue, int $id, Field $field, string $fieldName)
+    {
+        if ('inputUnit' === $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType']) {
+            $currentValue = StringUtil::deserialize($this->connection->fetchOne('SELECT '.$fieldName.' FROM '.$field->getTableName().' WHERE id = ?', [$id]), true);
+
+            $currentValue['value'] = $newValue;
+
+            $newValue = serialize($currentValue);
+        }
+
+        return $newValue;
+    }
+
     protected function getOptions($dca)
     {
         $options = $dca['options'] ?? [];
@@ -161,37 +204,7 @@ class PromptBuilder
         return $options;
     }
 
-    public function getPages(Field $field): array
-    {
-        $return = [];
-
-        if ($field->getTableName() === 'tl_page' || $field->getTableName() === 'tl_content') {
-            if ($field->getParent()->getRootPage()) {
-                $this->buildPages(PageModel::findByPk($field->getParent()->getRootPage()), $return);
-            }
-        }
-
-        return $return;
-    }
-
-    public function getContentElements(Field $field)
-    {
-        $pages = $this->getPages($field);
-
-        $qb = $this->connection->createQueryBuilder();
-
-        return $qb
-            ->select('c.id')
-            ->from('tl_content', 'c')
-            ->leftJoin('c', 'tl_article', 'a', 'c.pid=a.id and c.ptable = :article')
-            ->where($qb->expr()->in('a.pid', $pages))
-            ->setParameter('article', 'tl_article')
-            ->executeQuery()
-            ->fetchFirstColumn()
-        ;
-    }
-
-    protected function buildPages($pageObj, &$pageIds)
+    protected function buildPages($pageObj, &$pageIds): void
     {
         $pages = PageModel::findPublishedByPid($pageObj->id);
 
@@ -201,18 +214,5 @@ class PromptBuilder
                 $this->buildPages($page, $pageIds);
             }
         }
-    }
-
-    public function buildHeadline($newValue, int $id, Field $field, string $fieldName)
-    {
-        if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType'] === 'inputUnit') {
-            $currentValue = StringUtil::deserialize($this->connection->fetchOne('SELECT '.$fieldName.' FROM '.$field->getTableName().' WHERE id = ?', [$id]), true);
-
-            $currentValue['value'] = $newValue;
-
-            $newValue = serialize($currentValue);
-        }
-
-        return $newValue;
     }
 }

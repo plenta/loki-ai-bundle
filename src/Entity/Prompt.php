@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Plenta\LokiAiBundle\Repository\PromptRepository;
@@ -36,10 +35,10 @@ class Prompt extends DCADefault
     protected string $model = '';
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    protected ?int $maxTokens = null;
+    protected int|null $maxTokens = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    protected ?float $temperature = null;
+    protected float|null $temperature = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     protected bool $published = false;
@@ -51,7 +50,7 @@ class Prompt extends DCADefault
     protected bool $protected = false;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    protected $userGroups = null;
+    protected $userGroups;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     protected int $rootPage = 0;
@@ -67,7 +66,7 @@ class Prompt extends DCADefault
         return $this->fields;
     }
 
-    public function addField(Field $field)
+    public function addField(Field $field): void
     {
         if (!$this->fields->contains($field)) {
             $this->fields->add($field);
@@ -78,7 +77,7 @@ class Prompt extends DCADefault
         }
     }
 
-    public function removeField(Field $field)
+    public function removeField(Field $field): void
     {
         if ($this->fields->contains($field)) {
             $this->fields->removeElement($field);
@@ -90,9 +89,10 @@ class Prompt extends DCADefault
         return $this->title;
     }
 
-    public function setTitle(string $title): Prompt
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -101,9 +101,10 @@ class Prompt extends DCADefault
         return $this->prompt;
     }
 
-    public function setPrompt(string $prompt): Prompt
+    public function setPrompt(string $prompt): self
     {
         $this->prompt = $prompt;
+
         return $this;
     }
 
@@ -112,31 +113,34 @@ class Prompt extends DCADefault
         return $this->model;
     }
 
-    public function setModel(string $model): Prompt
+    public function setModel(string $model): self
     {
         $this->model = $model;
+
         return $this;
     }
 
-    public function getMaxTokens(): ?int
+    public function getMaxTokens(): int|null
     {
         return $this->maxTokens;
     }
 
-    public function setMaxTokens(?int $maxTokens): Prompt
+    public function setMaxTokens(int|null $maxTokens): self
     {
         $this->maxTokens = $maxTokens;
+
         return $this;
     }
 
-    public function getTemperature(): ?float
+    public function getTemperature(): float|null
     {
         return $this->temperature;
     }
 
-    public function setTemperature(?float $temperature): Prompt
+    public function setTemperature(float|null $temperature): self
     {
         $this->temperature = $temperature;
+
         return $this;
     }
 
@@ -145,9 +149,10 @@ class Prompt extends DCADefault
         return $this->published;
     }
 
-    public function setPublished(bool $published): Prompt
+    public function setPublished(bool $published): self
     {
         $this->published = $published;
+
         return $this;
     }
 
@@ -156,9 +161,10 @@ class Prompt extends DCADefault
         return $this->autoRun;
     }
 
-    public function setAutoRun(bool $autoRun): Prompt
+    public function setAutoRun(bool $autoRun): self
     {
         $this->autoRun = $autoRun;
+
         return $this;
     }
 
@@ -167,20 +173,22 @@ class Prompt extends DCADefault
         return $this->protected;
     }
 
-    public function setProtected(bool $protected): Prompt
+    public function setProtected(bool $protected): self
     {
         $this->protected = $protected;
+
         return $this;
     }
 
-    public function getUserGroups(): ?string
+    public function getUserGroups(): string|null
     {
         return $this->userGroups;
     }
 
-    public function setUserGroups(?string $userGroups): Prompt
+    public function setUserGroups(string|null $userGroups): self
     {
         $this->userGroups = $userGroups;
+
         return $this;
     }
 
@@ -189,9 +197,10 @@ class Prompt extends DCADefault
         return $this->rootPage;
     }
 
-    public function setRootPage(int $rootPage): Prompt
+    public function setRootPage(int $rootPage): self
     {
         $this->rootPage = $rootPage;
+
         return $this;
     }
 
@@ -200,9 +209,10 @@ class Prompt extends DCADefault
         return $this->alias;
     }
 
-    public function setAlias(string $alias): Prompt
+    public function setAlias(string $alias): self
     {
         $this->alias = $alias;
+
         return $this;
     }
 

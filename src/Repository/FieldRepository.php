@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io

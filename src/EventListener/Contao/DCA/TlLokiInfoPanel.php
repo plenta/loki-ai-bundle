@@ -12,13 +12,13 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\EventListener\Contao\DCA;
 
-use Contao\Message;
-use Contao\DataContainer;
 use Composer\InstalledVersions;
-use Symfony\Component\Asset\Packages;
-use Twig\Environment as TwigEnvironment;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\DataContainer;
+use Contao\Message;
+use Symfony\Component\Asset\Packages;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Environment as TwigEnvironment;
 
 #[AsCallback(table: 'tl_loki_prompt', target: 'config.onload')]
 class TlLokiInfoPanel
@@ -27,8 +27,7 @@ class TlLokiInfoPanel
         protected RequestStack $requestStack,
         protected TwigEnvironment $twig,
         protected Packages $packages,
-    )
-    {
+    ) {
     }
 
     public function __invoke(DataContainer|null $dc = null): void
