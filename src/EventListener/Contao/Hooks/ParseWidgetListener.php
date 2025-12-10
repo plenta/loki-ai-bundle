@@ -34,7 +34,7 @@ class ParseWidgetListener
     }
 
     #[AsHook(hook: 'parseWidget')]
-    public function onParseWidget(string $buffer, Widget $widget)
+    public function onParseWidget(string $buffer, Widget $widget): string
     {
         if (!$widget->dataContainer) {
             return $buffer;

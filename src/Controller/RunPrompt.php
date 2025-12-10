@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Plenta\LokiAiBundle\Controller;
 
 use Contao\Backend;
+use Contao\BackendUser;
 use Contao\CoreBundle\Controller\AbstractBackendController;
 use Contao\Message;
 use Contao\StringUtil;
@@ -24,6 +25,7 @@ use Plenta\LokiAiBundle\Repository\PromptRepository;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -40,7 +42,7 @@ class RunPrompt extends AbstractBackendController
         Connection $connection,
         Packages $packages,
         TranslatorInterface $translator,
-    ) {
+    ): Response {
         $prompt = $promptRepository->find($id);
 
         if (!$prompt->isPublished()) {
@@ -48,6 +50,7 @@ class RunPrompt extends AbstractBackendController
         }
 
         if ($prompt->isProtected()) {
+            /** @var BackendUser $user */
             $user = $tokenStorage->getToken()->getUser();
 
             if (!$user->isAdmin) {

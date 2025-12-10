@@ -31,7 +31,7 @@ class PromptBuilder
     ) {
     }
 
-    public function build(Field|null $field, int $objectId, string $fieldName)
+    public function build(Field|null $field, int $objectId, string $fieldName): string
     {
         if (null === $field) {
             throw new PromptException('Field entity not found');
@@ -123,19 +123,20 @@ class PromptBuilder
 
         $field_options = '';
 
-        if (!empty($options)) {
-            foreach ($options as $key => $option) {
-                if (!empty($field_options)) {
-                    $field_options .= '; ';
-                }
-
-                $field_options .= $option.' (Key: '.$key.')';
+        foreach ($options as $key => $option) {
+            if (!empty($field_options)) {
+                $field_options .= '; ';
             }
+
+            $field_options .= $option.' (Key: '.$key.')';
         }
 
         return StringUtil::decodeEntities($this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $currentValue])));
     }
 
+    /**
+     * @return array<string>
+     */
     public function getPages(Field $field): array
     {
         $return = [];
@@ -149,7 +150,10 @@ class PromptBuilder
         return $return;
     }
 
-    public function getContentElements(Field $field)
+    /**
+     * @return array<int>
+     */
+    public function getContentElements(Field $field): array
     {
         $pages = $this->getPages($field);
 
@@ -166,7 +170,7 @@ class PromptBuilder
         ;
     }
 
-    public function buildHeadline($newValue, int $id, Field $field, string $fieldName)
+    public function buildHeadline(string $newValue, int $id, Field $field, string $fieldName): string
     {
         if ('inputUnit' === $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType']) {
             $currentValue = StringUtil::deserialize($this->connection->fetchOne('SELECT '.$fieldName.' FROM '.$field->getTableName().' WHERE id = ?', [$id]), true);
@@ -179,7 +183,11 @@ class PromptBuilder
         return $newValue;
     }
 
-    protected function getOptions($dca)
+    /**
+     * @param  array<string, mixed> $dca
+     * @return array<string, mixed>
+     */
+    protected function getOptions(array $dca): array
     {
         $options = $dca['options'] ?? [];
 
@@ -204,13 +212,16 @@ class PromptBuilder
         return $options;
     }
 
-    protected function buildPages($pageObj, &$pageIds): void
+    /**
+     * @param array<string> $pageIds
+     */
+    protected function buildPages(PageModel $pageObj, array &$pageIds): void
     {
         $pages = PageModel::findPublishedByPid($pageObj->id);
 
         if ($pages) {
             foreach ($pages as $page) {
-                $pageIds[] = $page->id;
+                $pageIds[] = (string) $page->id;
                 $this->buildPages($page, $pageIds);
             }
         }

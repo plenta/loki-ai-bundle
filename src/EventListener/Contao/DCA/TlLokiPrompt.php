@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\EventListener\Contao\DCA;
 
+use Contao\BackendUser;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\Database;
@@ -37,8 +38,11 @@ class TlLokiPrompt
     ) {
     }
 
+    /**
+     * @return array<string>
+     */
     #[AsCallback(table: 'tl_loki_prompt', target: 'fields.tableName.options')]
-    public function getTableOptions()
+    public function getTableOptions(): array
     {
         $arrTables = Database::getInstance()->listTables();
         $arrViews = $this->connection->createSchemaManager()->listViews();
@@ -64,6 +68,9 @@ class TlLokiPrompt
         return array_values($arrTables);
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[AsCallback(table: 'tl_loki_prompt', target: 'fields.field.options')]
     #[AsCallback(table: 'tl_loki_prompt', target: 'fields.includeFields.options')]
     public function getFieldOptions(DataContainer $dc): array
@@ -92,8 +99,11 @@ class TlLokiPrompt
         return $return;
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[AsCallback(table: 'tl_loki_prompt', target: 'fields.model.options')]
-    public function getModelOptions()
+    public function getModelOptions(): array
     {
         $return = [];
 
@@ -126,6 +136,11 @@ class TlLokiPrompt
         }
     }
 
+    /**
+     * @param array<string, mixed> $row
+     * @param array<int>           $rootRecordIds
+     * @param array<int>|null      $childRecordIds
+     */
     #[AsCallback(table: 'tl_loki_prompt', target: 'list.operations.run.button_callback')]
     public function onRunButtonCallback(
         array $row,
@@ -146,6 +161,7 @@ class TlLokiPrompt
             return '';
         }
 
+        /** @var BackendUser $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$user->isAdmin && $row['protected']) {

@@ -40,6 +40,9 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPlu
         ];
     }
 
+    /**
+     * @param array<mixed> $managerConfig
+     */
     public function registerContainerConfiguration(LoaderInterface $loader, array $managerConfig): void
     {
         $loader->load(__DIR__.'/../../config/config.php');

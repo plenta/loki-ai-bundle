@@ -25,11 +25,14 @@ class Prompt extends DCADefault
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     protected string $title;
 
+    /**
+     * @var Collection<int, Field>
+     */
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Field::class, orphanRemoval: true)]
     protected Collection $fields;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    protected string $prompt;
+    protected string|null $prompt = null;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
     protected string $model = '';
@@ -50,7 +53,7 @@ class Prompt extends DCADefault
     protected bool $protected = false;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    protected $userGroups;
+    protected string|null $userGroups = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     protected int $rootPage = 0;
@@ -61,7 +64,10 @@ class Prompt extends DCADefault
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     protected bool $skipIfEmpty = false;
 
-    public function getFields()
+    /**
+     * @return Collection<int, Field>
+     */
+    public function getFields(): Collection
     {
         return $this->fields;
     }

@@ -26,7 +26,7 @@ class TlLokiPromptAlias
     ) {
     }
 
-    public function __invoke($value, DataContainer $dc)
+    public function __invoke(string $value, DataContainer $dc): string
     {
         $aliasExists = function (string $alias) use ($dc): bool {
             $qb = $this->connection->createQueryBuilder();
@@ -45,7 +45,7 @@ class TlLokiPromptAlias
 
         if (!$value) {
             $value = $this->slugGenerator->generate($dc->activeRecord->title, [], $aliasExists);
-        } elseif (preg_match('/^[1-9]\d*$/', (string) $value)) {
+        } elseif (preg_match('/^[1-9]\d*$/', $value)) {
             throw new \Exception(\sprintf($GLOBALS['TL_LANG']['ERR']['aliasNumeric'], $value));
         } elseif ($aliasExists($value)) {
             throw new \Exception(\sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $value));

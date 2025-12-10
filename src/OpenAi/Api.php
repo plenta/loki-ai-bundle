@@ -21,13 +21,16 @@ class Api
 {
     public function __construct(
         protected ClientContract $openAiClient,
+        /**
+         * @var array<string, mixed>
+         */
         protected array $openAi,
         protected ModelRepository $modelRepository,
         protected EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function chat($content, string|null $model = null, float|null $temperature = null, int|null $maxTokens = null): string
+    public function chat(string $content, string|null $model = null, float|null $temperature = null, int|null $maxTokens = null): string
     {
         $response = $this->openAiClient->chat()->create([
             'model' => $model ?: $this->openAi['model'],
@@ -44,7 +47,10 @@ class Api
         return $response->choices[0]->message->content;
     }
 
-    public function getModels()
+    /**
+     * @return array<Model>
+     */
+    public function getModels(): array
     {
         if (!$models = $this->modelRepository->findAll()) {
             $this->initializeModels();

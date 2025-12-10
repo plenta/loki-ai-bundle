@@ -21,10 +21,10 @@ abstract class DCADefault
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-    protected $id;
+    protected int $id;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
-    protected $tstamp;
+    protected int $tstamp;
 
     public function getId(): int
     {

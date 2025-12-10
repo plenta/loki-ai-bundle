@@ -1,0 +1,4 @@
+parameters:
+    doctrine:
+        # override objectManagerLoader to null or empty to disable it
+        objectManagerLoader: null
