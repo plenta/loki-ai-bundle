@@ -1,6 +1,7 @@
 .plenta-loki-ai-run-prompt {
-
-    .prompts.progress, .errors, .warnings {
+    .prompts.progress,
+    .errors,
+    .warnings {
         padding: 12px;
     }
 
@@ -14,7 +15,7 @@
             font-size: 15px;
             font-weight: bold;
 
-            &:before {
+            &::before {
                 content: '';
                 width: 20px;
                 height: 20px;
@@ -25,17 +26,18 @@
                 margin-right: 16px;
             }
 
-            &.pending:before {
+            &.pending::before {
                 /* webpackIgnore: true */
                 background-image: url('/system/themes/flexible/icons/loading.svg');
             }
 
-            &.complete:before {
+            &.complete::before {
                 /* webpackIgnore: true */
                 background-image: url('/system/themes/flexible/icons/ok.svg');
             }
         }
     }
+
     .error-header {
         margin-bottom: 12px;
     }
@@ -54,15 +56,9 @@
             &:nth-child(even) {
                 background: var(--panel-bg);
             }
-
-            p {
-
-            }
         }
     }
 }
-
-
 
 .plenta-loki-wrapper {
     display: flex;
@@ -86,7 +82,7 @@
     }
 }
 
-html[data-color-scheme="dark"] {
+html[data-color-scheme='dark'] {
     .plenta-box a {
         color: var(--blue, #0073ab);
 
