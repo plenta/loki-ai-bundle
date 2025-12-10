@@ -20,6 +20,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Plenta\LokiAiBundle\Entity\Field;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @extends ServiceEntityRepository<Field>
+ */
 class FieldRepository extends ServiceEntityRepository
 {
     public function __construct(

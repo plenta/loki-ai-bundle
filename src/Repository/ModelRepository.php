@@ -16,6 +16,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Plenta\LokiAiBundle\Entity\Model;
 
+/**
+ * @extends ServiceEntityRepository<Model>
+ */
 class ModelRepository extends ServiceEntityRepository
 {
     public function __construct(

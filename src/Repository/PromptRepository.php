@@ -16,6 +16,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Plenta\LokiAiBundle\Entity\Prompt;
 
+/**
+ * @extends ServiceEntityRepository<Prompt>
+ */
 class PromptRepository extends ServiceEntityRepository
 {
     public function __construct(

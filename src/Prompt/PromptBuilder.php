@@ -192,7 +192,7 @@ class PromptBuilder
         if (empty($options) && !empty($dca['foreignKey'])) {
             $options = [];
 
-            [$table, $label] = explode('.', $dca['foreignKey']);
+            [$table, $label] = explode('.', (string) $dca['foreignKey']);
 
             $data = $this->connection->fetchAllAssociative('SELECT id, '.$label.' FROM '.$table);
 

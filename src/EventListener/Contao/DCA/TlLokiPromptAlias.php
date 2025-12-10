@@ -45,7 +45,7 @@ class TlLokiPromptAlias
 
         if (!$value) {
             $value = $this->slugGenerator->generate($dc->activeRecord->title, [], $aliasExists);
-        } elseif (preg_match('/^[1-9]\d*$/', $value)) {
+        } elseif (preg_match('/^[1-9]\d*$/', (string) $value)) {
             throw new \Exception(\sprintf($GLOBALS['TL_LANG']['ERR']['aliasNumeric'], $value));
         } elseif ($aliasExists($value)) {
             throw new \Exception(\sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $value));
