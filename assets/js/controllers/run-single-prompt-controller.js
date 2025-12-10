@@ -7,15 +7,20 @@ export default class extends Controller {
     run() {
         this.element.classList.add(this.loadingClass);
 
-        fetch(`${this.element.dataset.prefix}/_loki/prompt/${this.element.dataset.id}/${this.element.dataset.field}/${this.element.dataset.objectId}`).then((r) => {
-            if (r.ok) {
-                return r.json();
-            }
+        fetch(
+            `${this.element.dataset.prefix}/_loki/prompt/${this.element.dataset.id}/${this.element.dataset.field}/${this.element.dataset.objectId}`,
+        )
+            .then((r) => {
+                if (r.ok) {
+                    return r.json();
+                }
 
-            this.buildDialog('<p>An error occurred while building the prompt.</p><p>Please check your API key. If the API key is correct and the error persists, please check your error logs and <a href="https://github.com/plenta/loki-ai-bundle/issues" target="_blank">create a ticket.</a></p>');
+                this.buildDialog(
+                    '<p>An error occurred while building the prompt.</p><p>Please check your API key. If the API key is correct and the error persists, please check your error logs and <a href="https://github.com/plenta/loki-ai-bundle/issues" target="_blank">create a ticket.</a></p>',
+                );
 
-            return [];
-        })
+                return [];
+            })
             .then((r) => {
                 this.element.classList.remove(this.loadingClass);
 

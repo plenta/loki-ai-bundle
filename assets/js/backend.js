@@ -3,11 +3,9 @@ import '../scss/backend.scss';
 import { startStimulusApp } from '@symfony/stimulus-bridge';
 
 // Registers Stimulus controllers from controllers.json and in the controllers/ directory
-export default startStimulusApp(require.context(
-    '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
-    true,
-    /\.[jt]sx?$/,
-));
+export default startStimulusApp(
+    require.context('@symfony/stimulus-bridge/lazy-controller-loader!./controllers', true, /\.[jt]sx?$/),
+);
 
 /* document.addEventListener('DOMContentLoaded', function () {
     const loadingClass = 'loading';
