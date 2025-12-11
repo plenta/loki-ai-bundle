@@ -15,7 +15,7 @@
             font-size: 15px;
             font-weight: bold;
 
-            &::before {
+            &:before {
                 content: '';
                 width: 20px;
                 height: 20px;
@@ -26,12 +26,12 @@
                 margin-right: 16px;
             }
 
-            &.pending::before {
+            &.pending:before {
                 /* webpackIgnore: true */
                 background-image: url('/system/themes/flexible/icons/loading.svg');
             }
 
-            &.complete::before {
+            &.complete:before {
                 /* webpackIgnore: true */
                 background-image: url('/system/themes/flexible/icons/ok.svg');
             }

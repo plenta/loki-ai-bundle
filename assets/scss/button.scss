@@ -26,7 +26,7 @@
             background-color: var(--contao, #f47c00);
         }
 
-        &::after {
+        &:after {
             content: '';
             width: 80%;
             height: 80%;
@@ -49,7 +49,7 @@
                 }
             }
 
-            &::after {
+            &:after {
                 background-image: url('/assets/images/loader-circle.svg');
                 animation: rotate-loki-button 1s linear infinite;
             }
