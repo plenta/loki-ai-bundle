@@ -15,20 +15,18 @@ namespace Plenta\LokiAiBundle\Controller;
 use Contao\Backend;
 use Contao\CoreBundle\Controller\AbstractBackendController;
 use Contao\Message;
-use Contao\PageModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Plenta\LokiAiBundle\Exception\PromptException;
 use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Plenta\LokiAiBundle\Repository\PromptRepository;
 use Symfony\Component\Asset\Packages;
-use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('%contao.backend.route_prefix%/_loki', defaults: ['_scope' => 'backend'])]
@@ -124,14 +122,17 @@ class RunPrompt extends AbstractBackendController
         FieldRepository $fieldRepository,
         Api $api,
         Connection $connection,
-        HtmlSanitizerInterface $sanitizer,
     ): JsonResponse {
         $field = $fieldRepository->find($id);
+
+        $htmlSanitizer = new HtmlSanitizer(
+            (new HtmlSanitizerConfig())->allowSafeElements()
+        );
 
         try {
             $prompt = $promptBuilder->build($field, $objectId, $fieldName);
         } catch (\Throwable $e) {
-            return new JsonResponse(['error' => $sanitizer->sanitizeFor('dialog', $e->getMessage())]);
+            return new JsonResponse(['error' => $htmlSanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }
 
         if (empty($prompt)) {
@@ -141,7 +142,7 @@ class RunPrompt extends AbstractBackendController
         try {
             $newValue = $promptBuilder->buildHeadline($api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $objectId, $field, $fieldName);
         } catch (\Throwable $e) {
-            return new JsonResponse(['error' => $sanitizer->sanitizeFor('dialog', $e->getMessage())]);
+            return new JsonResponse(['error' => $htmlSanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }
 
         $connection->createQueryBuilder()

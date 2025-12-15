@@ -16,7 +16,8 @@ use Contao\CoreBundle\Controller\AbstractController;
 use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
-use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,14 +32,17 @@ class GeneratePromptController extends AbstractController
         FieldRepository $fieldRepository,
         PromptBuilder $promptBuilder,
         Api $api,
-        HtmlSanitizerInterface $sanitizer,
     ): JsonResponse {
         $field = $fieldRepository->find($id);
+
+        $htmlSanitizer = new HtmlSanitizer(
+            (new HtmlSanitizerConfig())->allowSafeElements()
+        );
 
         try {
             $prompt = $promptBuilder->build($field, $objectId, $fieldName);
         } catch (\Throwable $e) {
-            return new JsonResponse(['error' => $sanitizer->sanitizeFor('dialog', $e->getMessage())]);
+            return new JsonResponse(['error' => $htmlSanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }
 
         if (empty($prompt)) {
@@ -48,7 +52,7 @@ class GeneratePromptController extends AbstractController
         try {
             $newValue = $api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens());
         } catch (\Throwable $e) {
-            return new JsonResponse(['error' => 'An error occurred: '.$sanitizer->sanitizeFor('dialog', $e->getMessage())]);
+            return new JsonResponse(['error' => 'An error occurred: '.$htmlSanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }
 
         return new JsonResponse(['result' => $newValue]);
