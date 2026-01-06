@@ -59,6 +59,8 @@ class PromptBuilder
             $currentValue = $options[$object[$fieldName]] ?? $object[$fieldName] ?? '';
         }
 
+        $fieldValues = [];
+
         if (\count($includeFields) > 1) {
             $base = '';
             $empty = true;
@@ -83,9 +85,14 @@ class PromptBuilder
                 $empty = false;
 
                 $base .= $includeField.': '.$value;
+                $fieldValues[$includeField] = $value;
             }
         } else {
             $base = $object[$includeFields[0] ?? null] ?? null;
+
+            if ($base) {
+                $fieldValues[$includeFields[0] ?? null] = $base;
+            }
 
             $empty = empty($base);
         }
@@ -131,7 +138,13 @@ class PromptBuilder
             $field_options .= $option.' (Key: '.$key.')';
         }
 
-        return StringUtil::decodeEntities($this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $currentValue])));
+        $tokens = ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $currentValue];
+
+        foreach ($fieldValues as $key => $value) {
+            $tokens['field_'.$key] = $value;
+        }
+
+        return StringUtil::decodeEntities($this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), $tokens)));
     }
 
     /**
