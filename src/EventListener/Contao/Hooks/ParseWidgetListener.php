@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io
@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Plenta\LokiAiBundle\EventListener\Contao\Hooks;
 
 use Contao\ArticleModel;
-use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\PageModel;
@@ -35,7 +34,7 @@ class ParseWidgetListener
     }
 
     #[AsHook(hook: 'parseWidget')]
-    public function onParseWidget(string $buffer, Widget $widget)
+    public function onParseWidget(string $buffer, Widget $widget): string
     {
         if (!$widget->dataContainer) {
             return $buffer;
@@ -61,13 +60,13 @@ class ParseWidgetListener
                 $page = null;
 
                 if ('tl_page' === $field->getTableName()) {
-                    $page = PageModel::findByPk($widget->dataContainer->id)->loadDetails();
+                    $page = PageModel::findById($widget->dataContainer->id)->loadDetails();
                 } elseif ('tl_content' === $field->getTableName()) {
-                    if ($widget->dataContainer->activeRecord->ptable === 'tl_article') {
+                    if ('tl_article' === $widget->dataContainer->activeRecord->ptable) {
                         $article = ArticleModel::findById($widget->dataContainer->activeRecord->pid);
 
                         if ($article) {
-                            $page = PageModel::findByPk($article->pid)->loadDetails();
+                            $page = PageModel::findById($article->pid)->loadDetails();
                         }
                     }
                 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io
@@ -15,11 +15,13 @@ namespace Plenta\LokiAiBundle\Repository;
 use Contao\BackendUser;
 use Contao\StringUtil;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Plenta\LokiAiBundle\Entity\Field;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @extends ServiceEntityRepository<Field>
+ */
 class FieldRepository extends ServiceEntityRepository
 {
     public function __construct(
@@ -30,9 +32,9 @@ class FieldRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Collection[Field]
+     * @return array<Field>
      */
-    public function findByTableNameAndField($tableName, $field)
+    public function findByTableNameAndField(string $tableName, string $field): array
     {
         $qb = $this->createQueryBuilder('f');
         $user = $this->tokenStorage->getToken()->getUser();

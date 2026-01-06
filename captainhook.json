@@ -1,0 +1,10 @@
+{
+    "pre-commit": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "composer run build-tools"
+            }
+        ]
+    }
+}

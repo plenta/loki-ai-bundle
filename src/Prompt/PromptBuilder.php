@@ -31,7 +31,7 @@ class PromptBuilder
     ) {
     }
 
-    public function build(?Field $field, int $objectId, string $fieldName)
+    public function build(Field|null $field, int $objectId, string $fieldName): string
     {
         if (null === $field) {
             throw new PromptException('Field entity not found');
@@ -51,7 +51,7 @@ class PromptBuilder
 
         Controller::loadDataContainer($field->getTableName());
 
-        if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType'] === 'inputUnit') {
+        if ('inputUnit' === $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType']) {
             $currentValue = StringUtil::deserialize($object[$fieldName], true)['value'] ?? '';
         } else {
             $options = $this->getOptions($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]);
@@ -59,7 +59,7 @@ class PromptBuilder
             $currentValue = $options[$object[$fieldName]] ?? $object[$fieldName] ?? '';
         }
 
-        if (count($includeFields) > 1) {
+        if (\count($includeFields) > 1) {
             $base = '';
             $empty = true;
 
@@ -68,25 +68,25 @@ class PromptBuilder
                     $base .= '; ';
                 }
 
-                if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]['inputType'] === 'inputUnit') {
+                if ('inputUnit' === $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]['inputType']) {
                     $value = StringUtil::deserialize($object[$includeField], true)['value'] ?? '';
                 } else {
                     $options = $this->getOptions($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$includeField]);
 
                     $value = $options[$object[$includeField]] ?? $object[$includeField];
                 }
-                
+
                 if (empty($value)) {
                     continue;
                 }
-                
+
                 $empty = false;
-                
+
                 $base .= $includeField.': '.$value;
             }
         } else {
             $base = $object[$includeFields[0] ?? null] ?? null;
-            
+
             $empty = empty($base);
         }
 
@@ -98,7 +98,7 @@ class PromptBuilder
 
         $affectedFields = StringUtil::deserialize($field->getField(), true);
 
-        if (!in_array($fieldName, $affectedFields)) {
+        if (!\in_array($fieldName, $affectedFields, true)) {
             throw new PromptException('Field '.$fieldName.' is not selected');
         }
 
@@ -123,58 +123,37 @@ class PromptBuilder
 
         $field_options = '';
 
-        if (!empty($options)) {
-            foreach ($options as $key => $option) {
-                if (!empty($field_options)) {
-                    $field_options .= '; ';
-                }
-
-                $field_options .= $option.' (Key: '.$key.')';
+        foreach ($options as $key => $option) {
+            if (!empty($field_options)) {
+                $field_options .= '; ';
             }
+
+            $field_options .= $option.' (Key: '.$key.')';
         }
 
         return StringUtil::decodeEntities($this->insertTagParser->replace($this->simpleTokenParser->parse($field->getParent()->getPrompt(), ['include_fields' => $base, 'field_options' => $field_options, 'current_value' => $currentValue])));
     }
 
-    protected function getOptions($dca)
-    {
-        $options = $dca['options'] ?? [];
-
-        if (empty($options) && !empty($dca['options_callback'])) {
-            $callback = System::importStatic($dca['options_callback'][0]);
-
-            $options = $callback->{$dca['options_callback'][1]}();
-        }
-
-        if (empty($options) && !empty($dca['foreignKey'])) {
-            $options = [];
-
-            [$table, $label] = explode('.', $dca['foreignKey']);
-
-            $data = $this->connection->fetchAllAssociative('SELECT id, '.$label.' FROM '.$table);
-
-            foreach ($data as $row) {
-                $options[$row['id']] = $row[$label];
-            }
-        }
-
-        return $options;
-    }
-
+    /**
+     * @return array<string>
+     */
     public function getPages(Field $field): array
     {
         $return = [];
 
-        if ($field->getTableName() === 'tl_page' || $field->getTableName() === 'tl_content') {
+        if ('tl_page' === $field->getTableName() || 'tl_content' === $field->getTableName()) {
             if ($field->getParent()->getRootPage()) {
-                $this->buildPages(PageModel::findByPk($field->getParent()->getRootPage()), $return);
+                $this->buildPages(PageModel::findById($field->getParent()->getRootPage()), $return);
             }
         }
 
         return $return;
     }
 
-    public function getContentElements(Field $field)
+    /**
+     * @return array<int>
+     */
+    public function getContentElements(Field $field): array
     {
         $pages = $this->getPages($field);
 
@@ -191,21 +170,9 @@ class PromptBuilder
         ;
     }
 
-    protected function buildPages($pageObj, &$pageIds)
+    public function buildHeadline(string $newValue, int $id, Field $field, string $fieldName): string
     {
-        $pages = PageModel::findPublishedByPid($pageObj->id);
-
-        if ($pages) {
-            foreach ($pages as $page) {
-                $pageIds[] = $page->id;
-                $this->buildPages($page, $pageIds);
-            }
-        }
-    }
-
-    public function buildHeadline($newValue, int $id, Field $field, string $fieldName)
-    {
-        if ($GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType'] === 'inputUnit') {
+        if ('inputUnit' === $GLOBALS['TL_DCA'][$field->getTableName()]['fields'][$fieldName]['inputType']) {
             $currentValue = StringUtil::deserialize($this->connection->fetchOne('SELECT '.$fieldName.' FROM '.$field->getTableName().' WHERE id = ?', [$id]), true);
 
             $currentValue['value'] = $newValue;
@@ -214,5 +181,49 @@ class PromptBuilder
         }
 
         return $newValue;
+    }
+
+    /**
+     * @param  array<string, mixed> $dca
+     * @return array<string, mixed>
+     */
+    protected function getOptions(array $dca): array
+    {
+        $options = $dca['options'] ?? [];
+
+        if (empty($options) && !empty($dca['options_callback'])) {
+            $callback = System::importStatic($dca['options_callback'][0]);
+
+            $options = $callback->{$dca['options_callback'][1]}();
+        }
+
+        if (empty($options) && !empty($dca['foreignKey'])) {
+            $options = [];
+
+            [$table, $label] = explode('.', (string) $dca['foreignKey']);
+
+            $data = $this->connection->fetchAllAssociative('SELECT id, '.$label.' FROM '.$table);
+
+            foreach ($data as $row) {
+                $options[$row['id']] = $row[$label];
+            }
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param array<string> $pageIds
+     */
+    protected function buildPages(PageModel $pageObj, array &$pageIds): void
+    {
+        $pages = PageModel::findPublishedByPid($pageObj->id);
+
+        if ($pages) {
+            foreach ($pages as $page) {
+                $pageIds[] = (string) $page->id;
+                $this->buildPages($page, $pageIds);
+            }
+        }
     }
 }

@@ -7,73 +7,82 @@ export default class extends Controller {
     run() {
         this.element.classList.add(this.loadingClass);
 
-        fetch(this.element.dataset.prefix + '/_loki/prompt/' + this.element.dataset.id + '/' + this.element.dataset.field + '/' + this.element.dataset.objectId).then(r => {
-            if (r.ok) {
-                return r.json();
-            }
+        fetch(
+            `${this.element.dataset.prefix}/_loki/prompt/${this.element.dataset.id}/${this.element.dataset.field}/${this.element.dataset.objectId}`,
+        )
+            .then((r) => {
+                if (r.ok) {
+                    return r.json();
+                }
 
-            this.buildDialog('<p>An error occurred while building the prompt.</p><p>Please check your API key. If the API key is correct and the error persists, please check your error logs and <a href="https://github.com/plenta/loki-ai-bundle/issues" target="_blank">create a ticket.</a></p>');
-        })
-            .then(r => {
-            this.element.classList.remove(this.loadingClass);
+                this.buildDialog(
+                    '<p>An error occurred while building the prompt.</p><p>Please check your API key. If the API key is correct and the error persists, please check your error logs and <a href="https://github.com/plenta/loki-ai-bundle/issues" target="_blank">create a ticket.</a></p>',
+                );
 
-            if (r.result) {
-                let input = this.element.closest('.widget').querySelector('input[id]');
-                let textarea = this.element.closest('.widget').querySelector('textarea[id]');
-                let select = this.element.closest('.widget').querySelector('select[id]');
+                return [];
+            })
+            .then((r) => {
+                this.element.classList.remove(this.loadingClass);
 
-                if (input) {
-                    input.value = r.result;
-                } else if (textarea) {
-                    textarea.innerText = r.result;
+                if (r.result) {
+                    const input = this.element.closest('.widget').querySelector('input[id]');
+                    const textarea = this.element.closest('.widget').querySelector('textarea[id]');
+                    const select = this.element.closest('.widget').querySelector('select[id]');
 
-                    if (window.tinymce && window.tinymce.get(textarea.id)) {
-                        window.tinymce.get(textarea.id).setContent(r.result);
-                    }
-                } else if (select) {
-                    select.querySelectorAll('option[selected]').forEach(function (item) {
-                        item.selected = false;
-                    })
+                    if (input) {
+                        input.value = r.result;
+                    } else if (textarea) {
+                        textarea.innerText = r.result;
 
-                    let option = select.querySelector('option[value="' + r.result + '"]');
+                        if (window.tinymce && window.tinymce.get(textarea.id)) {
+                            window.tinymce.get(textarea.id).setContent(r.result);
+                        }
+                    } else if (select) {
+                        select.querySelectorAll('option[selected]').forEach((item) => {
+                            item.selected = false;
+                        });
 
-                    if (option) {
-                        option.selected = true;
-                    }
+                        const option = select.querySelector(`option[value="${r.result}"]`);
 
-                    if (select.classList.contains('tl_chosen')) {
-                        select.dispatchEvent(new Event('input', {bubbles: true}));
-                        const chosenContainer = select.parentElement.querySelector('.chzn-container');
-                        if (chosenContainer) {
-                            chosenContainer.remove(); // Remove Chosen's UI
-                            new Chosen(select);
+                        if (option) {
+                            option.selected = true;
+                        }
+
+                        if (select.classList.contains('tl_chosen')) {
+                            select.dispatchEvent(new Event('input', { bubbles: true }));
+                            const chosenContainer = select.parentElement.querySelector('.chzn-container');
+                            if (chosenContainer) {
+                                chosenContainer.remove(); // Remove Chosen's UI
+                                /* eslint-disable-next-line no-undef */
+                                new Chosen(select);
+                            }
                         }
                     }
+                } else if (r.error) {
+                    this.buildDialog(r.error);
                 }
-            } else if (r.error) {
-                this.buildDialog(r.error);
-            }
-        });
+            });
     }
 
+    /* eslint-disable class-methods-use-this */
     buildDialog(msg) {
-        let button = document.createElement('button');
+        const button = document.createElement('button');
         button.innerText = 'x';
         button.classList.add('close');
         button.type = 'button';
 
-        let modalHeader = document.createElement('div');
+        const modalHeader = document.createElement('div');
         modalHeader.classList.add('simple-modal-header');
         modalHeader.innerHTML = '<h1>Loki AI - Error</h1>';
         modalHeader.appendChild(button);
 
-        let dialog = document.createElement('dialog');
+        const dialog = document.createElement('dialog');
         dialog.classList.add('plenta-loki-error');
         dialog.classList.add('simple-modal');
         dialog.classList.add('hide-footer');
 
         dialog.appendChild(modalHeader);
-        dialog.appendHTML('<div class="simple-modal-body"><div class="contents">' + msg + '</div></div>');
+        dialog.appendHTML(`<div class="simple-modal-body"><div class="contents">${msg}</div></div>`);
         document.body.appendChild(dialog);
 
         dialog.showModal();
@@ -82,4 +91,5 @@ export default class extends Controller {
             dialog.remove();
         });
     }
+    /* eslint-enable class-methods-use-this */
 }

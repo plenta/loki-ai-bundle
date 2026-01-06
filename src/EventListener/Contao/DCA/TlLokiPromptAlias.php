@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io
@@ -12,22 +12,21 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\EventListener\Contao\DCA;
 
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\CoreBundle\Slug\Slug;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
-use Contao\CoreBundle\Slug\Slug;
-use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 
 #[AsCallback(table: 'tl_loki_prompt', target: 'fields.alias.save')]
 class TlLokiPromptAlias
 {
     public function __construct(
         private readonly Connection $connection,
-        private readonly Slug $slugGenerator
-    )
-    {
+        private readonly Slug $slugGenerator,
+    ) {
     }
 
-    public function __invoke($value, DataContainer $dc)
+    public function __invoke(string $value, DataContainer $dc): string
     {
         $aliasExists = function (string $alias) use ($dc): bool {
             $qb = $this->connection->createQueryBuilder();
@@ -38,17 +37,18 @@ class TlLokiPromptAlias
                 ->andWhere('id <> :id')
                 ->setParameter('alias', $alias)
                 ->setParameter('id', (int) $dc->id)
-                ->setMaxResults(1);
+                ->setMaxResults(1)
+            ;
 
-            return $qb->executeQuery()->fetchOne() !== false;
+            return false !== $qb->executeQuery()->fetchOne();
         };
 
         if (!$value) {
             $value = $this->slugGenerator->generate($dc->activeRecord->title, [], $aliasExists);
         } elseif (preg_match('/^[1-9]\d*$/', $value)) {
-            throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasNumeric'], $value));
+            throw new \Exception(\sprintf($GLOBALS['TL_LANG']['ERR']['aliasNumeric'], $value));
         } elseif ($aliasExists($value)) {
-            throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $value));
+            throw new \Exception(\sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $value));
         }
 
         return $value;

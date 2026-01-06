@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\EventListener\Contao\DCA;
 
+use Contao\BackendUser;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\Database;
@@ -37,8 +38,11 @@ class TlLokiPrompt
     ) {
     }
 
+    /**
+     * @return array<string>
+     */
     #[AsCallback(table: 'tl_loki_prompt', target: 'fields.tableName.options')]
-    public function getTableOptions()
+    public function getTableOptions(): array
     {
         $arrTables = Database::getInstance()->listTables();
         $arrViews = $this->connection->createSchemaManager()->listViews();
@@ -48,19 +52,25 @@ class TlLokiPrompt
             natsort($arrTables);
         }
 
-        $arrTables = array_filter($arrTables, function ($table) {
-            DataContainer::loadDataContainer($table);
+        $arrTables = array_filter(
+            $arrTables,
+            static function ($table) {
+                DataContainer::loadDataContainer($table);
 
-            if ($GLOBALS['TL_DCA'][$table] ?? null) {
-                return true;
-            }
+                if ($GLOBALS['TL_DCA'][$table] ?? null) {
+                    return true;
+                }
 
-            return false;
-        });
+                return false;
+            },
+        );
 
         return array_values($arrTables);
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[AsCallback(table: 'tl_loki_prompt', target: 'fields.field.options')]
     #[AsCallback(table: 'tl_loki_prompt', target: 'fields.includeFields.options')]
     public function getFieldOptions(DataContainer $dc): array
@@ -82,15 +92,18 @@ class TlLokiPrompt
                     continue;
                 }
 
-                $return[$name] = (($dca['label'][0] ?? '')).'<span class="label-info">['.$name.']</span>';
+                $return[$name] = ($dca['label'][0] ?? '').'<span class="label-info">['.$name.']</span>';
             }
         }
 
         return $return;
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[AsCallback(table: 'tl_loki_prompt', target: 'fields.model.options')]
-    public function getModelOptions()
+    public function getModelOptions(): array
     {
         $return = [];
 
@@ -102,7 +115,7 @@ class TlLokiPrompt
     }
 
     #[AsCallback(table: 'tl_loki_prompt', target: 'config.onload')]
-    public function onLoad(?DataContainer $dc): void
+    public function onLoad(DataContainer|null $dc): void
     {
         if (!$dc || !$dc->id) {
             return;
@@ -123,26 +136,32 @@ class TlLokiPrompt
         }
     }
 
+    /**
+     * @param array<string, mixed> $row
+     * @param array<int>           $rootRecordIds
+     * @param array<int>|null      $childRecordIds
+     */
     #[AsCallback(table: 'tl_loki_prompt', target: 'list.operations.run.button_callback')]
     public function onRunButtonCallback(
         array $row,
-        ?string $href,
+        string|null $href,
         string $label,
         string $title,
-        ?string $icon,
+        string|null $icon,
         string $attributes,
         string $table,
         array $rootRecordIds,
-        ?array $childRecordIds,
+        array|null $childRecordIds,
         bool $circularReference,
-        ?string $previous,
-        ?string $next,
-        DataContainer $dc
+        string|null $previous,
+        string|null $next,
+        DataContainer $dc,
     ): string {
         if (!$row['published']) {
             return '';
         }
 
+        /** @var BackendUser $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$user->isAdmin && $row['protected']) {
@@ -150,7 +169,7 @@ class TlLokiPrompt
             $isAllowed = false;
 
             foreach ($user->groups as $group) {
-                if (in_array($group, $groups)) {
+                if (\in_array($group, $groups, true)) {
                     $isAllowed = true;
                 }
             }
@@ -162,12 +181,12 @@ class TlLokiPrompt
 
         $href = $this->router->generate('loki_run_prompt', ['id' => $row['id']]);
 
-        return sprintf(
+        return \sprintf(
             '<a href="%s" title="%s"%s>%s</a> ',
             $href,
             StringUtil::specialchars($title),
             $attributes,
-            Image::getHtml($icon, $label)
+            Image::getHtml($icon, $label),
         );
     }
 }

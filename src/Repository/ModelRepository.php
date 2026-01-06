@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io
@@ -16,6 +16,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Plenta\LokiAiBundle\Entity\Model;
 
+/**
+ * @extends ServiceEntityRepository<Model>
+ */
 class ModelRepository extends ServiceEntityRepository
 {
     public function __construct(
@@ -24,7 +27,7 @@ class ModelRepository extends ServiceEntityRepository
         parent::__construct($managerRegistry, Model::class);
     }
 
-    public function deleteOlderThan(int $time)
+    public function deleteOlderThan(int $time): void
     {
         $this->createQueryBuilder('m')
             ->delete()

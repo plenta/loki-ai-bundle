@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io
@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @link          https://github.com/plenta/
  */
 
-use Contao\System;
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
+use Contao\System;
 
 $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     'config' => [
@@ -65,7 +65,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
                 'href' => 'act=run',
                 'icon' => 'sync.svg',
                 'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['tl_loki_prompt']['runConfirm'] ?? null).'\')) return false; Backend.getScrollOffset();" data-turbo="false"',
-            ]
+            ],
         ],
     ],
     'palettes' => [
@@ -182,6 +182,6 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
             'sql' => ['type' => 'boolean', 'default' => false],
-        ]
+        ],
     ],
 ];

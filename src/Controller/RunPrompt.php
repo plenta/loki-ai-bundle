@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Loki AI Bundle for Contao Open Source CMS
  *
  * @copyright     Copyright (c) 2025, Plenta.io
@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Plenta\LokiAiBundle\Controller;
 
 use Contao\Backend;
+use Contao\BackendUser;
 use Contao\CoreBundle\Controller\AbstractBackendController;
 use Contao\Message;
 use Contao\StringUtil;
@@ -25,6 +26,7 @@ use Symfony\Component\Asset\Packages;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -41,7 +43,7 @@ class RunPrompt extends AbstractBackendController
         Connection $connection,
         Packages $packages,
         TranslatorInterface $translator,
-    ) {
+    ): Response {
         $prompt = $promptRepository->find($id);
 
         if (!$prompt->isPublished()) {
@@ -49,6 +51,7 @@ class RunPrompt extends AbstractBackendController
         }
 
         if ($prompt->isProtected()) {
+            /** @var BackendUser $user */
             $user = $tokenStorage->getToken()->getUser();
 
             if (!$user->isAdmin) {
@@ -56,7 +59,7 @@ class RunPrompt extends AbstractBackendController
                 $isAllowed = false;
 
                 foreach ($user->groups as $group) {
-                    if (in_array($group, $groups)) {
+                    if (\in_array($group, $groups, true)) {
                         $isAllowed = true;
                     }
                 }
@@ -70,16 +73,15 @@ class RunPrompt extends AbstractBackendController
         $GLOBALS['TL_JAVASCRIPT']['lokiBackend'] = $packages->getUrl('lokiai/backend.js', 'lokiai');
         $GLOBALS['TL_CSS']['lokiBackend'] = $packages->getUrl('lokiai/backend.css', 'lokiai');
 
-
         $fields = $prompt->getFields();
         $fieldArr = [];
 
         foreach ($fields as $field) {
             $affectedFields = StringUtil::deserialize($field->getField(), true);
 
-            if ($field->getTableName() === 'tl_page' && $prompt->getRootPage()) {
+            if ('tl_page' === $field->getTableName() && $prompt->getRootPage()) {
                 $ids = $promptBuilder->getPages($field);
-            } elseif ($field->getTableName() === 'tl_content' && $prompt->getRootPage()) {
+            } elseif ('tl_content' === $field->getTableName() && $prompt->getRootPage()) {
                 $ids = $promptBuilder->getContentElements($field);
             } else {
                 $ids = $connection->createQueryBuilder()

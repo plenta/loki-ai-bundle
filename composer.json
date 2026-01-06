@@ -22,20 +22,31 @@
         "contao/core-bundle": "^4.13 || ^5.3",
         "doctrine/dbal": "^3.2.0",
         "mvo/contao-group-widget": "^1.5",
-        "symfony/http-client": "^5.4 || ^6.4 || ^7.4",
         "openai-php/symfony": "^0.10.2",
         "symfony/http-foundation": "^5.4 || ^6.4 || ^7.4",
         "symfony/routing": "^5.4 || ^6.4 || ^7.4",
         "symfony/stimulus-bundle": "^2.31",
         "symfony/html-sanitizer": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-        "doctrine/orm":  "^2.20"
+        "doctrine/orm":  "^2.20",
+        "contao/manager-plugin": "^2.13",
+        "doctrine/collections": "^1.8",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/persistence": "^2.5",
+        "openai-php/client": "^0.10.2",
+        "symfony/asset": "^5.4 || 6.4 || 7.4",
+        "symfony/config": "^5.4 || 6.4 || 7.4",
+        "symfony/console": "^5.4 || 6.4 || 7.4",
+        "symfony/dependency-injection": "^5.4 || 6.4 || 7.4",
+        "symfony/filesystem": "^5.4 || 6.4 || 7.4",
+        "symfony/http-kernel": "^5.4 || 6.4 || 7.4",
+        "symfony/security-core": "^5.4 || 6.4 || 7.4",
+        "symfony/translation-contracts": "^2.5",
+        "twig/twig": "^v3.22"
     },
     "require-dev": {
         "contao/manager-bundle": "^4.13",
-        "phpunit/phpunit": "^9.5.10",
-        "contao/test-case": "^4.13",
-        "symfony/phpunit-bridge": "^v6.4.9",
-        "friendsofphp/php-cs-fixer": "^3.2"
+        "friendsofphp/php-cs-fixer": "^3.2",
+        "plenta/contao-build-tools": "@dev"
     },
     "extra": {
         "contao-manager-plugin": "Plenta\\LokiAiBundle\\ContaoManager\\Plugin"
@@ -51,7 +62,8 @@
             "contao-components/installer": true,
             "contao/manager-plugin": true,
             "contao-community-alliance/composer-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "plenta/contao-build-tools": true
         }
     }
 }

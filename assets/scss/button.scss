@@ -17,7 +17,9 @@
         border-radius: 0.2rem;
         position: relative;
 
-        &:hover, &:focus, &:active {
+        &:hover,
+        &:focus,
+        &:active {
             text-decoration: none !important;
             background-image: none;
             background-position: 0;
@@ -41,7 +43,7 @@
         }
 
         &.loading {
-            @keyframes rotateLokiButton {
+            @keyframes rotate-loki-button {
                 to {
                     transform: translate(-50%, -50%) rotate(360deg);
                 }
@@ -49,7 +51,7 @@
 
             &:after {
                 background-image: url('/assets/images/loader-circle.svg');
-                animation: rotateLokiButton 1s linear infinite;
+                animation: rotate-loki-button 1s linear infinite;
             }
         }
     }
@@ -80,13 +82,17 @@ dialog {
                 right: 10px;
                 top: 19px;
                 color: #999;
-                font-family: -apple-system, system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+                font-family:
+                    -apple-system, system-ui, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
+                    sans-serif;
                 font-size: 30px;
                 font-weight: 400;
                 line-height: 10px;
                 text-decoration: none;
 
-                &:hover, &:focus, &:active {
+                &:hover,
+                &:focus,
+                &:active {
                     text-decoration: none !important;
                     background-image: none;
                     background-position: 0;
@@ -100,7 +106,7 @@ dialog {
         }
 
         &::backdrop {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgb(0 0 0 / 70%);
         }
     }
 }

@@ -39,7 +39,7 @@ class RunPromptsCommand extends Command
         protected PromptBuilder $promptBuilder,
         protected Api $openAiApi,
         protected PromptRepository $promptRepository,
-        ?string $name = null,
+        string|null $name = null,
     ) {
         parent::__construct($name);
     }
@@ -78,19 +78,19 @@ class RunPromptsCommand extends Command
 
                 foreach ($dataFields as $dataField) {
                     if ($field->getParent()->getRootPage()) {
-                        if ($field->getTableName() === 'tl_page') {
+                        if ('tl_page' === $field->getTableName()) {
                             $ids = $this->promptBuilder->getPages($field);
-                        } elseif ($field->getTableName() === 'tl_content') {
+                        } elseif ('tl_content' === $field->getTableName()) {
                             $ids = $this->promptBuilder->getContentElements($field);
                         }
 
                         if (!empty($ids)) {
-                            $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().' WHERE id IN ('.implode(',', $ids).')'.($input->getOption('all') === false ? ' AND ('.$dataField.' = ? OR '.$dataField.' IS NULL)' : '').' LIMIT '.$input->getOption('limit'), $input->getOption('all') === false ? [''] : []);
+                            $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().' WHERE id IN ('.implode(',', $ids).')'.(false === $input->getOption('all') ? ' AND ('.$dataField.' = ? OR '.$dataField.' IS NULL)' : '').' LIMIT '.$input->getOption('limit'), false === $input->getOption('all') ? [''] : []);
                         } else {
                             $objects = null;
                         }
                     } else {
-                        $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().($input->getOption('all') === false ? ' WHERE '.$dataField.' = ? OR '.$dataField.' IS NULL' : '').' LIMIT '.$input->getOption('limit'), $input->getOption('all') === false ? [''] : []);
+                        $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().(false === $input->getOption('all') ? ' WHERE '.$dataField.' = ? OR '.$dataField.' IS NULL' : '').' LIMIT '.$input->getOption('limit'), false === $input->getOption('all') ? [''] : []);
                     }
 
                     if ($objects) {
@@ -105,13 +105,13 @@ class RunPromptsCommand extends Command
 
                             if (!$progressBar) {
                                 if (!$titlePrinted) {
-                                    $output->writeln(sprintf('<info>%s</info>', $promptObj->getTitle()));
+                                    $output->writeln(\sprintf('<info>%s</info>', $promptObj->getTitle()));
                                     $titlePrinted = true;
                                 }
 
                                 $output->writeln('<comment>'.$field->getTableName().' - '.$dataField.'</comment>');
 
-                                $progressBar = new ProgressBar($output, count($objects));
+                                $progressBar = new ProgressBar($output, \count($objects));
                                 $progressBar->start();
                             }
 
@@ -127,7 +127,6 @@ class RunPromptsCommand extends Command
                             $output->writeln('');
                         }
                     }
-
                 }
             }
         }

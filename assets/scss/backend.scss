@@ -1,6 +1,7 @@
 .plenta-loki-ai-run-prompt {
-
-    .prompts.progress, .errors, .warnings {
+    .prompts.progress,
+    .errors,
+    .warnings {
         padding: 12px;
     }
 
@@ -36,6 +37,7 @@
             }
         }
     }
+
     .error-header {
         margin-bottom: 12px;
     }
@@ -54,15 +56,9 @@
             &:nth-child(even) {
                 background: var(--panel-bg);
             }
-
-            p {
-
-            }
         }
     }
 }
-
-
 
 .plenta-loki-wrapper {
     display: flex;
@@ -86,7 +82,7 @@
     }
 }
 
-html[data-color-scheme="dark"] {
+html[data-color-scheme='dark'] {
     .plenta-box a {
         color: var(--blue, #0073ab);
 
