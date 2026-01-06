@@ -119,6 +119,12 @@
             <trans-unit id="tl_loki_prompt.runConfirm">
                 <target>Sind Sie sicher, dass Sie den Prompt ausführen möchten? Der Prompt wird für ALLE ausgewählten Felder von ALLEN Datensätzen, auf die die Beschränkungen zutreffen, ausgeführt, aktuelle Werte werden dabei überschrieben.</target>
             </trans-unit>
+            <trans-unit id="tl_loki_prompt.requirements.0">
+                <target>Beschränkungen</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.requirements.1">
+                <target>Die Ausführung des Prompts wird auf Datensätze beschränkt, die bestimmte Werte enthalten. Geben Sie den Spaltennamen in das Feld "Schlüssel" und den Wert in das Feld "Wert" ein. Mehrere Felder werden mit UND verknüpft.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

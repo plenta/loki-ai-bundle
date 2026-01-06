@@ -52,6 +52,9 @@ class Field extends AbstractGroupElementEntity
     #[ORM\Column(type: 'text', nullable: true)]
     protected string|null $includeFields = null;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    protected string|null $requirements = null;
+
     public function getTableName(): string
     {
         return $this->tableName;
@@ -80,5 +83,15 @@ class Field extends AbstractGroupElementEntity
     public function setIncludeFields(string $includeFields): void
     {
         $this->includeFields = $includeFields;
+    }
+
+    public function getRequirements(): string|null
+    {
+        return $this->requirements;
+    }
+
+    public function setRequirements(string|null $requirements): void
+    {
+        $this->requirements = $requirements;
     }
 }

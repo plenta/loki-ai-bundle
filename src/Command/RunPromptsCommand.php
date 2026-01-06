@@ -15,6 +15,7 @@ namespace Plenta\LokiAiBundle\Command;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Plenta\LokiAiBundle\Entity\Field;
 use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
@@ -75,6 +76,7 @@ class RunPromptsCommand extends Command
 
             foreach ($fields as $field) {
                 $dataFields = StringUtil::deserialize($field->getField(), true);
+                $requirements = StringUtil::deserialize($field->getRequirements(), true);
 
                 foreach ($dataFields as $dataField) {
                     if ($field->getParent()->getRootPage()) {
@@ -85,19 +87,19 @@ class RunPromptsCommand extends Command
                         }
 
                         if (!empty($ids)) {
-                            $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().' WHERE id IN ('.implode(',', $ids).')'.(false === $input->getOption('all') ? ' AND ('.$dataField.' = ? OR '.$dataField.' IS NULL)' : '').' LIMIT '.$input->getOption('limit'), false === $input->getOption('all') ? [''] : []);
+                            $objects = $this->getObjects($field, $input, $requirements, $dataField, $ids);
                         } else {
                             $objects = null;
                         }
                     } else {
-                        $objects = $this->connection->fetchAllAssociative('SELECT id FROM '.$field->getTableName().(false === $input->getOption('all') ? ' WHERE '.$dataField.' = ? OR '.$dataField.' IS NULL' : '').' LIMIT '.$input->getOption('limit'), false === $input->getOption('all') ? [''] : []);
+                        $objects = $this->getObjects($field, $input, $requirements, $dataField);
                     }
 
                     if ($objects) {
                         $progressBar = null;
 
                         foreach ($objects as $object) {
-                            $prompt = $this->promptBuilder->build($field, $object['id'], $dataField);
+                            $prompt = $this->promptBuilder->build($field, $object, $dataField);
 
                             if (empty($prompt)) {
                                 continue;
@@ -115,9 +117,9 @@ class RunPromptsCommand extends Command
                                 $progressBar->start();
                             }
 
-                            $newValue = $this->promptBuilder->buildHeadline($this->openAiApi->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $object['id'], $field, $dataField);
+                            $newValue = $this->promptBuilder->buildHeadline($this->openAiApi->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $object, $field, $dataField);
 
-                            $this->connection->update($field->getTableName(), [$dataField => $newValue], ['id' => $object['id']]);
+                            $this->connection->update($field->getTableName(), [$dataField => $newValue], ['id' => $object]);
 
                             $progressBar->advance();
                         }
@@ -132,5 +134,47 @@ class RunPromptsCommand extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @param  array<array<string, string>> $requirements
+     * @param  array<string>|null           $ids
+     * @return array<int>
+     */
+    protected function getObjects(Field $field, InputInterface $input, array $requirements, string $dataField, array|null $ids = null): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+        $qb
+            ->select('t.id')
+            ->from($field->getTableName(), 't')
+        ;
+
+        if (!empty($ids)) {
+            $qb->where($qb->expr()->in('t.id', $ids));
+        }
+
+        if (false === $input->getOption('all')) {
+            $qb
+                ->andWhere($qb->expr()->or('t.'.$dataField.' = :empty', $qb->expr()->isNull('t.'.$dataField)))
+                ->setParameter('empty', '')
+            ;
+        }
+
+        foreach ($requirements as $requirement) {
+            if (empty($requirement['key'])) {
+                continue;
+            }
+
+            $qb
+                ->andWhere('t.'.$requirement['key'].' = :value')
+                ->setParameter('value', $requirement['value'])
+            ;
+        }
+
+        return $qb
+            ->setMaxResults($input->getOption('limit'))
+            ->executeQuery()
+            ->fetchFirstColumn()
+        ;
     }
 }

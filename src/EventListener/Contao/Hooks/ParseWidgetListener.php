@@ -16,6 +16,7 @@ use Contao\ArticleModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Contao\Widget;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Symfony\Component\Asset\Packages;
@@ -75,6 +76,18 @@ class ParseWidgetListener
                     if (!\in_array($field->getParent()->getRootPage(), $page->trail, true)) {
                         continue;
                     }
+                }
+            }
+
+            $requirements = StringUtil::deserialize($field->getRequirements(), true);
+
+            foreach ($requirements as $requirement) {
+                if (empty($requirement['key'])) {
+                    continue;
+                }
+
+                if ($widget->dataContainer->activeRecord->{$requirement['key']} !== $requirement['value']) {
+                    continue 2;
                 }
             }
 

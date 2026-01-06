@@ -103,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'fields' => [
             'inputType' => 'group',
             'storage' => 'entity',
-            'palette' => ['tableName', 'field', 'includeFields'],
+            'palette' => ['tableName', 'field', 'includeFields', 'requirements'],
         ],
         'prompt' => [
             'inputType' => 'textarea',
@@ -182,6 +182,9 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
             'sql' => ['type' => 'boolean', 'default' => false],
+        ],
+        'requirements' => [
+            'inputType' => 'keyValueWizard',
         ],
     ],
 ];

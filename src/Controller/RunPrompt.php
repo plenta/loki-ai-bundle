@@ -92,6 +92,27 @@ class RunPrompt extends AbstractBackendController
                 ;
             }
 
+            if (!empty($ids)) {
+                $requirements = StringUtil::deserialize($field->getRequirements(), true);
+
+                foreach ($requirements as $requirement) {
+                    if (empty($requirement['key'])) {
+                        continue;
+                    }
+
+                    $qb = $connection->createQueryBuilder();
+                    $ids = $qb
+                        ->select('t.id')
+                        ->from($field->getTableName(), 't')
+                        ->where('t.'.$requirement['key'].' = :value')
+                        ->andWhere($qb->expr()->in('t.id', $ids))
+                        ->setParameter('value', $requirement['value'])
+                        ->executeQuery()
+                        ->fetchFirstColumn()
+                    ;
+                }
+            }
+
             foreach ($affectedFields as $affectedField) {
                 foreach ($ids as $id) {
                     $fieldArr[] = [
