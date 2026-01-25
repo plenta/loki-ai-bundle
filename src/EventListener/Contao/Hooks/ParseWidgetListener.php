@@ -37,7 +37,7 @@ class ParseWidgetListener
     #[AsHook(hook: 'parseWidget')]
     public function onParseWidget(string $buffer, Widget $widget): string
     {
-        if (!$widget->dataContainer) {
+        if (!$widget->dataContainer || !$widget->dataContainer->table) {
             return $buffer;
         }
 
