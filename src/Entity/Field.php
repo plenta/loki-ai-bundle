@@ -22,20 +22,6 @@ class Field extends AbstractGroupElementEntity
 {
     public const string TABLE = 'tl_loki_field';
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    /**
-     * @phpstan-ignore-next-line missingType.property
-     */
-    protected $id;
-
-    #[ORM\Column(name: 'position', type: 'integer', options: ['unsigned' => true])]
-    /**
-     * @phpstan-ignore-next-line missingType.property
-     */
-    protected $position = 0;
-
     #[ORM\ManyToOne(targetEntity: Prompt::class, inversedBy: 'fields')]
     #[ORM\JoinColumn(name: 'parent', nullable: false)]
     /**
