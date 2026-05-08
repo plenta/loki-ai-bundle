@@ -38,6 +38,10 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             'format' => '%s',
         ],
         'global_operations' => [
+            'loki_system_instruction' => [
+                'href' => 'table=tl_loki_system_instruction',
+                'icon' => 'settings.svg',
+            ],
             'all' => [
                 'href' => 'act=select',
                 'icon' => 'all',
@@ -70,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     ],
     'palettes' => [
         '__selector__' => ['protected'],
-        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,model,maxTokens,temperature;{publish_legend},autoRun,skipIfEmpty,protected,published',
+        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,systemInstruction,model,maxTokens,temperature;{publish_legend},autoRun,skipIfEmpty,protected,published',
     ],
     'subpalettes' => [
         'protected' => 'userGroups',
@@ -109,10 +113,33 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             'inputType' => 'textarea',
             'eval' => ['decodeEntities' => true],
         ],
+        'systemInstruction' => [
+            'inputType' => 'select',
+            'foreignKey' => 'tl_loki_system_instruction.title',
+            'eval' => [
+                'includeBlankOption' => true,
+                'multiple' => false,
+                'chosen' => true,
+                'tl_class' => 'w50',
+            ],
+            'sql' => [
+                'type' => 'integer',
+                'unsigned' => true,
+                'default' => 0,
+            ],
+            'relation' => [
+                'type' => 'belongsTo',
+                'load' => 'lazy',
+            ],
+        ],
         'model' => [
             'exclude' => true,
             'inputType' => 'select',
-            'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Default: '.System::getContainer()->getParameter('loki_ai.open_ai.model')],
+            'eval' => [
+                'includeBlankOption' => true,
+                'blankOptionLabel' => 'Default: '.System::getContainer()->getParameter('loki_ai.open_ai.model'),
+                'tl_class' => 'w50',
+            ],
         ],
         'maxTokens' => [
             'exclude' => true,

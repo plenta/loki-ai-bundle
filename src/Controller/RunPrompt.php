@@ -18,6 +18,7 @@ use Contao\CoreBundle\Controller\AbstractBackendController;
 use Contao\Message;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Plenta\LokiAiBundle\Dto\ChatRequest;
 use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
@@ -163,7 +164,15 @@ class RunPrompt extends AbstractBackendController
         }
 
         try {
-            $newValue = $promptBuilder->buildHeadline($api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $objectId, $field, $fieldName);
+            $chatRequest = new ChatRequest(
+                $prompt,
+                $field->getParent()->getModel(),
+                $field->getParent()->getTemperature(),
+                $field->getParent()->getMaxTokens(),
+                $field->getParent()->getSystemInstruction()->getSystemInstructionPrompt(),
+            );
+
+            $newValue = $promptBuilder->buildHeadline($api->chat($chatRequest), $objectId, $field, $fieldName);
         } catch (\Throwable $e) {
             return new JsonResponse(['error' => $htmlSanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }

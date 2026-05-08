@@ -14,6 +14,7 @@ namespace Plenta\LokiAiBundle\OpenAi;
 
 use Doctrine\ORM\EntityManagerInterface;
 use OpenAI\Contracts\ClientContract;
+use Plenta\LokiAiBundle\Dto\ChatRequest;
 use Plenta\LokiAiBundle\Entity\Model;
 use Plenta\LokiAiBundle\Repository\ModelRepository;
 
@@ -30,18 +31,27 @@ class Api
     ) {
     }
 
-    public function chat(string $content, string|null $model = null, float|null $temperature = null, int|null $maxTokens = null): string
+    public function chat(ChatRequest $request): string
     {
+        $messages = [];
+
+        if ($request->systemInstruction) {
+            $messages[] = [
+                'role' => 'system',
+                'content' => $request->systemInstruction,
+            ];
+        }
+
+        $messages[] = [
+            'role' => 'user',
+            'content' => $request->prompt,
+        ];
+
         $response = $this->openAiClient->chat()->create([
-            'model' => $model ?: $this->openAi['model'],
-            'temperature' => $temperature ?: $this->openAi['temperature'],
-            'max_completion_tokens' => $maxTokens ?: $this->openAi['max_tokens'],
-            'messages' => [
-                [
-                    'role' => 'user',
-                    'content' => $content,
-                ],
-            ],
+            'model' => $request->model ?: $this->openAi['model'],
+            'temperature' => $request->temperature ?: $this->openAi['temperature'],
+            'max_completion_tokens' => $request->maxTokens ?: $this->openAi['max_tokens'],
+            'messages' => $messages,
         ]);
 
         return $response->choices[0]->message->content;

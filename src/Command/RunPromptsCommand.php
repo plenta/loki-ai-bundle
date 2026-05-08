@@ -15,6 +15,7 @@ namespace Plenta\LokiAiBundle\Command;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Plenta\LokiAiBundle\Dto\ChatRequest;
 use Plenta\LokiAiBundle\Entity\Field;
 use Plenta\LokiAiBundle\OpenAi\Api;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
@@ -117,7 +118,15 @@ class RunPromptsCommand extends Command
                                 $progressBar->start();
                             }
 
-                            $newValue = $this->promptBuilder->buildHeadline($this->openAiApi->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $object, $field, $dataField);
+                            $chatRequest = new ChatRequest(
+                                $prompt,
+                                $field->getParent()->getModel,
+                                $field->getParent()->getTemperature(),
+                                $field->getParent()->getMaxTokens(),
+                                $field->getParent()->getSystemInstruction()->getSystemInstructionPrompt(),
+                            );
+
+                            $newValue = $this->promptBuilder->buildHeadline($this->openAiApi->chat($chatRequest), $object, $field, $dataField);
 
                             $this->connection->update($field->getTableName(), [$dataField => $newValue], ['id' => $object]);
 

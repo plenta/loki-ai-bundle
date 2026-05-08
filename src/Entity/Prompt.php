@@ -58,6 +58,10 @@ class Prompt extends DCADefault
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     protected int $rootPage = 0;
 
+    #[ORM\ManyToOne(targetEntity: SystemInstruction::class, inversedBy: 'prompts')]
+    #[ORM\JoinColumn(name: 'systemInstruction', referencedColumnName: 'id', nullable: true)]
+    private ?SystemInstruction $systemInstruction = null;
+
     #[ORM\Column(type: 'string', length: 255, options: ['default' => '', 'collation' => 'utf8mb4_bin'])]
     protected string $alias;
 
@@ -230,5 +234,17 @@ class Prompt extends DCADefault
     public function setSkipIfEmpty(bool $skipIfEmpty): void
     {
         $this->skipIfEmpty = $skipIfEmpty;
+    }
+
+    public function getSystemInstruction(): ?SystemInstruction
+    {
+        return $this->systemInstruction;
+    }
+
+    public function setSystemInstruction(?SystemInstruction $systemInstruction): self
+    {
+        $this->systemInstruction = $systemInstruction;
+
+        return $this;
     }
 }
