@@ -48,6 +48,9 @@
         "friendsofphp/php-cs-fixer": "^3.2",
         "plenta/contao-build-tools": "@dev"
     },
+    "suggest": {
+        "anthropic-ai/sdk": "Anthropic PHP SDK"
+    },
     "extra": {
         "contao-manager-plugin": "Plenta\\LokiAiBundle\\ContaoManager\\Plugin"
     },
