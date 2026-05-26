@@ -56,6 +56,12 @@
             <trans-unit id="tl_loki_prompt.rootPage.1">
                 <target>Wenn der Prompt auf einen bestimmten Seitenbaum beschränkt werden soll, wählen Sie bitte hier den Seitenbaum aus.</target>
             </trans-unit>
+            <trans-unit id="tl_loki_prompt.provider.0">
+                <target>KI-Anbieter</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.provider.1">
+                <target>Wählen Sie den KI-Anbieter aus. Je nach Auswahl werden entsprechende Modelle zur Verfügung gestellt.</target>
+            </trans-unit>
             <trans-unit id="tl_loki_prompt.prompt.0">
                 <target>Prompt</target>
             </trans-unit>
@@ -124,6 +130,9 @@
             </trans-unit>
             <trans-unit id="tl_loki_prompt.requirements.1">
                 <target>Die Ausführung des Prompts wird auf Datensätze beschränkt, die bestimmte Werte enthalten. Geben Sie den Spaltennamen in das Feld "Schlüssel" und den Wert in das Feld "Wert" ein. Mehrere Felder werden mit UND verknüpft.</target>
+            </trans-unit>
+            <trans-unit id="tl_loki_prompt.noProviderConfigured">
+                <target>Kein KI-Anbieter konfiguriert. Bitte hinterlegen Sie mindestens einen API-Schlüssel (z. B. &lt;code&gt;OPENAI_API_KEY&lt;/code&gt; oder &lt;code&gt;ANTHROPIC_API_KEY&lt;/code&gt;) in Ihrer &lt;code&gt;.env.local&lt;/code&gt; und leeren Sie anschließend den Symfony-Cache (&lt;code&gt;php bin/console cache:clear&lt;/code&gt;).</target>
             </trans-unit>
         </body>
     </file>

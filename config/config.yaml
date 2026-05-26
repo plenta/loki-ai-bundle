@@ -1,0 +1,20 @@
+framework:
+    assets:
+        packages:
+            lokiai:
+                json_manifest_path: '%kernel.project_dir%/public/bundles/lokiai/manifest.json'
+
+loki_ai:
+    providers:
+        openai:
+            # %env(default:loki_ai.empty:VAR)% returns '' when the env var is absent
+            # so isConfigured() returns false and the provider is hidden without an error.
+            api_key: '%env(default:loki_ai.empty:OPENAI_API_KEY)%'
+            model: gpt-4o-mini
+            temperature: 0.5
+            max_tokens: 100
+        claude:
+            api_key: '%env(default:loki_ai.empty:ANTHROPIC_API_KEY)%'
+            model: claude-sonnet-4-6
+            temperature: 0.5
+            max_tokens: 100

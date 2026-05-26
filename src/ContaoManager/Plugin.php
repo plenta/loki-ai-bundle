@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-/**
- * @copyright     Copyright (c) 2025, Plenta.io
+/*
+ * Loki AI Bundle for Contao Open Source CMS
+ *
+ * @copyright     Copyright (c) 2026, Plenta.io
  * @author        Plenta.io <https://plenta.io>
- * @license       commercial
+ * @link          https://github.com/plenta/
  */
 
 namespace Plenta\LokiAiBundle\ContaoManager;
@@ -16,7 +18,6 @@ use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Config\ConfigPluginInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
-use OpenAI\Symfony\OpenAIBundle;
 use Plenta\LokiAiBundle\LokiAiBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
@@ -29,12 +30,10 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPlu
     public function getBundles(ParserInterface $parser): array
     {
         return [
-            BundleConfig::create(OpenAIBundle::class),
             BundleConfig::create(StimulusBundle::class),
             BundleConfig::create(LokiAiBundle::class)
                 ->setLoadAfter([
                     ContaoCoreBundle::class,
-                    OpenAIBundle::class,
                     StimulusBundle::class,
                 ]),
         ];
@@ -45,21 +44,14 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPlu
      */
     public function registerContainerConfiguration(LoaderInterface $loader, array $managerConfig): void
     {
-        $loader->load(__DIR__.'/../../config/config.php');
+        $loader->load(__DIR__.'/../../config/config.yaml');
     }
 
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): RouteCollection|null
     {
         $resource = __DIR__.'/../Controller';
+        $loader   = $resolver->resolve($resource, 'attribute');
 
-        if ($loader = $resolver->resolve($resource, 'annotation')) {
-            return $loader->load($resource);
-        }
-
-        if ($loader = $resolver->resolve($resource, 'attribute')) {
-            return $loader->load($resource);
-        }
-
-        return null;
+        return $loader?->load($resource);
     }
 }

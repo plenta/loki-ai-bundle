@@ -22,7 +22,7 @@
         "contao/core-bundle": "^4.13 || ^5.3",
         "doctrine/dbal": "^3.2.0",
         "mvo/contao-group-widget": "^1.5",
-        "openai-php/symfony": "^0.10.2",
+        "symfony/http-client": "^5.4 || ^6.4 || ^7.4",
         "symfony/http-foundation": "^5.4 || ^6.4 || ^7.4",
         "symfony/routing": "^5.4 || ^6.4 || ^7.4",
         "symfony/stimulus-bundle": "^2.31",
@@ -46,10 +46,11 @@
     "require-dev": {
         "contao/manager-bundle": "^4.13",
         "friendsofphp/php-cs-fixer": "^3.2",
+        "phpunit/phpunit": "^11.0",
         "plenta/contao-build-tools": "@dev"
     },
     "suggest": {
-        "anthropic-ai/sdk": "Anthropic PHP SDK"
+        "openai-php/symfony": "Symfony bundle for OpenAI — alternative way to provide the API key via env var"
     },
     "extra": {
         "contao-manager-plugin": "Plenta\\LokiAiBundle\\ContaoManager\\Plugin"
@@ -57,6 +58,11 @@
     "autoload": {
         "psr-4": {
             "Plenta\\LokiAiBundle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Plenta\\LokiAiBundle\\Tests\\": "tests"
         }
     },
     "config": {

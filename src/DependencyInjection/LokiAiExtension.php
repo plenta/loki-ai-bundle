@@ -12,14 +12,13 @@ declare(strict_types=1);
 
 namespace Plenta\LokiAiBundle\DependencyInjection;
 
+use Plenta\LokiAiBundle\AiProvider\AsLokiAiProvider;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-/**
- * Adds the bundle services to the container.
- */
 class LokiAiExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -29,12 +28,32 @@ class LokiAiExtension extends Extension
             new FileLocator(__DIR__.'/../../config'),
         );
 
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
+
+        // Any class tagged #[AsLokiAiProvider('name')] is automatically tagged as loki_ai.provider.
+        // RegisterProvidersPass then injects the matching config block.
+        $container->registerAttributeForAutoconfiguration(
+            AsLokiAiProvider::class,
+            static function (ChildDefinition $definition, AsLokiAiProvider $attribute): void {
+                $definition->addTag('loki_ai.provider');
+            },
+        );
+
+        // Used as the fallback value in %env(default:loki_ai.empty:VAR)% references.
+        // When an API-key env var is not set, the default: processor returns this empty
+        // string, which causes isConfigured() to return false instead of throwing
+        // EnvNotFoundException.
+        $container->setParameter('loki_ai.empty', '');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        $container->setParameter('loki_ai.open_ai.model', $config['open_ai']['model']);
-        $container->setParameter('loki_ai.open_ai.temperature', $config['open_ai']['temperature']);
-        $container->setParameter('loki_ai.open_ai.max_tokens', $config['open_ai']['max_tokens']);
+
+        // Store the provider config verbatim.  Any %env(default:loki_ai.empty:VAR)%
+        // references in the config are resolved by Symfony's DefaultEnvVarProcessor at
+        // runtime: if the env var is set its value is used; if it is absent (or empty)
+        // the loki_ai.empty parameter ('') is returned instead, which prevents
+        // EnvNotFoundException and makes isConfigured() return false so the provider is
+        // simply hidden from the backend select field.
+        $container->setParameter('loki_ai.providers', $config['providers']);
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Plenta\LokiAiBundle\Controller;
 
 use Contao\CoreBundle\Controller\AbstractController;
-use Plenta\LokiAiBundle\OpenAi\Api;
+use Plenta\LokiAiBundle\AiProvider\LokiAiGateway;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
@@ -31,7 +31,7 @@ class GeneratePromptController extends AbstractController
         int $objectId,
         FieldRepository $fieldRepository,
         PromptBuilder $promptBuilder,
-        Api $api,
+        LokiAiGateway $gateway,
     ): JsonResponse {
         $field = $fieldRepository->find($id);
 
@@ -50,7 +50,13 @@ class GeneratePromptController extends AbstractController
         }
 
         try {
-            $newValue = $api->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens());
+            $parent = $field->getParent();
+            $newValue = $gateway->getProvider($parent->getProvider())->chat(
+                $prompt,
+                $parent->getModel(),
+                $parent->getTemperature(),
+                $parent->getMaxTokens(),
+            );
         } catch (\Throwable $e) {
             return new JsonResponse(['error' => 'An error occurred: '.$htmlSanitizer->sanitizeFor('dialog', $e->getMessage())]);
         }

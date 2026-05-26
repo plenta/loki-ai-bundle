@@ -18,9 +18,10 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Image;
+use Contao\Message;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Plenta\LokiAiBundle\OpenAi\Api;
+use Plenta\LokiAiBundle\AiProvider\LokiAiGateway;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Plenta\LokiAiBundle\Repository\PromptRepository;
 use Symfony\Component\Routing\RouterInterface;
@@ -31,7 +32,7 @@ class TlLokiPrompt
     public function __construct(
         protected Connection $connection,
         protected FieldRepository $fieldRepository,
-        protected Api $api,
+        protected LokiAiGateway $gateway,
         protected PromptRepository $promptRepository,
         protected RouterInterface $router,
         protected TokenStorageInterface $tokenStorage,
@@ -102,21 +103,56 @@ class TlLokiPrompt
     /**
      * @return array<string, string>
      */
-    #[AsCallback(table: 'tl_loki_prompt', target: 'fields.model.options')]
-    public function getModelOptions(): array
+    #[AsCallback(table: 'tl_loki_prompt', target: 'fields.provider.options')]
+    public function getProviderOptions(): array
     {
-        $return = [];
+        $options = [];
 
-        foreach ($this->api->getModels() as $model) {
-            $return[$model->getName()] = $model->getName();
+        foreach ($this->gateway->getProviders() as $name => $provider) {
+            if ($provider->isConfigured()) {
+                $options[$name] = $provider->getLabel();
+            }
         }
 
-        return $return;
+        return $options;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    #[AsCallback(table: 'tl_loki_prompt', target: 'fields.model.options')]
+    public function getModelOptions(DataContainer $dc): array
+    {
+        $providerName = $dc->activeRecord?->provider ?: 'openai';
+
+        try {
+            return $this->gateway->getProvider($providerName)->getAvailableModels();
+        } catch (\Throwable) {
+            return [];
+        }
     }
 
     #[AsCallback(table: 'tl_loki_prompt', target: 'config.onload')]
     public function onLoad(DataContainer|null $dc): void
     {
+        // Show a backend notice when no AI provider has a configured API key so that
+        // editors know where to look rather than facing an empty select field silently.
+        $hasConfigured = false;
+
+        foreach ($this->gateway->getProviders() as $provider) {
+            if ($provider->isConfigured()) {
+                $hasConfigured = true;
+                break;
+            }
+        }
+
+        if (!$hasConfigured) {
+            Message::addInfo(
+                ($GLOBALS['TL_LANG']['tl_loki_prompt']['noProviderConfigured'] ?? null)
+                    ?? 'Kein KI-Anbieter konfiguriert. Bitte hinterlegen Sie mindestens einen API-Schlüssel (z.&nbsp;B. <code>OPENAI_API_KEY</code> oder <code>ANTHROPIC_API_KEY</code>) in Ihrer <code>.env.local</code> und leeren Sie anschließend den Symfony-Cache (<code>php bin/console cache:clear</code>).',
+            );
+        }
+
         if (!$dc || !$dc->id) {
             return;
         }

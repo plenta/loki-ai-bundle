@@ -16,7 +16,7 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Plenta\LokiAiBundle\Entity\Field;
-use Plenta\LokiAiBundle\OpenAi\Api;
+use Plenta\LokiAiBundle\AiProvider\LokiAiGateway;
 use Plenta\LokiAiBundle\Prompt\PromptBuilder;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Plenta\LokiAiBundle\Repository\PromptRepository;
@@ -38,7 +38,7 @@ class RunPromptsCommand extends Command
         protected FieldRepository $fieldRepository,
         protected Connection $connection,
         protected PromptBuilder $promptBuilder,
-        protected Api $openAiApi,
+        protected LokiAiGateway $gateway,
         protected PromptRepository $promptRepository,
         string|null $name = null,
     ) {
@@ -117,7 +117,13 @@ class RunPromptsCommand extends Command
                                 $progressBar->start();
                             }
 
-                            $newValue = $this->promptBuilder->buildHeadline($this->openAiApi->chat($prompt, $field->getParent()->getModel(), $field->getParent()->getTemperature(), $field->getParent()->getMaxTokens()), $object, $field, $dataField);
+                            $parent = $field->getParent();
+                            $newValue = $this->promptBuilder->buildHeadline(
+                                $this->gateway->getProvider($parent->getProvider())->chat($prompt, $parent->getModel(), $parent->getTemperature(), $parent->getMaxTokens()),
+                                $object,
+                                $field,
+                                $dataField,
+                            );
 
                             $this->connection->update($field->getTableName(), [$dataField => $newValue], ['id' => $object]);
 

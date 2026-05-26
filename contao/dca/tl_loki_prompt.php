@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Contao\System;
 
 $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     'config' => [
@@ -70,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
     ],
     'palettes' => [
         '__selector__' => ['protected'],
-        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,model,maxTokens,temperature;{publish_legend},autoRun,skipIfEmpty,protected,published',
+        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,provider,model,maxTokens,temperature;{publish_legend},autoRun,skipIfEmpty,protected,published',
     ],
     'subpalettes' => [
         'protected' => 'userGroups',
@@ -109,17 +108,22 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             'inputType' => 'textarea',
             'eval' => ['decodeEntities' => true],
         ],
+        'provider' => [
+            'exclude' => true,
+            'inputType' => 'select',
+            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
+            'sql' => ['type' => 'string', 'length' => 50, 'default' => ''],
+        ],
         'model' => [
             'exclude' => true,
             'inputType' => 'select',
-            'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Default: '.System::getContainer()->getParameter('loki_ai.open_ai.model')],
+            'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Default (aus Konfiguration)', 'tl_class' => 'w50'],
         ],
         'maxTokens' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => [
                 'rgxp' => 'natural',
-                'placeholder' => System::getContainer()->getParameter('loki_ai.open_ai.max_tokens'),
                 'tl_class' => 'w50',
             ],
             'sql' => [
@@ -134,7 +138,6 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
                 'rgxp' => 'digit',
                 'minval' => 0,
                 'maxval' => 2,
-                'placeholder' => System::getContainer()->getParameter('loki_ai.open_ai.temperature'),
                 'tl_class' => 'w50',
             ],
             'sql' => [

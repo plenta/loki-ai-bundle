@@ -13,11 +13,11 @@ declare(strict_types=1);
 namespace Plenta\LokiAiBundle\Cron;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCronJob;
-use Plenta\LokiAiBundle\OpenAi\Api;
+use Plenta\LokiAiBundle\AiProvider\OpenAiProvider;
 
 class GetModelCron
 {
-    public function __construct(protected Api $api)
+    public function __construct(protected OpenAiProvider $api)
     {
     }
 
