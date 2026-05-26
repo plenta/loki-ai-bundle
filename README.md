@@ -12,7 +12,7 @@ Open source and free. 🚀
 
 ### Install using Contao Manager
 
-Search for **loki**, **ai**, **chatgpt**, or **openai** and you will find this extension.
+Search for **loki**, **ai**, **chatgpt**, **claude**, or **openai** and you will find this extension.
 
 ### Install using Composer
 
@@ -23,7 +23,7 @@ composer require plenta/loki-ai-bundle
 ## System requirements
 
 - PHP: `^8.3`
-- Contao: `^4.13` || `^5.3`
+- Contao: `^5.3`
 
 ## Documentation
 
