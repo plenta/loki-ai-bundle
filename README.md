@@ -8,6 +8,10 @@ Open source and free. 🚀
 
 👉 [Full documentation](https://plenta.io/contao-loki-ai-bundle)
 
+## Supported AI providers
+- **ChatGPT** (OpenAI)
+- **Claude** (Anthropic)
+
 ## Installation
 
 ### Install using Contao Manager
