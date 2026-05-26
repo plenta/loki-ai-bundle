@@ -135,8 +135,6 @@ class TlLokiPrompt
     #[AsCallback(table: 'tl_loki_prompt', target: 'config.onload')]
     public function onLoad(DataContainer|null $dc): void
     {
-        // Show a backend notice when no AI provider has a configured API key so that
-        // editors know where to look rather than facing an empty select field silently.
         $hasConfigured = false;
 
         foreach ($this->gateway->getProviders() as $provider) {
@@ -147,10 +145,7 @@ class TlLokiPrompt
         }
 
         if (!$hasConfigured) {
-            Message::addInfo(
-                ($GLOBALS['TL_LANG']['tl_loki_prompt']['noProviderConfigured'] ?? null)
-                    ?? 'Kein KI-Anbieter konfiguriert. Bitte hinterlegen Sie mindestens einen API-Schlüssel (z.&nbsp;B. <code>OPENAI_API_KEY</code> oder <code>ANTHROPIC_API_KEY</code>) in Ihrer <code>.env.local</code> und leeren Sie anschließend den Symfony-Cache (<code>php bin/console cache:clear</code>).',
-            );
+            Message::addInfo($GLOBALS['TL_LANG']['tl_loki_prompt']['noProviderConfigured']);
         }
 
         if (!$dc || !$dc->id) {
