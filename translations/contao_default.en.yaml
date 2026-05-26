@@ -1,0 +1,6 @@
+MSC:
+    PLENTA_LOKI:
+        DASHBOARD:
+            documentation: Documentation
+            report_error: Report an error
+            sponsor: 'Become a supporter!'

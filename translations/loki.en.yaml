@@ -1,0 +1,7 @@
+loki:
+    fields_edit: Fields edited
+    errors: 'Error(s) occurred:'
+    title: 'Execute prompt ":title"'
+    button:
+        title: 'Generate :field using the AI prompt ":title".'
+    empty_warning: 'Entry/entries was/were skipped because their values were empty.'

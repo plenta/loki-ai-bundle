@@ -1,0 +1,64 @@
+tl_loki_prompt:
+    title_legend: Titel
+    config_legend: Konfiguration
+    ai_legend: AI-Konfiguration
+    publish_legend: Veröffentlichung
+    title:
+        - Titel
+        - 'Bitte geben Sie einen Titel ein. Dieser wird auch auf dem Button zum Starten des Prompts ausgegeben.'
+    alias:
+        - Alias
+        - 'Der Alias ist eine eindeutige Referenz und dient dazu, den Prompt über die Kommandozeile direkt aufzurufen.'
+    fields:
+        - Konfigurations-Einstellungen
+        - 'Bitte legen Sie pro Konfiguration ein Element an.'
+    tableName:
+        - Tabelle
+        - 'Bitte wählen Sie eine Tabelle aus.'
+    field:
+        - Zu bearbeitende Felder
+        - 'Bitte wählen Sie die Felder der Tabelle aus, die vom Prompt bearbeitet werden sollen.'
+    includeFields:
+        - Eingebundene Felder
+        - 'Bitte wählen Sie die Felder der Tabelle aus, die in den Prompt eingebunden werden sollen.'
+    rootPage:
+        - Seitenbaum
+        - 'Wenn der Prompt auf einen bestimmten Seitenbaum beschränkt werden soll, wählen Sie bitte hier den Seitenbaum aus.'
+    provider:
+        - KI-Anbieter
+        - 'Wählen Sie den KI-Anbieter aus. Je nach Auswahl werden entsprechende Modelle zur Verfügung gestellt.'
+    prompt:
+        - Prompt
+        - 'Bitte geben Sie den Prompt für die AI ein. Die Werte der Felder aus den eingebundenen Feldern können über ##include_fields## eingebunden werden, der aktuelle Wert des Feldes über ##current_value## und Optionen eines Select-Felds/Checkboxen über ##field_options##.'
+    model:
+        - Modell
+        - 'Bitte wählen Sie das Modell aus. Hinweis: Die Modelle werden regelmäßig aktualisiert. Dabei können Modelle wegfallen und neu hinzukommen.'
+    maxTokens:
+        - Maximale Token-Anzahl
+        - 'Bitte geben Sie an, wie viele Tokens bei der Anfrage maximal verwendet werden sollen. Je komplexer die Anfrage ist, desto mehr Tokens werden benötigt. Bei unvollständigen Rückgabewerten kann es sinnvoll sein, die Zahl anzuheben. Je mehr Tokens verwendet werden, desto teurer ist die Anfrage.'
+    temperature:
+        - Temperatur
+        - 'Die Temperatur kann zwischen 0 und 1 sein. Je höher die Temperatur ist, desto zufälliger ist der Rückgabewert.'
+    published:
+        - Prompt veröffentlichen
+        - 'Der Prompt wird veröffentlicht und ist anschließend sowohl über den Button am Feld als auch über die Kommandozeile nutzbar.'
+    autoRun:
+        - Prompt automatisch ausführen
+        - 'Der Prompt wird ausgeführt, wenn das Konsolen-Kommando ausgeführt wird.'
+    protected:
+        - Prompt schützen
+        - 'Der Prompt wird nur bestimmten Benutzergruppen angezeigt.'
+    userGroups:
+        - Benutzergruppen
+        - 'Bitte wählen Sie die Benutzergruppen aus, die diesen Prompt ausführen dürfen.'
+    run:
+        - Prompt ausführen
+        - Prompt ausführen
+    skipIfEmpty:
+        - Leere Einträge überspringen
+        - 'Wenn der aktuelle Wert bzw. die eingebundenen Felder leer sind, wird der Prompt für diesen Eintrag nicht automatisch ausgeführt.'
+    runConfirm: 'Sind Sie sicher, dass Sie den Prompt ausführen möchten? Der Prompt wird für ALLE ausgewählten Felder von ALLEN Datensätzen, auf die die Beschränkungen zutreffen, ausgeführt, aktuelle Werte werden dabei überschrieben.'
+    requirements:
+        - Beschränkungen
+        - 'Die Ausführung des Prompts wird auf Datensätze beschränkt, die bestimmte Werte enthalten. Geben Sie den Spaltennamen in das Feld "Schlüssel" und den Wert in das Feld "Wert" ein. Mehrere Felder werden mit UND verknüpft.'
+    noProviderConfigured: 'Kein KI-Anbieter konfiguriert. Bitte hinterlegen Sie mindestens einen API-Schlüssel (z. B. <code>OPENAI_API_KEY</code> oder <code>ANTHROPIC_API_KEY</code>) in Ihrer <code>.env.local</code> und leeren Sie anschließend den Symfony-Cache (<code>php bin/console cache:clear</code>).'

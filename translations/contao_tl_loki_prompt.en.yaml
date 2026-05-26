@@ -1,0 +1,64 @@
+tl_loki_prompt:
+    title_legend: Title
+    config_legend: Configuration
+    ai_legend: AI Configuration
+    publish_legend: Publishing
+    title:
+        0: Title
+        1: 'Please enter a title. It will also be displayed on the button to start the prompt.'
+    alias:
+        0: Alias
+        1: 'The alias is a unique reference and is used to call the prompt directly via the command line.'
+    fields:
+        0: Configuration Settings
+        1: 'Please create one element per configuration.'
+    tableName:
+        0: Table
+        1: 'Please select a table.'
+    field:
+        0: Fields to edit
+        1: 'Please select the fields of the table that should be processed by the prompt.'
+    includeFields:
+        0: Included fields
+        1: 'Please select the fields of the table that should be included in the prompt.'
+    rootPage:
+        0: Page tree
+        1: 'If the prompt should be limited to a specific page tree, please select it here.'
+    provider:
+        0: AI provider
+        1: 'Select the AI provider. Depending on your selection, the corresponding models will be available.'
+    prompt:
+        0: Prompt
+        1: 'Please enter the prompt for the AI. The values of the included fields can be inserted via ##include_fields##, the current value of the field via ##current_value## and the options of a select field/checkboxes via ##field_options##.'
+    model:
+        0: Model
+        1: 'Please select the model. Note: Models are updated regularly. Models may be removed or added over time.'
+    maxTokens:
+        0: Maximum token count
+        1: 'Please specify the maximum number of tokens to be used per request. The more complex the request, the more tokens are needed. If responses are incomplete, it may help to increase this number. The more tokens are used, the more expensive the request.'
+    temperature:
+        0: Temperature
+        1: 'The temperature can be between 0 and 1. The higher the temperature, the more random the response.'
+    published:
+        0: Publish prompt
+        1: 'The prompt will be published and can then be used both via the button on the field and via the command line.'
+    autoRun:
+        0: Run prompt automatically
+        1: 'The prompt will be executed when the console command is run.'
+    protected:
+        0: Protect prompt
+        1: 'The prompt will only be shown to certain user groups.'
+    userGroups:
+        0: User groups
+        1: 'Please select the user groups that are allowed to execute this prompt.'
+    run:
+        0: Run prompt
+        1: Run prompt
+    skipIfEmpty:
+        0: Skip empty entries
+        1: 'If the current value or the included fields are empty, the prompt will not be executed automatically for that entry.'
+    runConfirm: 'Are you sure you want to run the prompt? The prompt will be executed for ALL selected fields of ALL records matching the restrictions, and current values will be overwritten.'
+    requirements:
+        0: Restrictions
+        1: 'The execution of the prompt will be limited to records containing specific values. Enter the column name in the "Key" field and the value in the "Value" field. Multiple fields are combined with AND.'
+    noProviderConfigured: 'No AI provider configured. Please add at least one API key (e.g. <code>OPENAI_API_KEY</code> or <code>ANTHROPIC_API_KEY</code>) to your <code>.env.local</code> and clear the Symfony cache afterwards (<code>php bin/console cache:clear</code>).'
