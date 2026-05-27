@@ -111,13 +111,21 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         'provider' => [
             'exclude' => true,
             'inputType' => 'select',
-            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
+            'eval' => [
+                'mandatory' => true,
+                'includeBlankOption' => true,
+                'submitOnChange' => true,
+                'tl_class' => 'w50',
+            ],
             'sql' => ['type' => 'string', 'length' => 50, 'default' => ''],
         ],
         'model' => [
             'exclude' => true,
             'inputType' => 'select',
-            'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Default (aus Konfiguration)', 'tl_class' => 'w50'],
+            'eval' => [
+                'includeBlankOption' => true,
+                'tl_class' => 'w50',
+            ],
         ],
         'maxTokens' => [
             'exclude' => true,
