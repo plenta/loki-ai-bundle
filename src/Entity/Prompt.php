@@ -64,8 +64,8 @@ class Prompt extends DCADefault
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     protected bool $skipIfEmpty = false;
 
-    #[ORM\Column(type: 'string', length: 50, options: ['default' => 'openai'])]
-    protected string $provider = 'openai';
+    #[ORM\Column(type: 'string', length: 50, options: ['default' => ''])]
+    protected string $provider = '';
 
     /**
      * @return Collection<int, Field>
