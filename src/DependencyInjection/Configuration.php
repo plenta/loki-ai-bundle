@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
                             ->floatNode('temperature')
                                 ->defaultValue(0.5)
                                 ->min(0.0)
-                                ->max(1.0)
+                                ->max(2.0)
                             ->end()
                             ->integerNode('max_tokens')
                                 ->defaultValue(1000)
