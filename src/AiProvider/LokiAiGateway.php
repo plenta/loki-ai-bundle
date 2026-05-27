@@ -26,15 +26,10 @@ class LokiAiGateway
         #[TaggedIterator('loki_ai.provider')]
         iterable $providers,
     ) {
-        // The TaggedIterator is lazy: each provider is instantiated when first accessed.
-        // Catch any error (e.g. missing env var before cache:clear) so that one broken
-        // provider does not prevent the whole gateway – and the rest of the backend – from loading.
         foreach ($providers as $provider) {
             try {
                 $this->providers[$provider->getProviderName()] = $provider;
             } catch (\Throwable) {
-                // Provider could not be initialised (e.g. unresolved env variable).
-                // It will simply not appear in the backend select field.
             }
         }
     }

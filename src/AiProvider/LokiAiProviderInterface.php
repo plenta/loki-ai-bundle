@@ -18,15 +18,8 @@ interface LokiAiProviderInterface
 
     public function getProviderName(): string;
 
-    /**
-     * Human-readable label shown in the backend select field.
-     */
     public function getLabel(): string;
 
-    /**
-     * Returns true when the provider is ready to use (e.g. API key is configured).
-     * Unconfigured providers are hidden in the backend.
-     */
     public function isConfigured(): bool;
 
     /**

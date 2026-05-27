@@ -21,18 +21,13 @@ class ClaudeProvider implements LokiAiProviderInterface
 
     private const ANTHROPIC_API_VERSION = '2023-06-01';
 
-    /**
-     * Fallback list used when the API is unreachable or the provider is not configured.
-     * It is intentionally kept minimal; the real list is fetched dynamically from
-     * https://api.anthropic.com/v1/models when a valid API key is present.
-     */
     private const FALLBACK_MODELS = [
         'claude-opus-4-7' => 'Claude Opus 4.7',
         'claude-sonnet-4-6' => 'Claude Sonnet 4.6',
         'claude-haiku-4-5-20251001' => 'Claude Haiku 4.5',
     ];
 
-    /** @var array<string, string>|null – in-request cache so the API is called at most once */
+    /** @var array<string, string>|null */
     private ?array $modelCache = null;
 
     public function __construct(
@@ -60,7 +55,6 @@ class ClaudeProvider implements LokiAiProviderInterface
             ],
         ];
 
-        // Claude temperature range is 0–1 (OpenAI allows up to 2)
         $temp = $temperature ?: ($this->providerConfig['temperature'] ?? null);
         if (null !== $temp) {
             $payload['temperature'] = min(1.0, (float) $temp);
@@ -96,16 +90,6 @@ class ClaudeProvider implements LokiAiProviderInterface
     }
 
     /**
-     * Returns models available through the Anthropic API.
-     *
-     * When a valid API key is configured, the list is fetched dynamically from
-     * https://api.anthropic.com/v1/models so that new models appear automatically
-     * without requiring a code change.  The result is cached for the lifetime of
-     * this service instance (= one HTTP request) to avoid redundant API calls.
-     *
-     * Falls back to FALLBACK_MODELS when the provider is not configured or the
-     * API call fails (network error, invalid key, etc.).
-     *
      * @return array<string, string>  model-id => display-name
      */
     public function getAvailableModels(): array
