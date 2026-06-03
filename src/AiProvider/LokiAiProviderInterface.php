@@ -22,6 +22,8 @@ interface LokiAiProviderInterface
 
     public function isConfigured(): bool;
 
+    public function initializeModels(): void;
+
     /**
      * @return array<string, string>
      */

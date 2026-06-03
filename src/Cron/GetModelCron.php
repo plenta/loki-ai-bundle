@@ -13,17 +13,19 @@ declare(strict_types=1);
 namespace Plenta\LokiAiBundle\Cron;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCronJob;
-use Plenta\LokiAiBundle\AiProvider\OpenAiProvider;
+use Plenta\LokiAiBundle\AiProvider\LokiAiGateway;
 
 class GetModelCron
 {
-    public function __construct(protected OpenAiProvider $api)
+    public function __construct(protected LokiAiGateway $gateway)
     {
     }
 
     #[AsCronJob(interval: 'daily')]
     public function getModels(): void
     {
-        $this->api->initializeModels();
+        foreach ($this->gateway->getProviders() as $provider) {
+            $provider->initializeModels();
+        }
     }
 }

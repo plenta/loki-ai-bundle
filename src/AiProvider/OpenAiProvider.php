@@ -98,6 +98,10 @@ class OpenAiProvider implements LokiAiProviderInterface
 
     public function initializeModels(): void
     {
+        if (empty($this->providerConfig['api_key'] ?? '')) {
+            return;
+        }
+
         $time = time();
 
         foreach ($this->getClient()->models()->list()->data as $model) {

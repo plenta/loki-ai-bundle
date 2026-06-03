@@ -84,6 +84,12 @@ class ClaudeProvider implements LokiAiProviderInterface
         return 'Claude (Anthropic)';
     }
 
+    public function initializeModels(): void
+    {
+        $this->modelCache = null;
+        $this->getAvailableModels();
+    }
+
     public function isConfigured(): bool
     {
         return !empty($this->providerConfig['api_key'] ?? '');
