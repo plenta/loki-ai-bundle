@@ -2,28 +2,37 @@
 
 declare(strict_types=1);
 
-/*
- * Loki AI Bundle for Contao Open Source CMS
- *
+/**
+ * @package       Customer
  * @copyright     Copyright (c) 2026, Plenta.io
  * @author        Plenta.io <https://plenta.io>
- * @link          https://github.com/plenta/
+ * @license       commercial
  */
 
 namespace Plenta\LokiAiBundle\Cron;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCronJob;
-use Plenta\LokiAiBundle\AiProvider\OpenAiProvider;
+use Plenta\LokiAiBundle\AiProvider\LokiAiProviderInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class GetModelCron
 {
-    public function __construct(protected OpenAiProvider $api)
-    {
+    public function __construct(
+        /** @param iterable<LokiAiProviderInterface> $providers */
+        #[AutowireIterator('plenta.loki_ai.provider')]
+        protected iterable $providers,
+    ) {
     }
 
     #[AsCronJob(interval: 'daily')]
     public function getModels(): void
     {
-        $this->api->initializeModels();
+        foreach ($this->providers as $provider) {
+            if (!$provider->isConfigured()) {
+                continue;
+            }
+
+            $provider->initializeModels();
+        }
     }
 }
