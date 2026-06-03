@@ -86,8 +86,6 @@ class ClaudeProvider implements LokiAiProviderInterface
 
     public function initializeModels(): void
     {
-        $this->modelCache = null;
-        $this->getAvailableModels();
     }
 
     public function isConfigured(): bool

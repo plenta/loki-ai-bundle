@@ -14,18 +14,30 @@ namespace Plenta\LokiAiBundle\Cron;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCronJob;
 use Plenta\LokiAiBundle\AiProvider\LokiAiGateway;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class GetModelCron
 {
-    public function __construct(protected LokiAiGateway $gateway)
-    {
+    public function __construct(
+        protected LokiAiGateway $gateway,
+        #[Autowire(service: 'monolog.logger.contao.cron')]
+        protected LoggerInterface $logger,
+    ) {
     }
 
     #[AsCronJob(interval: 'daily')]
     public function getModels(): void
     {
-        foreach ($this->gateway->getProviders() as $provider) {
-            $provider->initializeModels();
+        foreach ($this->gateway->getProviders() as $name => $provider) {
+            try {
+                $provider->initializeModels();
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    \sprintf('Loki AI: Could not update models for provider "%s": %s', $name, $e->getMessage()),
+                    ['exception' => $e],
+                );
+            }
         }
     }
 }
