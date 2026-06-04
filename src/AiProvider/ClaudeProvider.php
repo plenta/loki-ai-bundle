@@ -39,8 +39,13 @@ class ClaudeProvider implements LokiAiProviderInterface
     ) {
     }
 
-    public function chat(string $content, string|null $model = null, float|null $temperature = null, int|null $maxTokens = null): string
-    {
+    public function chat(
+        string $content,
+        ?string $model = null,
+        ?float $temperature = null,
+        ?int $maxTokens = null,
+        ?string $system = null,
+    ): string {
         $apiKey = $this->providerConfig['api_key'] ?? '';
 
         if (empty($apiKey)) {
@@ -54,6 +59,10 @@ class ClaudeProvider implements LokiAiProviderInterface
                 ['role' => 'user', 'content' => $content],
             ],
         ];
+
+        if (null !== $system) {
+            $payload['system'] = $system;
+        }
 
         $temp = $temperature ?: ($this->providerConfig['temperature'] ?? null);
         if (null !== $temp) {
@@ -94,7 +103,7 @@ class ClaudeProvider implements LokiAiProviderInterface
     }
 
     /**
-     * @return array<string, string>  model-id => display-name
+     * @return array<string, string> model-id => display-name
      */
     public function getAvailableModels(): array
     {
