@@ -1,0 +1,4 @@
+tl_files:
+    loki_vision:
+        - 'AI: Generate title & description'
+        - 'Automatically generate title, alt text and caption for this image using AI.'

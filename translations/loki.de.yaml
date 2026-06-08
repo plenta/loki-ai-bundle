@@ -5,3 +5,8 @@ loki:
     button:
         title: ':field mit Hilfe des KI Prompts ":title" generieren.'
     empty_warning: 'Eintrag/Einträge wurde(n) übersprungen, weil deren Werte leer waren.'
+    vision:
+        started: 'Vision-Analyse gestartet. Titel und Alt-Text werden in Kürze gesetzt.'
+        success: 'Titel, Alt-Text und Beschreibung wurden erfolgreich durch die KI generiert.'
+        error_json: 'Die KI hat kein gültiges JSON zurückgegeben. Bitte passe den Vision-Prompt an: Er muss die KI anweisen, ausschließlich ein JSON-Objekt mit den Schlüsseln "title", "alt" und "caption" zurückzugeben.'
+        error_truncated: 'Die KI-Antwort wurde abgeschnitten. Bitte erhöhe den Wert "Max. Tokens" im Vision-Prompt auf mindestens 500.'

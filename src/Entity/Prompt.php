@@ -67,6 +67,15 @@ class Prompt extends DCADefault
     #[ORM\Column(type: 'string', length: 50, options: ['default' => ''])]
     protected string $provider = '';
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    protected bool $visionPrompt = false;
+
+    #[ORM\Column(type: 'string', length: 255, options: ['default' => ''])]
+    protected string $visionLanguages = '';
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    protected string|null $visionSystemPrompt = null;
+
     /**
      * @return Collection<int, Field>
      */
@@ -243,6 +252,42 @@ class Prompt extends DCADefault
     public function setProvider(string $provider): self
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function isVisionPrompt(): bool
+    {
+        return $this->visionPrompt;
+    }
+
+    public function setVisionPrompt(bool $visionPrompt): self
+    {
+        $this->visionPrompt = $visionPrompt;
+
+        return $this;
+    }
+
+    public function getVisionLanguages(): string
+    {
+        return $this->visionLanguages;
+    }
+
+    public function setVisionLanguages(string $visionLanguages): self
+    {
+        $this->visionLanguages = $visionLanguages;
+
+        return $this;
+    }
+
+    public function getVisionSystemPrompt(): string|null
+    {
+        return $this->visionSystemPrompt;
+    }
+
+    public function setVisionSystemPrompt(string|null $visionSystemPrompt): self
+    {
+        $this->visionSystemPrompt = $visionSystemPrompt;
 
         return $this;
     }
