@@ -14,7 +14,9 @@ namespace Plenta\LokiAiBundle\AiProvider;
 
 interface LokiAiProviderInterface
 {
-    public function chat(string $content, string|null $model, float|null $temperature, int|null $maxTokens): string;
+    public function chat(string $content, string|null $model, float|null $temperature, int|null $maxTokens, ?string $imageData = null, ?string $imageMimeType = null): string;
+
+    public function supportsVision(): bool;
 
     public function getProviderName(): string;
 

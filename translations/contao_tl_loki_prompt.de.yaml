@@ -62,3 +62,13 @@ tl_loki_prompt:
         - Beschränkungen
         - 'Die Ausführung des Prompts wird auf Datensätze beschränkt, die bestimmte Werte enthalten. Geben Sie den Spaltennamen in das Feld "Schlüssel" und den Wert in das Feld "Wert" ein. Mehrere Felder werden mit UND verknüpft.'
     noProviderConfigured: 'Kein KI-Anbieter konfiguriert. Bitte hinterlegen Sie mindestens einen API-Schlüssel (z. B. <code>OPENAI_API_KEY</code> oder <code>ANTHROPIC_API_KEY</code>) in Ihrer <code>.env.local</code> und leeren Sie anschließend den Symfony-Cache (<code>php bin/console cache:clear</code>).'
+    vision_legend: Vision
+    visionPrompt:
+        - Vision-Prompt
+        - 'Diesen Prompt für die automatische Bild-Metadaten-Generierung in der Dateiverwaltung verwenden. Wenn aktiviert, wird das Prompt-Feld oben als optionaler Kontext genutzt (z. B. Branche, Tonalität oder Sprache). Die eigentliche KI-Anweisung zur JSON-Ausgabe wird automatisch ergänzt.'
+    visionSystemPrompt:
+        - System-Prompt
+        - 'Der KI-Prompt zur Bild-Analyse. Muss ein JSON-Objekt mit den Schlüsseln "title" und "alt" zurückgeben. Der Standard-Prompt ist bereits vorausgefüllt und kann angepasst werden.'
+    visionLanguages:
+        - Sprachen
+        - 'Kommagetrennte Sprachcodes, für die Titel und Alt-Text generiert werden sollen (z. B. de,en). Bereits befüllte Felder werden nicht überschrieben.'

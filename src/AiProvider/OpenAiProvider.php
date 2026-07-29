@@ -32,16 +32,39 @@ class OpenAiProvider implements LokiAiProviderInterface
     ) {
     }
 
-    public function chat(string $content, string|null $model = null, float|null $temperature = null, int|null $maxTokens = null): string
+    public function supportsVision(): bool
     {
+        $model = $this->providerConfig['model'] ?? '';
+
+        return str_starts_with($model, 'gpt-4o') || str_starts_with($model, 'gpt-4-vision') || str_starts_with($model, 'o1');
+    }
+
+    public function chat(string $content, string|null $model = null, float|null $temperature = null, int|null $maxTokens = null, ?string $imageData = null, ?string $imageMimeType = null): string
+    {
+        $resolvedModel = $model ?: ($this->providerConfig['model'] ?? 'gpt-4o-mini');
+
+        if (null !== $imageData) {
+            $userContent = [
+                [
+                    'type' => 'image_url',
+                    'image_url' => [
+                        'url' => sprintf('data:%s;base64,%s', $imageMimeType ?? 'image/jpeg', $imageData),
+                    ],
+                ],
+                ['type' => 'text', 'text' => $content],
+            ];
+        } else {
+            $userContent = $content;
+        }
+
         $response = $this->getClient()->chat()->create([
-            'model' => $model ?: ($this->providerConfig['model'] ?? 'gpt-4o-mini'),
+            'model' => $resolvedModel,
             'temperature' => $temperature ?: ($this->providerConfig['temperature'] ?? 0.5),
             'max_completion_tokens' => $maxTokens ?: ($this->providerConfig['max_tokens'] ?? 100),
             'messages' => [
                 [
-                    'role' => 'user',
-                    'content' => $content,
+                    'role'    => 'user',
+                    'content' => $userContent,
                 ],
             ],
         ]);

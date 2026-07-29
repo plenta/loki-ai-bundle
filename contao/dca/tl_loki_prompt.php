@@ -68,11 +68,12 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
         ],
     ],
     'palettes' => [
-        '__selector__' => ['protected'],
-        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,provider,model,maxTokens,temperature;{publish_legend},autoRun,skipIfEmpty,protected,published',
+        '__selector__' => ['protected', 'visionPrompt'],
+        'default' => '{title_legend},title,alias;{config_legend},fields;{ai_legend},prompt,provider,model,maxTokens,temperature;{vision_legend},visionPrompt;{publish_legend},autoRun,skipIfEmpty,protected,published',
     ],
     'subpalettes' => [
-        'protected' => 'userGroups',
+        'protected'    => 'userGroups',
+        'visionPrompt' => 'visionSystemPrompt,visionLanguages',
     ],
     'fields' => [
         'id' => [
@@ -193,6 +194,23 @@ $GLOBALS['TL_DCA']['tl_loki_prompt'] = [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
             'sql' => ['type' => 'boolean', 'default' => false],
+        ],
+        'visionPrompt' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
+            'sql' => ['type' => 'boolean', 'default' => false],
+        ],
+        'visionSystemPrompt' => [
+            'exclude' => true,
+            'inputType' => 'textarea',
+            'eval' => ['decodeEntities' => true, 'rows' => 8, 'tl_class' => 'clr'],
+            'sql' => ['type' => 'text', 'notnull' => false],
+        ],
+        'visionLanguages' => [
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['tl_class' => 'w50', 'placeholder' => 'de,en'],
         ],
         'requirements' => [
             'inputType' => 'keyValueWizard',

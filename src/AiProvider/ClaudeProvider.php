@@ -39,11 +39,18 @@ class ClaudeProvider implements LokiAiProviderInterface
     ) {
     }
 
+    public function supportsVision(): bool
+    {
+        return true;
+    }
+
     public function chat(
         string $content,
         ?string $model = null,
         ?float $temperature = null,
         ?int $maxTokens = null,
+        ?string $imageData = null,
+        ?string $imageMimeType = null,
         ?string $system = null,
     ): string {
         $apiKey = $this->providerConfig['api_key'] ?? '';
@@ -52,11 +59,27 @@ class ClaudeProvider implements LokiAiProviderInterface
             throw new \RuntimeException('Claude API key is not configured. Set loki_ai.providers.claude.api_key in your config.');
         }
 
+        if (null !== $imageData) {
+            $userContent = [
+                [
+                    'type'   => 'image',
+                    'source' => [
+                        'type'       => 'base64',
+                        'media_type' => $imageMimeType ?? 'image/jpeg',
+                        'data'       => $imageData,
+                    ],
+                ],
+                ['type' => 'text', 'text' => $content],
+            ];
+        } else {
+            $userContent = $content;
+        }
+
         $payload = [
-            'model' => $model ?: ($this->providerConfig['model'] ?? 'claude-sonnet-4-6'),
+            'model'      => $model ?: ($this->providerConfig['model'] ?? 'claude-sonnet-4-6'),
             'max_tokens' => $maxTokens ?: ($this->providerConfig['max_tokens'] ?? 1024),
-            'messages' => [
-                ['role' => 'user', 'content' => $content],
+            'messages'   => [
+                ['role' => 'user', 'content' => $userContent],
             ],
         ];
 

@@ -62,3 +62,13 @@ tl_loki_prompt:
         0: Restrictions
         1: 'The execution of the prompt will be limited to records containing specific values. Enter the column name in the "Key" field and the value in the "Value" field. Multiple fields are combined with AND.'
     noProviderConfigured: 'No AI provider configured. Please add at least one API key (e.g. <code>OPENAI_API_KEY</code> or <code>ANTHROPIC_API_KEY</code>) to your <code>.env.local</code> and clear the Symfony cache afterwards (<code>php bin/console cache:clear</code>).'
+    vision_legend: Vision
+    visionPrompt:
+        - Vision prompt
+        - 'Use this prompt for automatic image metadata generation in the file manager. When enabled, the prompt field above is used as optional context (e.g. industry, tone or language). The actual JSON instruction is added automatically.'
+    visionSystemPrompt:
+        - System prompt
+        - 'The AI prompt for image analysis. Must return a JSON object with the keys "title" and "alt". The default prompt is pre-filled and can be customised.'
+    visionLanguages:
+        - Languages
+        - 'Comma-separated language codes for which title and alt text will be generated (e.g. de,en). Fields that are already filled will not be overwritten.'

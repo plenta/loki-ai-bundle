@@ -22,6 +22,7 @@ use Contao\Message;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Plenta\LokiAiBundle\AiProvider\LokiAiGateway;
+use Plenta\LokiAiBundle\MessageHandler\VisionDescribeHandler;
 use Plenta\LokiAiBundle\Repository\FieldRepository;
 use Plenta\LokiAiBundle\Repository\PromptRepository;
 use Symfony\Component\Routing\RouterInterface;
@@ -219,5 +220,31 @@ class TlLokiPrompt
             $attributes,
             Image::getHtml($icon, $label),
         );
+    }
+
+    #[AsCallback(table: 'tl_loki_prompt', target: 'fields.visionSystemPrompt.load_callback')]
+    public function onLoadVisionSystemPrompt(mixed $value, DataContainer $dc): mixed
+    {
+        if (!empty($value)) {
+            return $value;
+        }
+
+        return preg_replace('/^[ \t]+/m', '', trim(VisionDescribeHandler::DEFAULT_SYSTEM_PROMPT));
+    }
+
+    #[AsCallback(table: 'tl_loki_prompt', target: 'fields.visionPrompt.save_callback')]
+    public function onSaveVisionPrompt(mixed $value, DataContainer $dc): mixed
+    {
+        if ($value) {
+            $this->connection->createQueryBuilder()
+                ->update('tl_loki_prompt')
+                ->set('visionPrompt', '0')
+                ->where('id != :id')
+                ->setParameter('id', $dc->id)
+                ->executeQuery()
+            ;
+        }
+
+        return $value;
     }
 }
