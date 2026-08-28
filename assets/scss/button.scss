@@ -10,8 +10,8 @@
         text-align: left;
         padding: 0;
         margin-left: 0.2em;
-        width: 0.875rem;
-        height: 0.875rem;
+        width: 1.3rem;
+        height: 1.3rem;
         display: inline-block;
         background-color: var(--blue, #006494);
         border-radius: 0.2rem;
@@ -32,7 +32,7 @@
             height: 80%;
             display: block;
             position: absolute;
-            background-image: url('/assets/images/wand-sparkles.svg');
+            background-image: url('/assets/images/play.svg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -53,6 +53,35 @@
                 background-image: url('/assets/images/loader-circle.svg');
                 animation: rotate-loki-button 1s linear infinite;
             }
+        }
+    }
+}
+
+.loki-prompt-button button {
+    font-size: 0;
+    line-height: 0;
+}
+
+h3:has(.loki-prompt-button) {
+    height: auto;
+}
+
+
+h3:has(.loki-prompt-button + .loki-prompt-button) .loki-prompt-button {
+    margin-block: 6px;
+
+    button {
+        font-size: .875rem;
+        line-height: normal;
+        width: auto;
+        height: auto;
+        padding: 0.25rem 0.5rem 0.25rem 20px;
+
+        &:after {
+            width: 1em;
+            height: 1em;
+            left: 3px;
+            transform: translateY(-50%) rotate(0);
         }
     }
 }
@@ -82,9 +111,8 @@ dialog {
                 right: 10px;
                 top: 19px;
                 color: #999;
-                font-family:
-                    -apple-system, system-ui, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
-                    sans-serif;
+                font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
+                sans-serif;
                 font-size: 30px;
                 font-weight: 400;
                 line-height: 10px;
